@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.7'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'bc1'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    /* Spring Basic Setting */
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    // JWT
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    /* DB */
+    // MySQL
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    // H2 database
+    runtimeOnly 'com.h2database:h2'
+
+    /* Test */
+    // Spring
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // JWT 테스트용
+    testCompileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    testRuntimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    testRuntimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+}
+
+tasks.named('bootBuildImage') {
+    builder = 'paketobuildpacks/builder-jammy-base:latest'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
