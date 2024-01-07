@@ -2,6 +2,7 @@ package bc1.gream.domain.user.service.impl;
 
 import bc1.gream.domain.user.dto.request.UserSignupRequestDto;
 import bc1.gream.domain.user.dto.response.UserSignupResponseDto;
+import bc1.gream.domain.user.entity.Provider;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.domain.user.repository.UserRepository;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
             .nickname(request.nickname())
             .password(passwordEncoder.encode(request.password()))
             .role(UserRole.USER)
+            .provider(Provider.LOCAL)
             .build();
 
         userRepository.save(user);
