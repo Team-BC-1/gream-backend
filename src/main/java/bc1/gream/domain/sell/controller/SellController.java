@@ -1,7 +1,9 @@
 package bc1.gream.domain.sell.controller;
 
-import bc1.gream.domain.sell.dto.request.SellRequestDto;
-import bc1.gream.domain.sell.dto.response.SellResponseDto;
+import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
+import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
+import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
+import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
 import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.RestResponse;
@@ -21,12 +23,22 @@ public class SellController {
     private final SellService sellService;
 
     @PostMapping("/{productId}/now")
-    public RestResponse<SellResponseDto> sellProduct(
+    public RestResponse<SellNowResponseDto> sellNowProduct(
         User user,
-        @Valid @RequestBody SellRequestDto requestDto,
+        @Valid @RequestBody SellNowRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        SellResponseDto response = sellService.sellNowProduct(user, requestDto, productId);
+        SellNowResponseDto response = sellService.sellNowProduct(user, requestDto, productId);
+        return RestResponse.success(response);
+    }
+
+    @PostMapping("/{productId}")
+    public RestResponse<SellBidResponseDto> sellBidProduct(
+        User user,
+        @Valid @RequestBody SellBidRequestDto requestDto,
+        @PathVariable Long productId
+    ) {
+        SellBidResponseDto response = sellService.sellBidProduct(user, requestDto, productId);
         return RestResponse.success(response);
     }
 }
