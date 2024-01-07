@@ -9,7 +9,6 @@ import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.sell.dto.request.SellRequestDto;
 import bc1.gream.domain.sell.dto.response.SellResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.sell.repository.GifticonRepository;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.SellTest;
@@ -30,9 +29,6 @@ class SellServiceImplTest implements UserTest, ProductTest, SellTest {
 
     @Mock
     ProductRepository productRepository;
-
-    @Mock
-    GifticonRepository gifticonRepository;
 
     @InjectMocks
     SellServiceImpl sellService;
