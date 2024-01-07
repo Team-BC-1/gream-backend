@@ -10,8 +10,11 @@ import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
+import bc1.gream.domain.sell.entity.Gifticon;
 import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.repository.GifticonRepository;
 import bc1.gream.domain.sell.repository.SellRepository;
+import bc1.gream.test.GifticonTest;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.SellTest;
 import bc1.gream.test.UserTest;
@@ -24,13 +27,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class SellServiceImplTest implements UserTest, ProductTest, SellTest {
+class SellServiceImplTest implements UserTest, ProductTest, SellTest, GifticonTest {
 
     @Mock
     SellRepository sellRepository;
 
     @Mock
     ProductRepository productRepository;
+
+    @Mock
+    GifticonRepository gifticonRepository;
 
     @InjectMocks
     SellServiceImpl sellService;
@@ -46,6 +52,7 @@ class SellServiceImplTest implements UserTest, ProductTest, SellTest {
 
         given(productRepository.findById(TEST_PRODUCT_ID)).willReturn(Optional.of(TEST_PRODUCT));
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
+        given(gifticonRepository.save(any(Gifticon.class))).willReturn(TEST_GIFTICON);
 
         SellNowResponseDto sellNowResponseDto = sellService.sellNowProduct(TEST_USER, sellNowRequestDto, TEST_PRODUCT_ID);
 
@@ -64,6 +71,7 @@ class SellServiceImplTest implements UserTest, ProductTest, SellTest {
 
         given(productRepository.findById(TEST_PRODUCT_ID)).willReturn(Optional.of(TEST_PRODUCT));
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
+        given(gifticonRepository.save(any(Gifticon.class))).willReturn(TEST_GIFTICON);
 
         SellBidResponseDto sellBidResponseDto = sellService.sellBidProduct(TEST_USER, sellBidRequestDto, TEST_PRODUCT_ID);
 
