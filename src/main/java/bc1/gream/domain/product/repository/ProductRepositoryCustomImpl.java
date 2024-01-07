@@ -1,5 +1,6 @@
 package bc1.gream.domain.product.repository;
 
+
 import static bc1.gream.domain.product.entity.QProduct.product;
 
 import bc1.gream.domain.product.entity.Product;
@@ -13,9 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 

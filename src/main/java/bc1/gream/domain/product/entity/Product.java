@@ -4,6 +4,7 @@ import bc1.gream.domain.model.BaseEntity;
 import bc1.gream.domain.order.entity.Order;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_product")
+@Entity
 @Getter
 @DynamicUpdate
 @DynamicInsert

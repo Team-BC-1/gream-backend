@@ -3,4 +3,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/gream
     username: root
-    password: ${DB_PASSWORD}
+    password: 1026baby
+#    password: ${DB_PASSWORD}
