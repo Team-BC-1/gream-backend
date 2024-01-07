@@ -27,11 +27,12 @@ public class RestResponse<T> implements Serializable {
             .build();
     }
 
-    public static <T> RestResponse<T> error(ResultCase ResultCase) {
+    public static <T> RestResponse<T> error(ResultCase ResultCase, T data) {
         return RestResponse.<T>builder()
             .status(ResultCase.getHttpStatus())
             .code(ResultCase.getCode())
             .message(ResultCase.getMessage())
+            .data(data)
             .build();
     }
 }
