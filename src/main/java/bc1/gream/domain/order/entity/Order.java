@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -24,9 +25,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Entity(name = "tb_order")
+@Entity
+@Table
 @Getter
-@Builder
 @DynamicUpdate
 @DynamicInsert
 public class Order extends BaseEntity {
@@ -60,4 +61,14 @@ public class Order extends BaseEntity {
     private LocalDateTime tradeDate;
 
     private Boolean isInstantTrade;
+
+
+    @Builder
+    private Order(Product product, OrderState state, BigInteger buyPrice, LocalDateTime tradeDate, Boolean isInstantTrade) {
+        this.product = product;
+        this.state = state;
+        this.buyPrice = buyPrice;
+        this.tradeDate = tradeDate;
+        this.isInstantTrade = isInstantTrade;
+    }
 }

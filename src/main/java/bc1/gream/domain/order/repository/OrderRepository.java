@@ -1,8 +1,9 @@
 package bc1.gream.domain.order.repository;
 
 import bc1.gream.domain.order.entity.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.RepositoryDefinition;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+@RepositoryDefinition(domainClass = Order.class, idClass = Long.class)
+public interface OrderRepository {
 
 }
