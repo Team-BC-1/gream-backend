@@ -4,8 +4,10 @@ import static bc1.gream.domain.product.entity.QProduct.product;
 
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.helper.ProductQueryConditionFactory;
+import bc1.gream.domain.product.repository.helper.ProductQueryOrderFactory;
 import bc1.gream.domain.product.service.query.unit.ProductCondition;
 import bc1.gream.global.config.QueryDslConfig;
+import com.querydsl.core.types.OrderSpecifier;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,22 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Override
     public List<Product> findAllByPaging(ProductCondition condition, Pageable pageable) {
+        // Get Order By Columns
+        OrderSpecifier[] ordersOf = ProductQueryOrderFactory.getOrdersOf(pageable.getSort());
+
+        // Query + Order + Paging
+        qd.query()
+            .selectFrom(product)
+            .where(
+                ProductQueryConditionFactory.brandEquals(condition.brand()),
+                ProductQueryConditionFactory.nameEquals(condition.brand()),
+                ProductQueryConditionFactory.hasPriceRangeOf(condition.startPrice(), condition.endPrice())
+            )
+            .orderBy(ordersOf)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
         return null;
     }
 }
