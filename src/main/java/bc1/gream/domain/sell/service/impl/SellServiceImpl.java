@@ -8,7 +8,9 @@ import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
+import bc1.gream.domain.sell.entity.Gifticon;
 import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.repository.GifticonRepository;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.sell.service.SellServiceMapper;
@@ -26,12 +28,14 @@ public class SellServiceImpl implements SellService {
 
     private final SellRepository sellRepository;
     private final ProductRepository productRepository;
+    private final GifticonRepository gifticonRepository;
 
     @Override
     @Transactional
     public SellNowResponseDto sellNowProduct(User user, SellNowRequestDto requestDto, Long productId) {
         Sell sell = nowSellProduct(user, requestDto, productId);
         Sell savedSell = sellRepository.save(sell);
+        saveGifticon(sell, requestDto.gifticonUrl());
 
         return SellServiceMapper.INSTANCE.toSellNowResponseDto(savedSell);
     }
@@ -40,6 +44,8 @@ public class SellServiceImpl implements SellService {
     public SellBidResponseDto sellBidProduct(User user, SellBidRequestDto requestDto, Long productId) {
         Sell sell = bidSellProduct(user, requestDto, productId);
         Sell savedSell = sellRepository.save(sell);
+        saveGifticon(sell, requestDto.gifticonUrl());
+
         return SellServiceMapper.INSTANCE.toSellBidResponseDto(savedSell);
     }
 
@@ -91,6 +97,16 @@ public class SellServiceImpl implements SellService {
         return productRepository.findById(productId).orElseThrow(
             () -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND)
         );
+    }
+
+    private Gifticon saveGifticon(Sell sell, String gifticonUrl) {
+
+        Gifticon gifticon = Gifticon.builder()
+            .gifticonImg(gifticonUrl)
+            .sell(sell)
+            .build();
+
+        return gifticonRepository.save(gifticon);
     }
 
 }
