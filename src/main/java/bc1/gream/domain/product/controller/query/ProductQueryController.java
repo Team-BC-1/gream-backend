@@ -9,5 +9,4 @@ import org.springframework.stereotype.Controller;
 public class ProductQueryController {
 
     private final ProductQueryService productQueryService;
-
 }
