@@ -1,0 +1,63 @@
+package bc1.gream.domain.sell.service.impl;
+
+import static java.time.LocalDateTime.now;
+
+import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.sell.dto.request.SellRequestDto;
+import bc1.gream.domain.sell.dto.response.SellResponseDto;
+import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.repository.SellRepository;
+import bc1.gream.domain.sell.service.SellService;
+import bc1.gream.domain.sell.service.SellServiceMapper;
+import bc1.gream.domain.user.entity.User;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.GlobalException;
+import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class SellServiceImpl implements SellService {
+
+    private final SellRepository sellRepository;
+    private final ProductRepository productRepository;
+
+    @Override
+    @Transactional
+    public SellResponseDto sellNowProduct(User user, SellRequestDto requestDto, Long productId) {
+        Sell sell = nowSellProduct(user, requestDto, productId);
+        Sell savedSell = sellRepository.save(sell);
+
+        return SellServiceMapper.INSTANCE.toSellNowResponseDto(savedSell);
+    }
+
+    private Sell nowSellProduct(User user, SellRequestDto requestDto, Long productId) {
+
+        Long price = requestDto.price();
+        Boolean isClose = true;
+        LocalDateTime deadLineAt = now().plusDays(7);
+        Product product = findProductById(productId);
+        Boolean isNow = true;
+        String paymentType = requestDto.paymentType();
+
+        return Sell.builder()
+            .price(price)
+            .isClose(isClose)
+            .deadlineAt(deadLineAt)
+            .isNow(isNow)
+            .paymentType(paymentType)
+            .user(user)
+            .product(product)
+            .build();
+    }
+
+
+    private Product findProductById(Long productId) {
+        return productRepository.findById(productId).orElseThrow(
+            () -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND)
+        );
+    }
+}
