@@ -1,8 +1,11 @@
 package bc1.gream.domain.product.repository;
 
 import bc1.gream.domain.product.entity.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import org.springframework.data.repository.RepositoryDefinition;
 
-public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
+@RepositoryDefinition(domainClass = Product.class, idClass = Long.class)
+public interface ProductRepository extends ProductRepositoryCustom {
 
+    List<Product> findAll();
 }
