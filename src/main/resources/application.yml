@@ -4,3 +4,12 @@ spring:
     url: jdbc:mysql://localhost:3306/gream
     username: root
     password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
