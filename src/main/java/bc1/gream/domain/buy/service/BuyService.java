@@ -1,9 +1,12 @@
 package bc1.gream.domain.buy.service;
 
+import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
+import static bc1.gream.global.common.ResultCase.SEARCH_RESULT_NOT_FOUND;
 
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.product.entity.Product;
@@ -39,8 +42,23 @@ public class BuyService {
             .build();
 
         Buy savedBuy = buyRepository.save(buy);
-        
+
         return BuyServiceMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
+    }
+
+
+    public BuyCancelBidResponseDto buyCancelBid(User user, Long buyId) {
+        Buy buyBid = buyRepository.findById(buyId).orElseThrow(
+            () -> new GlobalException(SEARCH_RESULT_NOT_FOUND)
+        );
+
+        if (!buyBid.getUser().getLoginId().equals(user.getLoginId())) {
+            throw new GlobalException(NOT_AUTHORIZED);
+        }
+
+        buyRepository.delete(buyBid);
+
+        return new BuyCancelBidResponseDto();
     }
 
     private Integer getPeriod(Integer period) {
