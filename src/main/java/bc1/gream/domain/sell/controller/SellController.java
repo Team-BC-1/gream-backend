@@ -21,16 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellController {
 
     private final SellService sellService;
-    private final ProductService productService;
 
-    @PostMapping("{productId}")
+    @PostMapping("/{productId}")
     public RestResponse<SellBidResponseDto> sellBidProduct(
         User user,
         @Valid @RequestBody SellBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        Product product = productService.findProductById(productId);
-        SellBidResponseDto responseDto = sellService.sellBidProduct(user, requestDto, product);
+        SellBidResponseDto responseDto = sellService.sellBidProduct(user, requestDto, productId);
         return RestResponse.success(responseDto);
     }
 }
