@@ -33,14 +33,16 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath imageUrl = createString("imageUrl");
 
+    public final ListPath<LikeProduct, QLikeProduct> likeProducts = this.<LikeProduct, QLikeProduct>createList("likeProducts", LikeProduct.class, QLikeProduct.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public final StringPath name = createString("name");
 
-    public final ListPath<bc1.gream.domain.order.entity.Order, bc1.gream.domain.order.entity.QOrder> orders = this.<bc1.gream.domain.order.entity.Order, bc1.gream.domain.order.entity.QOrder>createList("orders", bc1.gream.domain.order.entity.Order.class, bc1.gream.domain.order.entity.QOrder.class, PathInits.DIRECT2);
+    public final SetPath<bc1.gream.domain.order.entity.Order, bc1.gream.domain.order.entity.QOrder> orders = this.<bc1.gream.domain.order.entity.Order, bc1.gream.domain.order.entity.QOrder>createSet("orders", bc1.gream.domain.order.entity.Order.class, bc1.gream.domain.order.entity.QOrder.class, PathInits.DIRECT2);
 
-    public final NumberPath<java.math.BigInteger> price = createNumber("price", java.math.BigInteger.class);
+    public final NumberPath<Long> price = createNumber("price", Long.class);
 
     public QProduct(String variable) {
         super(Product.class, forVariable(variable));
