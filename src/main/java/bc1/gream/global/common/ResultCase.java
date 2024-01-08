@@ -17,7 +17,7 @@ public enum ResultCase {
     // 중복된 닉네임 입력 409
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, 1001, "중복된 닉네임을 입력하셨습니다."),
     // 존재하지 않는 사용자 404,
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 1002, "중복된 로그인ID를 입력하셨습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 1002, "유저를 찾을 수 없습니다."),
 
     // 상품 2000번대
     // 검색 결과 없음 404
