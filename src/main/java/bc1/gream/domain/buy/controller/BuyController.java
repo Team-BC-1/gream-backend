@@ -2,6 +2,7 @@ package bc1.gream.domain.buy.controller;
 
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
@@ -28,6 +29,15 @@ public class BuyController {
         @PathVariable Long productId
     ) {
         BuyBidResponseDto responseDto = buyService.buyBidProduct(userDetails.getUser(), requestDto, productId);
+        return RestResponse.success(responseDto);
+    }
+
+    @PostMapping("/{buyId}")
+    public RestResponse<BuyCancelBidResponseDto> buyCancelBid(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable Long buyId
+    ) {
+        BuyCancelBidResponseDto responseDto = buyService.buyCancelBid(userDetails.getUser(), buyId);
         return RestResponse.success(responseDto);
     }
 }
