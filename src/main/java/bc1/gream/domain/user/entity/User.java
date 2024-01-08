@@ -1,6 +1,8 @@
 package bc1.gream.domain.user.entity;
 
 import bc1.gream.domain.model.BaseEntity;
+import bc1.gream.domain.order.entity.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,7 +10,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +24,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tb_user")
 public class User extends BaseEntity {
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "buyer", targetEntity = Order.class)
+    private final Set purchasedOrders = new HashSet();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "seller", targetEntity = Order.class)
+    private final Set saleOrders = new HashSet();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
