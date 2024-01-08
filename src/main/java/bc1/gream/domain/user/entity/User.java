@@ -2,7 +2,12 @@ package bc1.gream.domain.user.entity;
 
 import bc1.gream.domain.model.BaseEntity;
 import bc1.gream.domain.order.entity.Order;
+import bc1.gream.domain.product.entity.LikeProduct;
+import bc1.gream.domain.product.entity.Product;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.GlobalException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,7 +17,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,6 +39,10 @@ public class User extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "seller", targetEntity = Order.class)
     private final Set saleOrders = new HashSet();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = LikeProduct.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<LikeProduct> likeProducts = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,5 +72,19 @@ public class User extends BaseEntity {
         this.password = password;
         this.role = role;
         this.provider = provider;
+    }
+
+    public void addLikeProduct(Product product) {
+        LikeProduct likeProduct = new LikeProduct(this, product);
+        product.getLikeProducts().add(likeProduct);
+        this.likeProducts.add(likeProduct);
+    }
+
+    public void removeLikeProduct(Product product) {
+        LikeProduct likeProduct = this.likeProducts.stream()
+            .filter(lp -> lp.getProduct().equals(product))
+            .findAny().orElseThrow(() -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND));
+        this.likeProducts.remove(likeProduct);
+        product.getLikeProducts().remove(likeProduct);
     }
 }
