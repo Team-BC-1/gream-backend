@@ -3,6 +3,8 @@ package bc1.gream.domain.buy.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
@@ -47,5 +49,18 @@ class BuyServiceTest implements UserTest, ProductTest, BuyTest {
 
         // then
         assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
+    }
+
+    @Test
+    void buyCancelBidTest() {
+
+        // given
+        given(buyRepository.findById(TEST_BUY_ID)).willReturn(Optional.of(TEST_BUY));
+
+        // when
+        buyService.buyCancelBid(TEST_USER, TEST_BUY_ID);
+
+        // then
+        verify(buyRepository, times(1)).delete(any(Buy.class));
     }
 }
