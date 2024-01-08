@@ -42,11 +42,9 @@ class SellServiceTest implements SellTest {
         String url = "images/images.png";
         Resource fileResource = new ClassPathResource(url);
 
-        System.out.println(fileResource.getURL());
-
         SellBidRequestDto requestDto = SellBidRequestDto.builder()
             .price(TEST_SELL_PRICE)
-            .gifticonUrl(String.valueOf(fileResource.getURL()))
+            .gifticonUrl(fileResource.getURL().getPath())
             .build();
 
         given(productRepository.findById(1L)).willReturn(Optional.of(TEST_PRODUCT));
