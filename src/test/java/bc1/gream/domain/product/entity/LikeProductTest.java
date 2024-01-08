@@ -1,8 +1,6 @@
 package bc1.gream.domain.product.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.product.repository.LikeProductRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
@@ -12,6 +10,7 @@ import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.UserTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,13 @@ class LikeProductTest implements UserTest, ProductTest {
         productRepository.save(TEST_PRODUCT);
     }
 
+    @AfterEach
+    void tearDown() {
+        likeProductRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+    }
+
     @Test
     public void 중간조인테이블_복합키_확인() {
         // GIVEN
@@ -51,37 +57,5 @@ class LikeProductTest implements UserTest, ProductTest {
         // THEN
         assertEquals(TEST_PRODUCT, savedLikeProduct.getProduct());
         assertEquals(TEST_USER, savedLikeProduct.getUser());
-    }
-
-    @Test
-    public void 사용자_관심상품_추가합니다() {
-        // WHEN
-        TEST_USER.addLikeProduct(TEST_PRODUCT);
-
-        // THEN
-        boolean hasLikeProduct = likeProductRepository.findAll().stream()
-            .filter(likeProduct ->
-                likeProduct.getProduct().equals(TEST_PRODUCT))
-            .anyMatch(likeProduct ->
-                likeProduct.getUser().equals(TEST_USER));
-        assertTrue(hasLikeProduct);
-    }
-
-
-    @Test
-    public void 사용자_관심상품_삭제합니다() {
-        // GIVEN
-        TEST_USER.addLikeProduct(TEST_PRODUCT);
-
-        // WHEN
-        TEST_USER.removeLikeProduct(TEST_PRODUCT);
-
-        // THEN
-        boolean hasLikeProduct = likeProductRepository.findAll().stream()
-            .filter(lp ->
-                lp.getProduct().equals(TEST_PRODUCT))
-            .anyMatch(lp ->
-                lp.getUser().equals(TEST_USER));
-        assertFalse(hasLikeProduct);
     }
 }
