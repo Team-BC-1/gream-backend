@@ -30,7 +30,7 @@ public class Sell extends BaseEntity {
     @Column(name = "price", nullable = false)
     private Long price;
 
-    @Column(name = "deadlineAt")
+    @Column(name = "deadline_At")
     private LocalDateTime deadlineAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
