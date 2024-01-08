@@ -2,12 +2,9 @@ package bc1.gream.domain.user.repository;
 
 import bc1.gream.domain.user.entity.User;
 import java.util.Optional;
-import org.springframework.data.repository.RepositoryDefinition;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@RepositoryDefinition(domainClass = User.class, idClass = Long.class)
-public interface UserRepository {
-
-    User save(User user);
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByLoginId(String loginId);
 
