@@ -3,6 +3,7 @@ package bc1.gream.domain.buy.entity;
 import bc1.gream.domain.model.BaseEntity;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,10 +35,12 @@ public class Buy extends BaseEntity {
     @Column(name = "deadline_at")
     private LocalDateTime deadlineAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
