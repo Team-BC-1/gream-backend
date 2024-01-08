@@ -1,17 +1,16 @@
 package bc1.gream.domain.sell.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
-import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.SellTest;
 import java.io.IOException;
 import java.util.Optional;
@@ -57,4 +56,16 @@ class SellServiceTest implements SellTest {
         assertThat(responseDto.price()).isEqualTo(TEST_SELL_PRICE);
     }
 
+    @Test
+    void sellCancelBidTest() {
+
+        // given
+        given(sellRepository.findById(TEST_SELL_ID)).willReturn(Optional.of(TEST_SELL));
+
+        // when
+        sellService.sellCancelBid(TEST_USER, TEST_SELL_ID);
+
+        // then
+        verify(sellRepository, times(1)).delete(any(Sell.class));
+    }
 }
