@@ -1,11 +1,16 @@
 package bc1.gream.domain.order.entity;
 
 import bc1.gream.domain.model.BaseEntity;
+import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigInteger;
@@ -24,6 +29,18 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @DynamicInsert
 public class Order extends BaseEntity {
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User buyer;
+    
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User seller;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
