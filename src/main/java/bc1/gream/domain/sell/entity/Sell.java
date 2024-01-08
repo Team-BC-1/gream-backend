@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tb_sell")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Sell extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +31,7 @@ public class Sell extends BaseEntity {
     @Column(name = "price", nullable = false)
     private Long price;
 
-    @Column(name = "deadline_At")
+    @Column(name = "deadline_at")
     private LocalDateTime deadlineAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
