@@ -1,5 +1,6 @@
 package bc1.gream.domain.order.entity;
 
+
 import bc1.gream.domain.model.BaseEntity;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
@@ -37,7 +38,7 @@ public class Order extends BaseEntity {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User buyer;
-    
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User seller;

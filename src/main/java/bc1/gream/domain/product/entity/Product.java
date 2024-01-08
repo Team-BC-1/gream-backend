@@ -12,8 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,6 +34,10 @@ public class Product extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "product", targetEntity = Order.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Order> orders = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", targetEntity = LikeProduct.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<LikeProduct> likeProducts = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,10 +61,10 @@ public class Product extends BaseEntity {
 
     @Column
     @NotNull
-    private BigInteger price;
+    private Long price;
 
     @Builder
-    public Product(String brand, String name, String imageUrl, String description, BigInteger price) {
+    private Product(String brand, String name, String imageUrl, String description, Long price) {
         this.brand = brand;
         this.name = name;
         this.imageUrl = imageUrl;
