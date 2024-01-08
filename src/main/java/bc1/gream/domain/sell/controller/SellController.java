@@ -2,12 +2,14 @@ package bc1.gream.domain.sell.controller;
 
 import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
+import bc1.gream.domain.sell.dto.response.SellCancelBidResponseDto;
 import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,16 @@ public class SellController {
         @PathVariable Long productId
     ) {
         SellBidResponseDto responseDto = sellService.sellBidProduct(userDetails.getUser(), requestDto, productId);
+        return RestResponse.success(responseDto);
+    }
+
+    @DeleteMapping("/{sellId}")
+    public RestResponse<SellCancelBidResponseDto> sellCancelBid(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable Long sellId
+    ) {
+        SellCancelBidResponseDto responseDto = sellService.sellCancelBid(userDetails.getUser(), sellId);
+
         return RestResponse.success(responseDto);
     }
 }
