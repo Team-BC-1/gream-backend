@@ -19,4 +19,5 @@ else
 fi
 
 echo "> $JAR_PATH deploy"
+cd /build/libs
 nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
