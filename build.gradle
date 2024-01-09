@@ -70,3 +70,7 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+jar {
+    enabled = false
+}
