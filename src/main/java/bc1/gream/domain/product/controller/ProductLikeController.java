@@ -1,4 +1,4 @@
-package bc1.gream.domain.product.controller.command;
+package bc1.gream.domain.product.controller;
 
 import bc1.gream.domain.product.dto.ProductLikeResponseDto;
 import bc1.gream.domain.product.mapper.ProductMapper;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/products")
-public class ProductCommendController {
+public class ProductLikeController {
 
     private final ProductCommendService productCommendService;
 

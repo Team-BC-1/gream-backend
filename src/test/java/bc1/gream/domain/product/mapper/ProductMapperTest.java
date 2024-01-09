@@ -5,12 +5,10 @@ import bc1.gream.test.OrderTest;
 import bc1.gream.test.ProductTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 class ProductMapperTest implements ProductTest, OrderTest {
 
-    @Autowired
-    ProductMapperImpl productMapperImpl;
+    ProductMapperImpl productMapperImpl = new ProductMapperImpl();
 
     @Test
     @DisplayName("상품을 입력받아 ProductQueryResponseDto로 변환합니다.")

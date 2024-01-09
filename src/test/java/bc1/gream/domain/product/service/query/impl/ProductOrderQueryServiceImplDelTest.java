@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.service.query.OrderQueryService;
+import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.test.OrderTest;
 import bc1.gream.test.ProductTest;
@@ -20,10 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ProductOrderQueryServiceImplTest implements UserTest, ProductTest, OrderTest {
+class ProductOrderQueryServiceImplDelTest implements UserTest, ProductTest, OrderTest {
 
     @InjectMocks
-    ProductOrderQueryServiceImpl productOrderQueryService;
+    ProductOrderQueryService productOrderQueryService;
 
     @Mock
     ProductQueryService productQueryService;

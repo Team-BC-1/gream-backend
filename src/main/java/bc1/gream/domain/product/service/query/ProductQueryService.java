@@ -1,25 +1,36 @@
 package bc1.gream.domain.product.service.query;
 
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.product.service.query.unit.ProductCondition;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.GlobalException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-public interface ProductQueryService {
+@Service
+@RequiredArgsConstructor
+public class ProductQueryService {
 
-    // 전체 조회
-    List<Product> findAll();
+    private final ProductRepository productRepository;
 
-    // 전체 조건 조회
-    List<Product> findAllBy(ProductCondition condition);
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 
-    // 전체 조건 조회 페이징
-    Page<Product> findAllByPaging(ProductCondition condition, Pageable pageable);
+    public List<Product> findAllBy(ProductCondition condition) {
+        return productRepository.findAllBy(condition);
+    }
 
-    // 상세 조회
-    Product findBy(Long id);
-    // 상품 :: 체결 거래 내역 조회
-    // 상품 :: 판매 입찰가 조회
-    // 상품 :: 구매 입찰가 조회
+    public Page<Product> findAllByPaging(ProductCondition condition, Pageable pageable) {
+        return productRepository.findAllByPaging(condition, pageable);
+    }
+
+    public Product findBy(Long id) {
+        return productRepository.findById(id)
+            .orElseThrow(() -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND));
+    }
 }

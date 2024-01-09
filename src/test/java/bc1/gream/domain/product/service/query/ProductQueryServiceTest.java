@@ -5,7 +5,6 @@ import static org.mockito.Mockito.lenient;
 
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
-import bc1.gream.domain.product.service.query.impl.ProductQueryServiceImpl;
 import bc1.gream.test.ProductTest;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ProductQueryServiceTest implements ProductTest {
 
     @InjectMocks
-    ProductQueryServiceImpl productQueryService;
+    ProductQueryService productQueryService;
 
     @Mock
     ProductRepository productRepository;

@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import bc1.gream.domain.product.controller.ProductLikeController;
 import bc1.gream.domain.product.service.command.ProductCommendService;
 import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.BaseMvcTest;
@@ -20,9 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@WebMvcTest(controllers = ProductCommendController.class)
+@WebMvcTest(controllers = ProductLikeController.class)
 @WithMockCustomUser
-class ProductCommendControllerTest extends BaseMvcTest implements ProductTest {
+class ProductLikeControllerTest extends BaseMvcTest implements ProductTest {
 
     @Autowired
     WebApplicationContext context;

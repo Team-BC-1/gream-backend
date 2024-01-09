@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import bc1.gream.domain.product.controller.ProductQueryController;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;

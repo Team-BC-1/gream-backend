@@ -1,4 +1,4 @@
-package bc1.gream.domain.product.controller.query;
+package bc1.gream.domain.product.controller;
 
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.dto.ProductQueryResponseDto;
