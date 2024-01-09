@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ProductOrderQueryServiceImplDelTest implements UserTest, ProductTest, OrderTest {
+class ProductOrderQueryServiceImplTest implements UserTest, ProductTest, OrderTest {
 
     @InjectMocks
     ProductOrderQueryService productOrderQueryService;
