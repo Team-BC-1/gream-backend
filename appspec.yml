@@ -16,6 +16,5 @@ permissions:
 
 hooks:
   AfterInstall:
-    - location: spript/deploy.sh
+    - location: deploy.sh
       timeout: 60
-      runas: root
