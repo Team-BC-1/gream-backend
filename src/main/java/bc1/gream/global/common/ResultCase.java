@@ -18,6 +18,8 @@ public enum ResultCase {
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, 1001, "중복된 닉네임을 입력하셨습니다."),
     // 존재하지 않는 사용자 404,
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 1002, "유저를 찾을 수 없습니다."),
+    // 유효하지 않은 토큰 400
+    INVALID_TOKEN(HttpStatus.BAD_REQUEST, 1003, "유효하지 않은 토큰입니다."),
 
     // 상품 2000번대
     // 검색 결과 없음 404
@@ -41,7 +43,9 @@ public enum ResultCase {
     // 권한 없음 403
     NOT_AUTHORIZED(HttpStatus.FORBIDDEN, 5000, "해당 요청에 대한 권한이 없습니다."),
     // 잘못된 형식의 입력 400
-    INVALID_INPUT(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 입력값");
+    INVALID_INPUT(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 입력값"),
+    // 시스템 에러 500
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
