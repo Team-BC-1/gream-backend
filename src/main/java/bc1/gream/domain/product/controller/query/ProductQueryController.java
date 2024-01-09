@@ -1,8 +1,11 @@
 package bc1.gream.domain.product.controller.query;
 
+import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.dto.ProductQueryResponseDto;
+import bc1.gream.domain.product.dto.TradeResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
+import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.global.common.RestResponse;
 import java.util.List;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductQueryController {
 
     private final ProductQueryService productQueryService;
+    private final ProductOrderQueryService productOrderQueryService;
 
     @GetMapping
     public RestResponse<List<ProductQueryResponseDto>> findAll() {
@@ -36,5 +40,33 @@ public class ProductQueryController {
         Product product = productQueryService.findBy(productId);
         ProductQueryResponseDto responseDto = ProductMapper.INSTANCE.toQueryResponseDto(product);
         return RestResponse.success(responseDto);
+    }
+
+    // 상품 :: 체결 거래 내역 조회
+    @GetMapping("/{id}/trade")
+    public RestResponse<List<TradeResponseDto>> findAllTrades(
+        @PathVariable("id") Long productId
+    ) {
+        List<Order> allTrades = productOrderQueryService.findAllTradesOf(productId);
+        List<TradeResponseDto> tradeResponseDtos = allTrades.stream()
+            .map(ProductMapper.INSTANCE::toTradeResponseDto)
+            .toList();
+        return RestResponse.success(tradeResponseDtos);
+    }
+
+    // 상품 :: 판매 입찰가 조회
+    @GetMapping("/{id}/sell")
+    public RestResponse<ProductQueryResponseDto> findAllSoldBidPrices(
+        @PathVariable("id") Long productId
+    ) {
+        return null;
+    }
+
+    // 상품 :: 구매 입찰가 조회
+    @GetMapping("/{id}/buy")
+    public RestResponse<ProductQueryResponseDto> findAllPurchasedBidPrices(
+        @PathVariable("id") Long productId
+    ) {
+        return null;
     }
 }

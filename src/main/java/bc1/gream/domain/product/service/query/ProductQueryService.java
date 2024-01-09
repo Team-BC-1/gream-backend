@@ -19,4 +19,7 @@ public interface ProductQueryService {
 
     // 상세 조회
     Product findBy(Long id);
+    // 상품 :: 체결 거래 내역 조회
+    // 상품 :: 판매 입찰가 조회
+    // 상품 :: 구매 입찰가 조회
 }
