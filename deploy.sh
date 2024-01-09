@@ -7,7 +7,8 @@ echo "$JAR_NAME"
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 echo "$JAR_PATH"
 
-CURRENT_PID=$(pgrep -f jar)
+APP_NAME=gream
+CURRENT_PID=$(pgrep -f $APP_NAME)
 
 if [ -z $CURRENT_PID ]
 then
