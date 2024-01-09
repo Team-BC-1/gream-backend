@@ -1,6 +1,7 @@
 package bc1.gream.domain.product.controller;
 
 import bc1.gream.domain.order.entity.Order;
+import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.product.dto.ProductQueryResponseDto;
 import bc1.gream.domain.product.dto.TradeResponseDto;
 import bc1.gream.domain.product.entity.Product;
@@ -49,7 +50,7 @@ public class ProductQueryController {
     ) {
         List<Order> allTrades = productOrderQueryService.findAllTradesOf(productId);
         List<TradeResponseDto> tradeResponseDtos = allTrades.stream()
-            .map(ProductMapper.INSTANCE::toTradeResponseDto)
+            .map(OrderMapper.INSTANCE::toTradeResponseDto)
             .toList();
         return RestResponse.success(tradeResponseDtos);
     }
