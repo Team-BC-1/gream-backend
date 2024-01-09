@@ -1,8 +1,8 @@
 package bc1.gream.domain.order.service;
 
+import static bc1.gream.global.common.ResultCase.BUY_BID_PRODUCT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.SEARCH_RESULT_NOT_FOUND;
 
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
@@ -49,7 +49,7 @@ public class BuyService {
 
     public BuyCancelBidResponseDto buyCancelBid(User user, Long buyId) {
         Buy buyBid = buyRepository.findById(buyId).orElseThrow(
-            () -> new GlobalException(SEARCH_RESULT_NOT_FOUND)
+            () -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND)
         );
 
         if (!buyBid.getUser().getLoginId().equals(user.getLoginId())) {

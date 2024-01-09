@@ -2,7 +2,7 @@ package bc1.gream.domain.order.service;
 
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.SEARCH_RESULT_NOT_FOUND;
+import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
@@ -52,7 +52,7 @@ public class SellService {
 
     public SellCancelBidResponseDto sellCancelBid(User user, Long sellId) {
         Sell bidSell = sellRepository.findById(sellId).orElseThrow(
-            () -> new GlobalException(SEARCH_RESULT_NOT_FOUND)
+            () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
         );
 
         if (!bidSell.getUser().getLoginId().equals(user.getLoginId())) {
