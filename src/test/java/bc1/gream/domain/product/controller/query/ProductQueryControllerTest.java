@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.test.ProductTest;
 import java.util.List;
@@ -24,11 +25,13 @@ class ProductQueryControllerTest implements ProductTest {
     private MockMvc mockMvc;
     @MockBean
     private ProductQueryService productQueryService;
+    @MockBean
+    private ProductOrderQueryService productOrderQueryService;
 
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(
-            new ProductQueryController(productQueryService)
+            new ProductQueryController(productQueryService, productOrderQueryService)
         ).build();
     }
 
@@ -46,13 +49,28 @@ class ProductQueryControllerTest implements ProductTest {
     }
 
     @Test
-    public void 상품_단건조회() throws Exception {
-        // GIVEN
-        Long productId = 1L;
-
+    public void 체결_거래_내역_조회() throws Exception {
         // WHEN
         // THEN
-        this.mockMvc.perform(get("/api/products/" + productId))
+        this.mockMvc.perform(get("/api/products/" + TEST_PRODUCT_ID + "/trade"))
+            .andDo(print())
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 판매_입찰가_조회() throws Exception {
+        // WHEN
+        // THEN
+        this.mockMvc.perform(get("/api/products/" + TEST_PRODUCT_ID + "/sell"))
+            .andDo(print())
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 구매_입찰가_조회() throws Exception {
+        // WHEN
+        // THEN
+        this.mockMvc.perform(get("/api/products/" + TEST_PRODUCT_ID + "/buy"))
             .andDo(print())
             .andExpect(status().isOk());
     }
