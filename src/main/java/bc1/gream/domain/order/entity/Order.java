@@ -54,10 +54,15 @@ public class Order extends BaseEntity {
     @NotNull
     private Long salePurchasedPrice;
 
+    @Column
     private LocalDateTime orderedAt;
 
     @Builder
-    private Order(Long finalPrice, Long salePurchasedPrice, LocalDateTime orderedAt) {
+    private Order(Product product, User buyer, User seller, Long id, Long finalPrice, Long salePurchasedPrice, LocalDateTime orderedAt) {
+        this.product = product;
+        this.buyer = buyer;
+        this.seller = seller;
+        this.id = id;
         this.finalPrice = finalPrice;
         this.salePurchasedPrice = salePurchasedPrice;
         this.orderedAt = orderedAt;
