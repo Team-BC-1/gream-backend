@@ -1,8 +1,8 @@
-package bc1.gream.domain.sell.controller;
+package bc1.gream.domain.buy.controller;
 
-import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
-import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
-import bc1.gream.domain.sell.service.SellService;
+import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
+import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/sell")
+@RequestMapping("/api/buy")
 @RequiredArgsConstructor
-public class SellController {
+public class BuyController {
 
-    private final SellService sellService;
+    private final BuyService buyService;
 
     @PostMapping("/{productId}")
-    public RestResponse<SellBidResponseDto> sellBidProduct(
+    public RestResponse<BuyBidResponseDto> buyBidProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestBody SellBidRequestDto requestDto,
+        @Valid @RequestBody BuyBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        SellBidResponseDto responseDto = sellService.sellBidProduct(userDetails.getUser(), requestDto, productId);
+        BuyBidResponseDto responseDto = buyService.buyBidProduct(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
     }
 }
