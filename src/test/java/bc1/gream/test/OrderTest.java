@@ -15,8 +15,8 @@ public interface OrderTest extends UserTest, ProductTest {
         .buyer(TEST_BUYER)
         .seller(TEST_SELLER)
         .id(TEST_ORDER_ID)
-        .finalPrice(TEST_ORDER_FINAL_PRICE)
-        .salePurchasedPrice(TEST_ORDER_SALE_PURCHASED_PRICE)
+        .finalPurchasePrice(TEST_ORDER_FINAL_PRICE)
+        .expectedPurchasedPrice(TEST_ORDER_SALE_PURCHASED_PRICE)
         .orderedAt(TEST_ORDER_ORDERED_AT)
         .build();
 }

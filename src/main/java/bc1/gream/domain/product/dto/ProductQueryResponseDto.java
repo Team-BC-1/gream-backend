@@ -10,4 +10,14 @@ public record ProductQueryResponseDto(
     BigInteger price
 ) {
 
+    @Override
+    public String toString() {
+        return "ProductQueryResponseDto{" +
+            "brand='" + brand + '\'' +
+            ", name='" + name + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", description='" + description + '\'' +
+            ", price=" + price +
+            '}';
+    }
 }
