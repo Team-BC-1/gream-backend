@@ -1,7 +1,8 @@
 package bc1.gream.domain.product.repository.helper;
 
+import static bc1.gream.domain.product.entity.QProduct.product;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
-import java.math.BigInteger;
 
 public final class ProductQueryConditionFactory {
 
@@ -21,17 +22,13 @@ public final class ProductQueryConditionFactory {
         return null;
     }
 
-    public static BooleanExpression hasPriceRangeOf(BigInteger startPrice, BigInteger endPrice) {
-        if (startPrice.compareTo(BigInteger.ZERO) == 0) {
-            return null;
-        }
-        if (endPrice.compareTo(BigInteger.ZERO) == 0) {
+    public static BooleanExpression hasPriceRangeOf(Long startPrice, Long endPrice) {
+        if (startPrice.equals(0L) || endPrice.equals(0L)) {
             return null;
         }
         if (startPrice.compareTo(endPrice) < 0) {
             return null;
         }
-//        return product.price.between(startPrice, endPrice);
-        return null;
+        return product.price.between(startPrice, endPrice);
     }
 }

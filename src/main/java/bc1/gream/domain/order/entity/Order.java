@@ -14,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -49,20 +48,20 @@ public class Order extends BaseEntity {
 
     @Column
     @NotNull
-    private BigInteger priceToSell;
+    private Long priceToSell;
 
     @Column
     @NotNull
-    private BigInteger finalPrice;
+    private Long finalPrice;
 
     @Column
     @NotNull
-    private BigInteger salePurchasedPrice;
+    private Long salePurchasedPrice;
 
     private LocalDateTime orderedAt;
 
     @Builder
-    private Order(BigInteger priceToSell, BigInteger finalPrice, BigInteger salePurchasedPrice, LocalDateTime orderedAt) {
+    private Order(Long priceToSell, Long finalPrice, Long salePurchasedPrice, LocalDateTime orderedAt) {
         this.priceToSell = priceToSell;
         this.finalPrice = finalPrice;
         this.salePurchasedPrice = salePurchasedPrice;
