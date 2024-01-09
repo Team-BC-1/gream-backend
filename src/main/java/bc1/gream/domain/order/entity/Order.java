@@ -48,23 +48,24 @@ public class Order extends BaseEntity {
 
     @Column
     @NotNull
-    private Long finalPrice;
+    private Long finalPurchasePrice; // 최종거래가격
 
     @Column
     @NotNull
-    private Long salePurchasedPrice;
+    private Long expectedPurchasedPrice; // 구매희망가격
 
     @Column
     private LocalDateTime orderedAt;
 
     @Builder
-    private Order(Product product, User buyer, User seller, Long id, Long finalPrice, Long salePurchasedPrice, LocalDateTime orderedAt) {
+    private Order(Product product, User buyer, User seller, Long id, Long finalPurchasePrice, Long expectedPurchasedPrice,
+        LocalDateTime orderedAt) {
         this.product = product;
         this.buyer = buyer;
         this.seller = seller;
         this.id = id;
-        this.finalPrice = finalPrice;
-        this.salePurchasedPrice = salePurchasedPrice;
+        this.finalPurchasePrice = finalPurchasePrice;
+        this.expectedPurchasedPrice = expectedPurchasedPrice;
         this.orderedAt = orderedAt;
     }
 }
