@@ -13,8 +13,9 @@ permissions:
     owner: ubuntu
     group: ubuntu
     mode: 755
+
 hooks:
   AfterInstall:
-    - location: deploy.sh
+    - location: spript/deploy.sh
       timeout: 60
       runas: root
