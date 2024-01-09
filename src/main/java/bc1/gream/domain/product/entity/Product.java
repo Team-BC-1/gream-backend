@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_product")
 public class Product extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +26,7 @@ public class Product extends BaseEntity {
     private String brand;
 
     @Builder
-    public Product(String brand) {
+    private Product(String brand) {
         this.brand = brand;
     }
 }

@@ -1,6 +1,7 @@
 package bc1.gream.domain.order.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -20,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 @ExtendWith(MockitoExtension.class)
 class SellServiceTest implements SellTest {
@@ -39,7 +39,7 @@ class SellServiceTest implements SellTest {
 
         // given
         String url = "images/images.png";
-        Resource fileResource = new ClassPathResource(url);
+        ClassPathResource fileResource = new ClassPathResource(url);
 
         SellBidRequestDto requestDto = SellBidRequestDto.builder()
             .price(TEST_SELL_PRICE)
