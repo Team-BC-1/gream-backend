@@ -69,11 +69,13 @@ class SellServiceTest implements GifticonTest {
 
         // given
         given(sellRepository.findById(TEST_SELL_ID)).willReturn(Optional.of(TEST_SELL));
+        given(gifticonRepository.findBySell_Id(TEST_SELL_ID)).willReturn(Optional.of(TEST_GIFTICON));
 
         // when
         sellService.sellCancelBid(TEST_USER, TEST_SELL_ID);
 
         // then
         verify(sellRepository, times(1)).delete(any(Sell.class));
+        verify(gifticonRepository, times(1)).delete(any(Gifticon.class));
     }
 }
