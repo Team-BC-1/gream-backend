@@ -66,7 +66,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(
         HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
 
-        log.info("success auth username : {}", authResult.getName());
+        log.info("success auth loginId : {}", authResult.getName());
 
         UserLoginResponseDto res = getResponseDtoWithTokensInHeader(authResult, response); // 헤더에서 토큰을 추가한 응답 DTO 생성
         settingResponse(response, RestResponse.success(res)); // 공통 응답 객체를 Response 에 담기
@@ -79,15 +79,16 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String loginId = userDetails.getUsername();
 
         // JWT 토큰을 생성하고,
-        String accessToken = jwtUtil.createAccessToken(loginId, getRoleInAuthentication(authentication));
-        String refreshToken = jwtUtil.createRefreshToken();
+        String role = getRoleInAuthentication(authentication);
+        String accessToken = jwtUtil.createAccessToken(loginId, role);
+        String refreshToken = jwtUtil.createRefreshToken(loginId, role);
 
         // response 객체의 헤더에 Bearer 접두사를 붙여 넣어준 뒤,
         response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, jwtUtil.setTokenWithBearer(accessToken));
         response.addHeader(JwtUtil.REFRESH_TOKEN_HEADER, jwtUtil.setTokenWithBearer(refreshToken));
 
-        // 레디스에 Bearer 없는 refresh token 을 키로, loginId 를 벨류로 리프레쉬 토큰 만료 시간만큼 넣어줌.
-        redisUtil.set(jwtUtil.getTokenWithoutBearer(refreshToken), loginId, JwtUtil.REFRESH_TOKEN_TIME);
+        // 레디스에 loginId 을 키로, Bearer 없는 refresh token 를 벨류로 리프레쉬 토큰 만료 시간만큼 넣어줌.
+        redisUtil.set(loginId, jwtUtil.getTokenWithoutBearer(refreshToken), JwtUtil.REFRESH_TOKEN_TIME);
 
         return new UserLoginResponseDto();
     }

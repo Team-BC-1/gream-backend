@@ -18,8 +18,14 @@ public enum ResultCase {
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, 1001, "중복된 닉네임을 입력하셨습니다."),
     // 존재하지 않는 사용자 404,
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 1002, "유저를 찾을 수 없습니다."),
-    // 유효하지 않은 토큰 400
-    INVALID_TOKEN(HttpStatus.BAD_REQUEST, 1003, "유효하지 않은 토큰입니다."),
+    // 유효하지 않은 토큰 401
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, 1003, "유효하지 않은 토큰입니다."),
+    // 로그인 필요 403
+    LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, 1004, "로그인이 필요합니다."),
+    // 만료된 액세스 토큰 401
+    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, 1005, "만료된 Access Token"),
+    // 만료된 리프레쉬 토큰 401
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 1006, "만료된 Refresh Token"),
 
     // 상품 2000번대
     // 검색 결과 없음 404
