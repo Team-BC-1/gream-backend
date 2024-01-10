@@ -5,6 +5,7 @@ import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
@@ -15,7 +16,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +43,8 @@ public class BuyService {
             .build();
 
         Buy savedBuy = buyRepository.save(buy);
-        
-        return BuyServiceMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
+
+        return BuyMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
     }
 
     private Integer getPeriod(Integer period) {
@@ -51,5 +55,17 @@ public class BuyService {
         return productRepository.findById(productId).orElseThrow(
             () -> new GlobalException(PRODUCT_NOT_FOUND)
         );
+    }
+
+    /**
+     * Product에 대한 구매입찰가 내역 페이징 조회
+     *
+     * @param product  이모티콘 상품
+     * @param pageable 페이징 요청 데이터
+     * @return 구매입찰가 내역 페이징 데이터
+     */
+    @Transactional(readOnly = true)
+    public Page<Buy> findAllBuyBidsOf(Product product, Pageable pageable) {
+        return buyRepository.findAllPricesOf(product, pageable);
     }
 }
