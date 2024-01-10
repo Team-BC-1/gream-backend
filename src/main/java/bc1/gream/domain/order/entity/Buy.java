@@ -49,8 +49,9 @@ public class Buy extends BaseEntity {
     private Product product;
 
     @Builder
-    private Buy(Long price, LocalDateTime deadlineAt, User user, Product product) {
+    private Buy(Long price, LocalDateTime deadlineAt, Long couponId, User user, Product product) {
         this.price = price;
+        this.couponId = couponId;
         this.deadlineAt = deadlineAt;
         this.user = user;
         this.product = product;
