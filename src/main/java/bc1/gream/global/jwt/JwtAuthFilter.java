@@ -42,10 +42,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
 
-        String accessToken = jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER)); // access token 은 필수
+        String accessToken = jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER));
         log.info("accessToken : {}", accessToken);
-        String refreshToken = jwtUtil.getTokenWithoutBearer(request.getHeader(REFRESH_TOKEN_HEADER)); // refresh token 은 선택
-        log.info("refreshToken : {}", refreshToken);
 
         // access token 비어있으면 인증 미처리
         if (!StringUtils.hasText(accessToken)) {
@@ -54,48 +52,57 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         // access token 으로 유효성 검증
-        JwtStatus AccessTokenStatus = jwtUtil.validateToken(accessToken);
+        JwtStatus accessTokenStatus = jwtUtil.validateToken(accessToken);
 
-        // 유효하지 않은 토큰은 예외 발생
-        if (AccessTokenStatus.equals(JwtStatus.DENIED)) {
-            throw new GlobalException(ResultCase.INVALID_TOKEN);
+        switch (accessTokenStatus) {
+            case DENIED -> throw new GlobalException(ResultCase.INVALID_TOKEN);
+            case ACCESS -> authenticateLoginUser(accessToken);
+            case EXPIRED -> authenticateWithRefreshToken(request, response);
         }
 
-        // 만료된 액세스 토큰인 경우
-        if (AccessTokenStatus.equals(JwtStatus.EXPIRED)) {
-            // Refresh token 가 없다면 필요하다고 알림
-            if (refreshToken == null) {
-                throw new GlobalException(ResultCase.EXPIRED_ACCESS_TOKEN);
-            }
+        filterChain.doFilter(request, response);
+    }
 
-            JwtStatus refreshTokenStatus = jwtUtil.validateToken(refreshToken);
-
-            switch (refreshTokenStatus) {
-                case DENIED -> throw new GlobalException(ResultCase.INVALID_TOKEN);
-                case EXPIRED -> throw new GlobalException(ResultCase.LOGIN_REQUIRED);
-                case ACCESS -> {
-                    // 응답 헤더에 재발급한 access token 추가
-                    response.addHeader(ACCESS_TOKEN_HEADER, renewAccessToken(refreshToken));
-                    setAuthentication(refreshToken);
-                }
-            }
-
-            filterChain.doFilter(request, response);
-            return;
-        }
-
+    private void authenticateLoginUser(String accessToken) {
         // 로그아웃 처리된 경우 검증
         if (!redisUtil.hasKey(jwtUtil.getLoginIdFromToken(accessToken))) {
             throw new GlobalException(ResultCase.LOGIN_REQUIRED);
         }
-
         // 유효한 토큰이면 인증 처리 후 필터 통과
-        if (AccessTokenStatus.equals(JwtStatus.ACCESS)) {
-            setAuthentication(accessToken);
-            filterChain.doFilter(request, response);
+        setAuthentication(accessToken);
+    }
+
+    private void authenticateWithRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+
+        String refreshToken = jwtUtil.getTokenWithoutBearer(request.getHeader(REFRESH_TOKEN_HEADER));
+        log.info("refreshToken : {}", refreshToken);
+
+        // Refresh token 가 없다면 필요하다고 알림
+        if (refreshToken == null) {
+            throw new GlobalException(ResultCase.EXPIRED_ACCESS_TOKEN);
+        }
+
+        JwtStatus refreshTokenStatus = jwtUtil.validateToken(refreshToken);
+
+        switch (refreshTokenStatus) {
+            case DENIED -> throw new GlobalException(ResultCase.INVALID_TOKEN);
+            case EXPIRED -> throw new GlobalException(ResultCase.LOGIN_REQUIRED);
+            case ACCESS -> setAuthWithRenewAccessToken(response, refreshToken);
         }
     }
 
+    /**
+     * 재발급한 Access token 을 헤더에 추가 후 인증 처리
+     */
+    private void setAuthWithRenewAccessToken(HttpServletResponse response, String refreshToken) {
+        // 응답 헤더에 재발급한 access token 추가
+        response.addHeader(ACCESS_TOKEN_HEADER, renewAccessToken(refreshToken));
+        setAuthentication(refreshToken);
+    }
+
+    /**
+     * Refresh token 을 이용하여 Access Token 재발급
+     */
     private String renewAccessToken(String refreshToken) {
         log.info("access token 재발급");
         String loginId = jwtUtil.getLoginIdFromToken(refreshToken);
