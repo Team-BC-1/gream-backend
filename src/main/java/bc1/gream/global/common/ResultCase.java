@@ -32,11 +32,14 @@ public enum ResultCase {
     PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 3000, "구매 요청 대상 상품이 이미 판매되었습니다."),
     // 구매 요청 대상 상품이 존재하지 않음 404
     BUY_PRODUCT_SOLD_OUT(HttpStatus.NOT_FOUND, 3001, "구매 요청 대상 상품이 이미 판매되었습니다."),
+    BUY_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 3002, "해당 구매 입찰 건은 존재하지 않습니다."),
     // 입찰 마감 기한 초과 409
     DEADLINE_EXCEEDED(HttpStatus.CONFLICT, 3002, "구매 요청 대상 상품이 이미 판매되었습니다."),
 
     // 판매 4000번대
     // 판매 요청에 대상 상품이 존재하지 않음 404
+    SELL_PRODUCT_SOLD_OUT(HttpStatus.NOT_FOUND, 4001, "판매 요청 대상 상품이 이미 구매되었습니다."),
+    SELL_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 4002, "해당 판매 입찰 건은 존재하지 않습니다."),
     // 입찰 마감 기한 초과 409
 
     // 글로벌 5000번대

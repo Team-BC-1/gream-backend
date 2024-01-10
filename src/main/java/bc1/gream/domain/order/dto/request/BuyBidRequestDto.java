@@ -1,4 +1,4 @@
-package bc1.gream.domain.buy.dto.request;
+package bc1.gream.domain.order.dto.request;
 
 import lombok.Builder;
 
