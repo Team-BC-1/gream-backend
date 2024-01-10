@@ -1,5 +1,7 @@
 package bc1.gream.global.security;
 
+import bc1.gream.global.exception.ExceptionHandlerFilter;
+import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
 import bc1.gream.global.jwt.JwtUtil;
 import bc1.gream.global.redis.RedisUtil;
@@ -13,10 +15,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +29,7 @@ public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
+    private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
@@ -45,6 +50,16 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public JwtAuthFilter jwtAuthFilter() throws Exception {
+        return new JwtAuthFilter(jwtUtil, redisUtil, userDetailsService);
+    }
+
+    @Bean
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
+        return new ExceptionHandlerFilter();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
@@ -59,7 +74,9 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
         );
 
+        http.addFilterBefore(jwtAuthFilter(), JwtLoginFilter.class);
         http.addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
 
         return http.build();
     }
