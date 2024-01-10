@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,6 +40,7 @@ public class Coupon extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder
     private Coupon(String name, DiscountType discountType, Long discount, CouponStatus status, User user) {
         this.name = name;
         this.discountType = discountType;
@@ -47,7 +49,7 @@ public class Coupon extends BaseEntity {
         this.user = user;
     }
 
-    public void update(CouponStatus status) {
+    public void changeStatus(CouponStatus status) {
         this.status = status;
     }
 }
