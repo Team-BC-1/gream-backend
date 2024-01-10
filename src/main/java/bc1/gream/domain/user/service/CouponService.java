@@ -22,6 +22,6 @@ public class CouponService {
             () -> new GlobalException(COUPON_NOT_FOUND)
         );
 
-        coupon.update(couponStatus);
+        coupon.changeStatus(couponStatus);
     }
 }
