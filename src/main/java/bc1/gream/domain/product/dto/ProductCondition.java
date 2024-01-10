@@ -1,4 +1,4 @@
-package bc1.gream.domain.product.service.query.unit;
+package bc1.gream.domain.product.dto;
 
 public record ProductCondition(
     String brand,
