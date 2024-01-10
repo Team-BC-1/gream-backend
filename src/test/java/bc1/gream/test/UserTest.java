@@ -18,4 +18,30 @@ public interface UserTest {
         .role(UserRole.USER)
         .provider(Provider.LOCAL)
         .build();
+
+    Long TEST_BUYER_ID = 2L;
+    String TEST_BUYER_LOGIN_ID = "buyerId01";
+    String TEST_BUYER_NICKNAME = "buyerNickname01";
+    String TEST_BUYER_PASSWORD = "ABcd5678#&";
+
+    User TEST_BUYER = User.builder()
+        .loginId(TEST_BUYER_LOGIN_ID)
+        .nickname(TEST_BUYER_NICKNAME)
+        .password(TEST_BUYER_PASSWORD)
+        .role(UserRole.USER)
+        .provider(Provider.LOCAL)
+        .build();
+
+    Long TEST_SELLER_ID = 3L;
+    String TEST_SELLER_LOGIN_ID = "sellerId01";
+    String TEST_SELLER_NICKNAME = "sellerNickname01";
+    String TEST_SELLER_PASSWORD = "ABcd5678#&";
+
+    User TEST_SELLER = User.builder()
+        .loginId(TEST_SELLER_LOGIN_ID)
+        .nickname(TEST_SELLER_NICKNAME)
+        .password(TEST_SELLER_PASSWORD)
+        .role(UserRole.USER)
+        .provider(Provider.LOCAL)
+        .build();
 }
