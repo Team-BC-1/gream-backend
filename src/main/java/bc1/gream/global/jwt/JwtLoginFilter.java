@@ -79,8 +79,9 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String loginId = userDetails.getUsername();
 
         // JWT 토큰을 생성하고,
-        String accessToken = jwtUtil.createAccessToken(loginId, getRoleInAuthentication(authentication));
-        String refreshToken = jwtUtil.createRefreshToken();
+        String role = getRoleInAuthentication(authentication);
+        String accessToken = jwtUtil.createAccessToken(loginId, role);
+        String refreshToken = jwtUtil.createRefreshToken(loginId, role);
 
         // response 객체의 헤더에 Bearer 접두사를 붙여 넣어준 뒤,
         response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, jwtUtil.setTokenWithBearer(accessToken));
