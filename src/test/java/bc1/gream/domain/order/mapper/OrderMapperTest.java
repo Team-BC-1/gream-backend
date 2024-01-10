@@ -18,10 +18,10 @@ class OrderMapperTest implements OrderTest {
     public void 주문_toTradeResponseDto() {
         // WHEN
         ReflectionTestUtils.setField(TEST_ORDER, "createdAt", LocalDateTime.of(2024, 1, 1, 12, 12));
-        TradeResponseDto tradeResponseDto = orderMapper.toTradeResponseDto(TEST_ORDER);
+        TradeResponseDto tradeResponseDto = orderMapper.ofTradedOrder(TEST_ORDER);
 
         // THEN
-        assertEquals(TEST_ORDER_FINAL_PRICE, tradeResponseDto.finalPrice());
+        assertEquals(TEST_ORDER_FINAL_PRICE, tradeResponseDto.price());
         assertEquals(TEST_ORDER.getCreatedAt(), tradeResponseDto.tradeDate());
     }
 }
