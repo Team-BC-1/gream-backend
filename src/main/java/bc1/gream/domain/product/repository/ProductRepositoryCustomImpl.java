@@ -27,7 +27,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             .selectFrom(product)
             .where(
                 ProductQueryConditionFactory.brandEquals(condition.brand()),
-                ProductQueryConditionFactory.nameEquals(condition.brand()),
+                ProductQueryConditionFactory.nameEquals(condition.name()),
                 ProductQueryConditionFactory.hasPriceRangeOf(condition.startPrice(), condition.endPrice())
             )
             .fetch();
@@ -43,7 +43,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             .selectFrom(product)
             .where(
                 ProductQueryConditionFactory.brandEquals(condition.brand()),
-                ProductQueryConditionFactory.nameEquals(condition.brand()),
+                ProductQueryConditionFactory.nameEquals(condition.name()),
                 ProductQueryConditionFactory.hasPriceRangeOf(condition.startPrice(), condition.endPrice())
             )
             .orderBy(ordersOf)
