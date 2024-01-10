@@ -12,8 +12,10 @@ if [ -z "$CURRENT_PID" ]; then
 else
   echo "> kill -15 $CURRENT_PID"
   kill -15 $CURRENT_PID
+  kill -9 `ps -ef|grep java|awk '{print $2}'`
   sleep 5
 fi
+
 
 JAR_NAME=$(ls -tr build/libs/*.jar | tail -n 1)
 
@@ -28,6 +30,5 @@ echo "> $JAR_NAME 실행"
 chmod u+x /home/ubuntu/gream/custum.env
 
 source /home/ubuntu/gream/custum.env
-env
 
 nohup java -jar $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
