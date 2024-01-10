@@ -1,7 +1,10 @@
+
 REPOSITORY=/home/ubuntu/gream
 
+# shellcheck disable=SC2164
 cd $REPOSITORY
 
+# shellcheck disable=SC2010
 JAR_NAME=$(ls $REPOSITORY/ | grep 'SNAPSHOT.jar' | tail -n 1)
 echo "$JAR_NAME"
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
@@ -17,7 +20,6 @@ else
   kill -15 $CURRENT_PID
   sleep 5
 fi
-
+chmod +x $JAR_PATH
 echo "> $JAR_PATH deploy"
-cd /build/libs
 nohup java -jar $JAR_PATH --spring.profiles.active=prod > /dev/null 2> /dev/null < /dev/null &
