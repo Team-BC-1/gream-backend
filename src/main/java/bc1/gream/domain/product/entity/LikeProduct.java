@@ -1,9 +1,6 @@
-package bc1.gream.domain.sell.entity;
+package bc1.gream.domain.product.entity;
 
-import bc1.gream.domain.model.BaseEntity;
-import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,40 +9,33 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Getter
-@Entity
-@Table(name = "tb_sell")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Sell extends BaseEntity {
+@Table(name = "tb_like_product")
+@Entity
+@Getter
+@DynamicUpdate
+@DynamicInsert
+public class LikeProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "price", nullable = false)
-    private Long price;
-
-    @Column(name = "deadline_at")
-    private LocalDateTime deadlineAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @Builder
-    private Sell(Long price, LocalDateTime deadlineAt, User user, Product product) {
-        this.price = price;
-        this.deadlineAt = deadlineAt;
+    public LikeProduct(User user, Product product) {
         this.user = user;
         this.product = product;
     }
