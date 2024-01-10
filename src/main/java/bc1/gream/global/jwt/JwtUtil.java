@@ -59,10 +59,12 @@ public class JwtUtil {
     /**
      * RefreshToken 생성
      */
-    public String createRefreshToken() {
+    public String createRefreshToken(String loginId, String role) {
         Date now = new Date();
 
         return Jwts.builder()
+            .setSubject(loginId) // 사용자 식별자값(ID)
+            .claim(AUTHORIZATION_KEY, role) // 사용자 권한
             .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_TIME)) // 만료 시간
             .setIssuedAt(now) // 발급일
             .signWith(key, SignatureAlgorithm.HS256) // 암호화 알고리즘 (HS256)
@@ -105,6 +107,13 @@ public class JwtUtil {
      */
     public String getLoginIdFromToken(String token) {
         return getUserInfoFromToken(token).getSubject();
+    }
+
+    /**
+     * 토큰에서 role 가져오기
+     */
+    public String getRoleFromToken(String token) {
+        return (String) getUserInfoFromToken(token).get(AUTHORIZATION_KEY);
     }
 
     /**
