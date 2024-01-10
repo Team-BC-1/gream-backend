@@ -11,6 +11,8 @@ public interface SellTest extends UserTest, ProductTest {
 
     LocalDateTime TEST_DEADLINE_AT = LocalDateTime.now().plusDays(7);
 
+    String TEST_GIFTICON_URL = "images/images.png";
+
     Sell TEST_SELL = Sell.builder()
         .price(TEST_SELL_PRICE)
         .deadlineAt(TEST_DEADLINE_AT)
