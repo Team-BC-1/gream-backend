@@ -9,6 +9,7 @@ import bc1.gream.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class BuyController {
         return RestResponse.success(responseDto);
     }
 
-    @PostMapping("/{buyId}")
+    @DeleteMapping("/{buyId}")
     public RestResponse<BuyCancelBidResponseDto> buyCancelBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long buyId
