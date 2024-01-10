@@ -1,5 +1,6 @@
 package bc1.gream.domain.order.service;
 
+import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.SEARCH_RESULT_NOT_FOUND;
@@ -101,8 +102,8 @@ public class SellService {
     }
 
     private void deleteGifticon(Long sellId) {
-        Gifticon gifticon = gifticonRepository.findById(sellId).orElseThrow(
-            () -> new GlobalException(SEARCH_RESULT_NOT_FOUND)
+        Gifticon gifticon = gifticonRepository.findBySell_Id(sellId).orElseThrow(
+            () -> new GlobalException(GIFTICON_NOT_FOUND)
         );
 
         gifticonRepository.delete(gifticon);
