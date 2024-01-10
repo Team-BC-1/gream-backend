@@ -8,6 +8,7 @@ import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.order.mapper.BuyMapper;
 import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
@@ -30,6 +31,7 @@ public class BuyService {
     public BuyBidResponseDto buyBidProduct(User user, BuyBidRequestDto requestDto, Long productId) {
         Long price = requestDto.price();
         Integer period = getPeriod(requestDto.period());
+        Long couponId = requestDto.couponId();
         LocalDate date = LocalDate.now();
         LocalDateTime deadlineAt = date.atTime(LocalTime.MAX).plusDays(period);
         Product product = getProductById(productId);
@@ -37,13 +39,14 @@ public class BuyService {
         Buy buy = Buy.builder()
             .price(price)
             .deadlineAt(deadlineAt)
+            .couponId(couponId)
             .user(user)
             .product(product)
             .build();
 
         Buy savedBuy = buyRepository.save(buy);
 
-        return BuyServiceMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
+        return BuyMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
     }
 
 
