@@ -2,6 +2,7 @@ package bc1.gream.domain.order.service;
 
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
+import static bc1.gream.global.common.ResultCase.SEARCH_RESULT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
@@ -65,6 +66,7 @@ public class SellService {
         }
 
         sellRepository.delete(bidSell);
+        deleteGifticon(sellId);
 
         return new SellCancelBidResponseDto();
     }
@@ -96,5 +98,13 @@ public class SellService {
             .order(order)
             .build();
         gifticonRepository.save(gifticon);
+    }
+
+    private void deleteGifticon(Long sellId) {
+        Gifticon gifticon = gifticonRepository.findById(sellId).orElseThrow(
+            () -> new GlobalException(SEARCH_RESULT_NOT_FOUND)
+        );
+
+        gifticonRepository.delete(gifticon);
     }
 }
