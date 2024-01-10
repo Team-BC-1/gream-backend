@@ -66,7 +66,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(
         HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
 
-        log.info("success auth username : {}", authResult.getName());
+        log.info("success auth loginId : {}", authResult.getName());
 
         UserLoginResponseDto res = getResponseDtoWithTokensInHeader(authResult, response); // 헤더에서 토큰을 추가한 응답 DTO 생성
         settingResponse(response, RestResponse.success(res)); // 공통 응답 객체를 Response 에 담기
