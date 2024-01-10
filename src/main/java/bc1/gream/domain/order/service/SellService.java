@@ -7,7 +7,11 @@ import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
 import bc1.gream.domain.order.dto.response.SellCancelBidResponseDto;
+import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.entity.Sell;
+import bc1.gream.domain.order.mapper.SellMapper;
+import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
@@ -26,6 +30,7 @@ public class SellService {
 
     private final SellRepository sellRepository;
     private final ProductRepository productRepository;
+    private final GifticonRepository gifticonRepository;
 
     public SellBidResponseDto sellBidProduct(User user, SellBidRequestDto requestDto, Long productId) {
         Long price = requestDto.price();    // 판매하려는 가격
@@ -46,7 +51,9 @@ public class SellService {
 
         Sell savedSell = sellRepository.save(sell);
 
-        return SellServiceMapper.INSTANCE.toSellBidResponseDto(savedSell);
+        saveGifticon(requestDto.gifticonUrl(), savedSell, null); // Order는 우선 null로 입력 추후 즉시 구매 시 Order 넣어줄 예정
+
+        return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);
     }
 
 
@@ -80,5 +87,14 @@ public class SellService {
 
     private boolean isNotSellerLoggedInUser(Sell sell, User user) {
         return !sell.getUser().getLoginId().equals(user.getLoginId());
+    }
+
+    private void saveGifticon(String gifticonUrl, Sell sell, Order order) {
+        Gifticon gifticon = Gifticon.builder()
+            .gifticonUrl(gifticonUrl)
+            .sell(sell)
+            .order(order)
+            .build();
+        gifticonRepository.save(gifticon);
     }
 }
