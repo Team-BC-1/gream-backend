@@ -15,7 +15,7 @@ else
   sleep 5
 fi
 
-JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+JAR_NAME=$(ls -tr build/libs/*.jar | tail -n 1)
 
 echo "> JAR NAME: $JAR_NAME"
 
