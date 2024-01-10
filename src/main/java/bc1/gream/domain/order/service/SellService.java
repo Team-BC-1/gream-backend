@@ -51,11 +51,9 @@ public class SellService {
 
 
     public SellCancelBidResponseDto sellCancelBid(User user, Long sellId) {
-        Sell bidSell = sellRepository.findById(sellId).orElseThrow(
-            () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
-        );
+        Sell bidSell = findSellById(sellId);
 
-        if (!bidSell.getUser().getLoginId().equals(user.getLoginId())) {
+        if (isNotSellerLoggedInUser(bidSell, user)) {
             throw new GlobalException(NOT_AUTHORIZED);
         }
 
@@ -72,5 +70,15 @@ public class SellService {
         return productRepository.findById(productId).orElseThrow(
             () -> new GlobalException(PRODUCT_NOT_FOUND)
         );
+    }
+
+    protected Sell findSellById(Long sellId) {
+        return sellRepository.findById(sellId).orElseThrow(
+            () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
+        );
+    }
+
+    private boolean isNotSellerLoggedInUser(Sell sell, User user) {
+        return !sell.getUser().getLoginId().equals(user.getLoginId());
     }
 }

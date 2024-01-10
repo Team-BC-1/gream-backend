@@ -48,11 +48,9 @@ public class BuyService {
 
 
     public BuyCancelBidResponseDto buyCancelBid(User user, Long buyId) {
-        Buy buyBid = buyRepository.findById(buyId).orElseThrow(
-            () -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND)
-        );
+        Buy buyBid = findBuyById(buyId);
 
-        if (!buyBid.getUser().getLoginId().equals(user.getLoginId())) {
+        if (isNotBuyerLoggedInUser(buyBid, user)) {
             throw new GlobalException(NOT_AUTHORIZED);
         }
 
@@ -69,5 +67,15 @@ public class BuyService {
         return productRepository.findById(productId).orElseThrow(
             () -> new GlobalException(PRODUCT_NOT_FOUND)
         );
+    }
+
+    protected Buy findBuyById(Long buyId) {
+        return buyRepository.findById(buyId).orElseThrow(
+            () -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND)
+        );
+    }
+
+    private boolean isNotBuyerLoggedInUser(Buy buy, User user) {
+        return !buy.getUser().getLoginId().equals(user.getLoginId());
     }
 }
