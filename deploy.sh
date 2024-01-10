@@ -25,5 +25,5 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 
-source /home/ubuntu/.bashrc
+source /home/ubuntu/gream/custum.env
 nohup java -jar $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
