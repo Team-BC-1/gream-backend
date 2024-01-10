@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bc1.gream.domain.product.controller.ProductQueryController;
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.service.BuyOrderQueryService;
+import bc1.gream.domain.product.service.SellOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.test.ProductTest;
@@ -16,10 +18,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @WebMvcTest(controllers = ProductQueryController.class)
+//@EnableSpringDataWebSupport
 class ProductQueryControllerTest implements ProductTest {
 
     @Autowired
@@ -28,12 +33,24 @@ class ProductQueryControllerTest implements ProductTest {
     private ProductQueryService productQueryService;
     @MockBean
     private ProductOrderQueryService productOrderQueryService;
+    @MockBean
+    private SellOrderQueryService sellOrderQueryService;
+    @MockBean
+    private BuyOrderQueryService buyOrderQueryService;
 
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(
-            new ProductQueryController(productQueryService, productOrderQueryService)
-        ).build();
+                new ProductQueryController(
+                    productQueryService,
+                    productOrderQueryService,
+                    sellOrderQueryService,
+                    buyOrderQueryService
+                ))
+            .setCustomArgumentResolvers(
+                new PageableHandlerMethodArgumentResolver()
+            )
+            .build();
     }
 
     @Test
@@ -53,7 +70,9 @@ class ProductQueryControllerTest implements ProductTest {
     public void 체결_거래_내역_조회() throws Exception {
         // WHEN
         // THEN
-        this.mockMvc.perform(get("/api/products/" + TEST_PRODUCT_ID + "/trade"))
+        this.mockMvc.perform(
+                get("/api/products/" + TEST_PRODUCT_ID + "/trade")
+            )
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -62,7 +81,10 @@ class ProductQueryControllerTest implements ProductTest {
     public void 판매_입찰가_조회() throws Exception {
         // WHEN
         // THEN
-        this.mockMvc.perform(get("/api/products/" + TEST_PRODUCT_ID + "/sell"))
+        this.mockMvc.perform(
+                get("/api/products/" + TEST_PRODUCT_ID + "/sell?page=1&size=10")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
             .andDo(print())
             .andExpect(status().isOk());
     }
@@ -71,7 +93,10 @@ class ProductQueryControllerTest implements ProductTest {
     public void 구매_입찰가_조회() throws Exception {
         // WHEN
         // THEN
-        this.mockMvc.perform(get("/api/products/" + TEST_PRODUCT_ID + "/buy"))
+        this.mockMvc.perform(
+                get("/api/products/" + TEST_PRODUCT_ID + "/buy?page=1&size=10")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
             .andDo(print())
             .andExpect(status().isOk());
     }

@@ -17,9 +17,11 @@ import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.validator.OrderCriteriaValidator;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,28 +70,30 @@ public class ProductQueryController {
     @GetMapping("/{id}/sell")
     public RestResponse<List<TradeResponseDto>> findAllSellBidPrices(
         @PathVariable("id") Long productId,
-        Pageable pageable
-//        @PageableDefault(size = 5, value = 0) Pageable pageable
+        @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Sell.class, pageable);
         Page<Sell> allSellBids = sellOrderQueryService.findAllSellBidsOf(productId, pageable);
-        List<TradeResponseDto> tradeResponseDtos = allSellBids.stream()
-            .map(SellMapper.INSTANCE::toTradeResponseDto)
-            .toList();
+        List<TradeResponseDto> tradeResponseDtos = Optional.ofNullable(allSellBids)
+            .map(sells -> sells.stream()
+                .map(SellMapper.INSTANCE::toTradeResponseDto)
+                .toList())
+            .orElse(null);
         return RestResponse.success(tradeResponseDtos);
     }
 
     @GetMapping("/{id}/buy")
     public RestResponse<List<TradeResponseDto>> findAllBuyBidPrices(
         @PathVariable("id") Long productId,
-        Pageable pageable
-//        @PageableDefault(size = 5, value = 0) Pageable pageable
+        @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Buy.class, pageable);
         Page<Buy> allBuyBids = buyOrderQueryService.findAllBuyBidsOf(productId, pageable);
-        List<TradeResponseDto> tradeResponseDtos = allBuyBids.stream()
-            .map(BuyMapper.INSTANCE::toTradeResponseDto)
-            .toList();
+        List<TradeResponseDto> tradeResponseDtos = Optional.ofNullable(allBuyBids)
+            .map(buys -> buys.stream()
+                .map(BuyMapper.INSTANCE::toTradeResponseDto)
+                .toList())
+            .orElse(null);
         return RestResponse.success(tradeResponseDtos);
     }
 }
