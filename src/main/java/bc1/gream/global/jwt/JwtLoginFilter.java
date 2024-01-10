@@ -86,8 +86,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, jwtUtil.setTokenWithBearer(accessToken));
         response.addHeader(JwtUtil.REFRESH_TOKEN_HEADER, jwtUtil.setTokenWithBearer(refreshToken));
 
-        // 레디스에 Bearer 없는 refresh token 을 키로, loginId 를 벨류로 리프레쉬 토큰 만료 시간만큼 넣어줌.
-        redisUtil.set(jwtUtil.getTokenWithoutBearer(refreshToken), loginId, JwtUtil.REFRESH_TOKEN_TIME);
+        // 레디스에 loginId 을 키로, Bearer 없는 refresh token 를 벨류로 리프레쉬 토큰 만료 시간만큼 넣어줌.
+        redisUtil.set(loginId, jwtUtil.getTokenWithoutBearer(refreshToken), JwtUtil.REFRESH_TOKEN_TIME);
 
         return new UserLoginResponseDto();
     }
