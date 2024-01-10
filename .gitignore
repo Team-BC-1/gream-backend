@@ -203,3 +203,6 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,gradle
+
+### Query Dsl ###
+/src/main/generated

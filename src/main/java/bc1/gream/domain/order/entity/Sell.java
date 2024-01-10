@@ -32,7 +32,7 @@ public class Sell extends BaseEntity {
     @Column(name = "price", nullable = false)
     private Long price;
 
-    @Column(name = "deadline_At")
+    @Column(name = "deadline_at")
     private LocalDateTime deadlineAt;
 
     @JsonIgnore
