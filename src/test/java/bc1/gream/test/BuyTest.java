@@ -1,6 +1,6 @@
 package bc1.gream.test;
 
-import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.order.entity.Buy;
 import java.time.LocalDateTime;
 
 public interface BuyTest extends UserTest, ProductTest {
