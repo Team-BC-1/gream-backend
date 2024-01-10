@@ -82,7 +82,7 @@ class ProductQueryControllerTest implements ProductTest {
         // WHEN
         // THEN
         this.mockMvc.perform(
-                get("/api/products/" + TEST_PRODUCT_ID + "/sell?page=1&size=10")
+                get("/api/products/{TEST_PRODUCT_ID}/sell?page=1&size=10", TEST_PRODUCT_ID)
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andDo(print())
@@ -94,7 +94,7 @@ class ProductQueryControllerTest implements ProductTest {
         // WHEN
         // THEN
         this.mockMvc.perform(
-                get("/api/products/" + TEST_PRODUCT_ID + "/buy?page=1&size=10")
+                get("/api/products/{TEST_PRODUCT_ID}/buy?page=1&size=10", TEST_PRODUCT_ID)
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andDo(print())
