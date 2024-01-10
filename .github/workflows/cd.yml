@@ -8,7 +8,7 @@
 name: CD
 
 on:
-  merge_group:
+  push:
     branches: [ "main" ]
 
 env:
