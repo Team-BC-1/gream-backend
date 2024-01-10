@@ -9,9 +9,12 @@ import static org.mockito.Mockito.verify;
 
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
+import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Sell;
+import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.test.GifticonTest;
 import bc1.gream.test.SellTest;
 import java.io.IOException;
 import java.util.Optional;
@@ -23,13 +26,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 
 @ExtendWith(MockitoExtension.class)
-class SellServiceTest implements SellTest {
+class SellServiceTest implements GifticonTest {
 
     @Mock
     SellRepository sellRepository;
 
     @Mock
     ProductRepository productRepository;
+
+    @Mock
+    GifticonRepository gifticonRepository;
 
     @InjectMocks
     SellService sellService;
@@ -48,11 +54,13 @@ class SellServiceTest implements SellTest {
 
         given(productRepository.findById(1L)).willReturn(Optional.of(TEST_PRODUCT));
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
+        given(gifticonRepository.save(any(Gifticon.class))).willReturn(TEST_GIFTICON);
 
         // when
         SellBidResponseDto responseDto = sellService.sellBidProduct(TEST_USER, requestDto, TEST_PRODUCT_ID);
 
         // then
+        verify(gifticonRepository, times(1)).save(any());
         assertThat(responseDto.price()).isEqualTo(TEST_SELL_PRICE);
     }
 
