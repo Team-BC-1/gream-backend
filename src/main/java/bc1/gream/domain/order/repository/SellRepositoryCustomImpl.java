@@ -1,11 +1,11 @@
-package bc1.gream.domain.sell.repository;
+package bc1.gream.domain.order.repository;
 
-import static bc1.gream.domain.sell.entity.QSell.sell;
+import static bc1.gream.domain.order.entity.QSell.sell;
 
+import bc1.gream.domain.order.entity.Sell;
+import bc1.gream.domain.order.repository.helper.SellQueryOrderFactory;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.entity.QProduct;
-import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.sell.repository.helper.SellQueryOrderFactory;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

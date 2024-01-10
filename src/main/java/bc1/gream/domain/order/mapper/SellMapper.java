@@ -1,8 +1,8 @@
-package bc1.gream.domain.sell.mapper;
+package bc1.gream.domain.order.mapper;
 
+import bc1.gream.domain.order.dto.response.SellBidResponseDto;
+import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.product.dto.TradeResponseDto;
-import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
-import bc1.gream.domain.sell.entity.Sell;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

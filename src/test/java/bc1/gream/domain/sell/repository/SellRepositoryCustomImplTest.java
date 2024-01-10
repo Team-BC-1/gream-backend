@@ -2,8 +2,10 @@ package bc1.gream.domain.sell.repository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import bc1.gream.domain.order.entity.Sell;
+import bc1.gream.domain.order.repository.SellRepository;
+import bc1.gream.domain.order.repository.SellRepositoryCustomImpl;
 import bc1.gream.domain.product.repository.ProductRepository;
-import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.jpa.AuditingConfig;

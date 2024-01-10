@@ -2,7 +2,9 @@ package bc1.gream.domain.buy.repository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.order.repository.BuyRepository;
+import bc1.gream.domain.order.repository.BuyRepositoryCustomImpl;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;

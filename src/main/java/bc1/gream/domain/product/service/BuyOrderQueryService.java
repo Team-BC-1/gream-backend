@@ -1,7 +1,7 @@
 package bc1.gream.domain.product.service;
 
-import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.order.service.BuyService;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductQueryService;
 import lombok.RequiredArgsConstructor;

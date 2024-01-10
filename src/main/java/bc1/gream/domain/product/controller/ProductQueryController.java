@@ -1,9 +1,11 @@
 package bc1.gream.domain.product.controller;
 
-import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.buy.mapper.BuyMapper;
+import bc1.gream.domain.order.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
+import bc1.gream.domain.order.entity.Sell;
+import bc1.gream.domain.order.mapper.BuyMapper;
 import bc1.gream.domain.order.mapper.OrderMapper;
+import bc1.gream.domain.order.mapper.SellMapper;
 import bc1.gream.domain.product.dto.ProductQueryResponseDto;
 import bc1.gream.domain.product.dto.TradeResponseDto;
 import bc1.gream.domain.product.entity.Product;
@@ -12,8 +14,6 @@ import bc1.gream.domain.product.service.BuyOrderQueryService;
 import bc1.gream.domain.product.service.SellOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;
-import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.validator.OrderCriteriaValidator;
 import java.util.List;

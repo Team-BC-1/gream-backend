@@ -9,6 +9,7 @@ import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.ProductTest;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,11 @@ class ProductRepositoryCustomImplTest implements ProductTest {
         productRepository.save(TEST_PRODUCT);
     }
 
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAllInBatch();
+    }
+
     @Test
     @DisplayName("상품 검색에 따른 조건조회를 합니다.")
     public void 상품_조건조회() {
@@ -55,7 +61,7 @@ class ProductRepositoryCustomImplTest implements ProductTest {
 
         // THEN
         boolean hasProductInProducts = products.stream()
-            .anyMatch(product -> product.equals(TEST_PRODUCT));
+            .anyMatch(product -> product.getName().equals(TEST_PRODUCT_NAME));
         assertTrue(hasProductInProducts);
     }
 
@@ -76,7 +82,7 @@ class ProductRepositoryCustomImplTest implements ProductTest {
 
         // THEN
         boolean hasProductInProducts = productPage.stream()
-            .anyMatch(product -> product.equals(TEST_PRODUCT));
+            .anyMatch(product -> product.getName().equals(TEST_PRODUCT_NAME));
         assertEquals(10, productPage.getSize());
         assertEquals(0, productPage.getNumber());
         assertTrue(hasProductInProducts);
