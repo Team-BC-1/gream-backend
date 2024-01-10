@@ -32,6 +32,9 @@ public class Buy extends BaseEntity {
     @Column
     private Long price;
 
+    @Column(name = "coupon_id")
+    private Long couponId;
+
     @Column(name = "deadline_at")
     private LocalDateTime deadlineAt;
 
