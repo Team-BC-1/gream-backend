@@ -1,14 +1,17 @@
-package bc1.gream.domain.sell.service;
+package bc1.gream.domain.order.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import bc1.gream.domain.order.dto.request.SellBidRequestDto;
+import bc1.gream.domain.order.dto.response.SellBidResponseDto;
+import bc1.gream.domain.order.entity.Sell;
+import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
-import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
-import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
-import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.test.SellTest;
 import java.io.IOException;
 import java.util.Optional;
@@ -40,7 +43,7 @@ class SellServiceTest implements SellTest {
 
         SellBidRequestDto requestDto = SellBidRequestDto.builder()
             .price(TEST_SELL_PRICE)
-            .gifticonUrl(fileResource.getFile().getPath())
+            .gifticonUrl(fileResource.getURL().getPath())
             .build();
 
         given(productRepository.findById(1L)).willReturn(Optional.of(TEST_PRODUCT));
@@ -53,4 +56,16 @@ class SellServiceTest implements SellTest {
         assertThat(responseDto.price()).isEqualTo(TEST_SELL_PRICE);
     }
 
+    @Test
+    void sellCancelBidTest() {
+
+        // given
+        given(sellRepository.findById(TEST_SELL_ID)).willReturn(Optional.of(TEST_SELL));
+
+        // when
+        sellService.sellCancelBid(TEST_USER, TEST_SELL_ID);
+
+        // then
+        verify(sellRepository, times(1)).delete(any(Sell.class));
+    }
 }

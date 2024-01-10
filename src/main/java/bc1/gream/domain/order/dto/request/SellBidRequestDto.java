@@ -1,4 +1,4 @@
-package bc1.gream.domain.sell.dto.request;
+package bc1.gream.domain.order.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

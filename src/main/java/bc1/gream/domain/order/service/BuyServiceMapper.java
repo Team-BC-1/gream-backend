@@ -1,7 +1,7 @@
-package bc1.gream.domain.buy.service;
+package bc1.gream.domain.order.service;
 
-import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
-import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.order.entity.Buy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
