@@ -25,6 +25,8 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 
+chmod +x /home/ubuntu/gream/custum.env
+
 source /home/ubuntu/gream/custum.env
 env
 
