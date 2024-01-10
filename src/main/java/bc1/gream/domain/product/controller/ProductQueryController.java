@@ -1,16 +1,25 @@
 package bc1.gream.domain.product.controller;
 
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.product.dto.ProductQueryResponseDto;
 import bc1.gream.domain.product.dto.TradeResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
+import bc1.gream.domain.product.service.BuyOrderQueryService;
+import bc1.gream.domain.product.service.SellOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductOrderQueryService;
 import bc1.gream.domain.product.service.query.ProductQueryService;
+import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.global.common.RestResponse;
+import bc1.gream.global.validator.OrderCriteriaValidator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +33,8 @@ public class ProductQueryController {
 
     private final ProductQueryService productQueryService;
     private final ProductOrderQueryService productOrderQueryService;
+    private final SellOrderQueryService sellOrderQueryService;
+    private final BuyOrderQueryService buyOrderQueryService;
 
     @GetMapping
     public RestResponse<List<ProductQueryResponseDto>> findAll() {
@@ -43,31 +54,42 @@ public class ProductQueryController {
         return RestResponse.success(responseDto);
     }
 
-    // 상품 :: 체결 거래 내역 조회
     @GetMapping("/{id}/trade")
     public RestResponse<List<TradeResponseDto>> findAllTrades(
         @PathVariable("id") Long productId
     ) {
         List<Order> allTrades = productOrderQueryService.findAllTradesOf(productId);
         List<TradeResponseDto> tradeResponseDtos = allTrades.stream()
-            .map(OrderMapper.INSTANCE::toTradeResponseDto)
+            .map(OrderMapper.INSTANCE::ofTradedOrder)
             .toList();
         return RestResponse.success(tradeResponseDtos);
     }
 
-    // 상품 :: 판매 입찰가 조회
     @GetMapping("/{id}/sell")
-    public RestResponse<ProductQueryResponseDto> findAllSoldBidPrices(
-        @PathVariable("id") Long productId
+    public RestResponse<List<TradeResponseDto>> findAllSellBidPrices(
+        @PathVariable("id") Long productId,
+        Pageable pageable
+//        @PageableDefault(size = 5, value = 0) Pageable pageable
     ) {
-        return null;
+        OrderCriteriaValidator.validateOrderCriteria(Sell.class, pageable);
+        Page<Sell> allSellBids = sellOrderQueryService.findAllSellBidsOf(productId, pageable);
+        List<TradeResponseDto> tradeResponseDtos = allSellBids.stream()
+            .map(SellMapper.INSTANCE::toTradeResponseDto)
+            .toList();
+        return RestResponse.success(tradeResponseDtos);
     }
 
-    // 상품 :: 구매 입찰가 조회
     @GetMapping("/{id}/buy")
-    public RestResponse<ProductQueryResponseDto> findAllPurchasedBidPrices(
-        @PathVariable("id") Long productId
+    public RestResponse<List<TradeResponseDto>> findAllBuyBidPrices(
+        @PathVariable("id") Long productId,
+        Pageable pageable
+//        @PageableDefault(size = 5, value = 0) Pageable pageable
     ) {
-        return null;
+        OrderCriteriaValidator.validateOrderCriteria(Buy.class, pageable);
+        Page<Buy> allBuyBids = buyOrderQueryService.findAllBuyBidsOf(productId, pageable);
+        List<TradeResponseDto> tradeResponseDtos = allBuyBids.stream()
+            .map(BuyMapper.INSTANCE::toTradeResponseDto)
+            .toList();
+        return RestResponse.success(tradeResponseDtos);
     }
 }
