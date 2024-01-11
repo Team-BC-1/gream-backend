@@ -74,7 +74,7 @@ public class BuyService {
     public BuyCancelBidResponseDto buyCancelBid(User user, Long buyId) {
         Buy buyBid = findBuyById(buyId);
 
-        if (isBuyerLoggedInUser(buyBid, user)) {
+        if (!isBuyerLoggedInUser(buyBid, user)) {
             throw new GlobalException(NOT_AUTHORIZED);
         }
 
