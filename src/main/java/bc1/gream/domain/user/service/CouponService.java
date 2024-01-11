@@ -25,19 +25,19 @@ public class CouponService {
         coupon.changeStatus(couponStatus);
     }
 
-    private Coupon findCouponById(Long couponId, User user) {
+    public Coupon findCouponById(Long couponId, User user) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(
             () -> new GlobalException(COUPON_NOT_FOUND)
         );
 
-        if(isNotMatchCouponUser(user, coupon)) {
+        if (!isMatchCouponUser(user, coupon)) {
             throw new GlobalException(NOT_AUTHORIZED);
         }
 
         return coupon;
     }
 
-    private boolean isNotMatchCouponUser(User user, Coupon coupon) {
+    private boolean isMatchCouponUser(User user, Coupon coupon) {
         return !coupon.getUser().getLoginId().equals(user.getLoginId());
     }
 }

@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.order.repository.SellRepositoryCustomImpl;
+import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.jpa.AuditingConfig;
@@ -30,6 +32,10 @@ import org.springframework.test.context.ActiveProfiles;
 @Import({QueryDslConfig.class, AuditingConfig.class})
 class SellRepositoryCustomImplTest implements SellTest {
 
+    User user;
+    Product product;
+    Sell sell;
+    
     @Autowired
     private SellRepositoryCustomImpl sellRepositoryCustom;
     @Autowired
@@ -41,9 +47,9 @@ class SellRepositoryCustomImplTest implements SellTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.save(TEST_USER);
-        productRepository.save(TEST_PRODUCT);
-        sellRepository.save(TEST_SELL);
+        user = userRepository.save(TEST_USER);
+        product = productRepository.save(TEST_PRODUCT);
+        sell = sellRepository.save(TEST_SELL);
     }
 
     @Test
@@ -54,10 +60,9 @@ class SellRepositoryCustomImplTest implements SellTest {
 
         // WHEN
         Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
-
         // THEN
         boolean hasSellBid = allPricesOf.stream()
-            .anyMatch(buy -> buy.equals(TEST_SELL));
+            .anyMatch(s -> s.equals(sell));
         assertTrue(hasSellBid);
     }
 }

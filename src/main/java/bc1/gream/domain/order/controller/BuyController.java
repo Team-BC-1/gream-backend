@@ -1,12 +1,17 @@
 package bc1.gream.domain.order.controller;
 
+
+import static bc1.gream.domain.user.entity.CouponStatus.ALREADY_USED;
 import static bc1.gream.domain.user.entity.CouponStatus.AVAILABLE;
 import static bc1.gream.domain.user.entity.CouponStatus.IN_USE;
 
-import bc1.gream.domain.common.facade.ChangeCouponStatusFacade;
+import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
+import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
+import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
+
 import bc1.gream.domain.order.service.BuyService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
@@ -28,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuyController {
 
     private final BuyService buyService;
-    private final ChangeCouponStatusFacade changeCouponStatusFacade;
+    private final ChangingCouponStatusFacade changingCouponStatusFacade;
 
     @PostMapping("/{productId}")
     public RestResponse<BuyBidResponseDto> buyBidProduct(
@@ -37,17 +42,29 @@ public class BuyController {
         @PathVariable Long productId
     ) {
         BuyBidResponseDto responseDto = buyService.buyBidProduct(userDetails.getUser(), requestDto, productId);
-        changeCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), IN_USE);
+        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), IN_USE);
         return RestResponse.success(responseDto);
     }
 
-    @DeleteMapping("/{buyId}")
+    @DeleteMapping("/bid/{buyId}")
     public RestResponse<BuyCancelBidResponseDto> buyCancelBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long buyId
     ) {
-        changeCouponStatusFacade.changeCouponStatus(buyId, userDetails.getUser(), AVAILABLE);
+        changingCouponStatusFacade.changeCouponStatus(buyId, userDetails.getUser(), AVAILABLE);
         BuyCancelBidResponseDto responseDto = buyService.buyCancelBid(userDetails.getUser(), buyId);
+        return RestResponse.success(responseDto);
+    }
+
+    @PostMapping("/{productId}/now")
+    public RestResponse<BuyNowResponseDto> buyNowProduct(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable Long productId,
+        @RequestBody BuyNowRequestDto requestDto
+    ) {
+        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), ALREADY_USED);
+        BuyNowResponseDto responseDto = buyService.buyNowProduct(userDetails.getUser(), requestDto, productId);
+
         return RestResponse.success(responseDto);
     }
 }

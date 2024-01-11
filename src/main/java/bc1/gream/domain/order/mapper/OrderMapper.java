@@ -1,5 +1,6 @@
 package bc1.gream.domain.order.mapper;
 
+import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.dto.response.TradeResponseDto;
 import org.mapstruct.Mapper;
@@ -15,4 +16,7 @@ public interface OrderMapper {
     @Mapping(target = "price", source = "finalPrice")
     @Mapping(target = "tradeDate", source = "createdAt")
     TradeResponseDto ofTradedOrder(Order order);
+
+    @Mapping(source = "id", target = "orderId")
+    BuyNowResponseDto toBuyNowResponseDto(Order order);
 }
