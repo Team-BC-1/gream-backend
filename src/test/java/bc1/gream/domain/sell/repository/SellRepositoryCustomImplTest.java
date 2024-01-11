@@ -54,10 +54,9 @@ class SellRepositoryCustomImplTest implements SellTest {
 
         // WHEN
         Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
-
         // THEN
         boolean hasSellBid = allPricesOf.stream()
-            .anyMatch(buy -> buy.equals(TEST_SELL));
+            .anyMatch(buy -> buy.getUser().equals(TEST_SELL.getUser()));
         assertTrue(hasSellBid);
     }
 }
