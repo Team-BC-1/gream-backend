@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class BuyOrderQueryFacade {
 
-    private final ProductService productService;
+    private final ProductService productQueryService;
     private final BuyService buyService;
 
     /**
@@ -27,7 +27,7 @@ public class BuyOrderQueryFacade {
      * @author 임지훈
      */
     public List<Buy> findAllBuyBidsOf(Long productId, Pageable pageable) {
-        Product product = productService.findBy(productId);
+        Product product = productQueryService.findBy(productId);
         return buyService.findAllBuyBidsOf(product, pageable).getContent();
     }
 }
