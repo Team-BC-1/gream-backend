@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bc1.gream.domain.product.controller.ProductLikeController;
-import bc1.gream.domain.product.service.command.ProductCommendService;
+import bc1.gream.domain.product.service.command.ProductLikeService;
 import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.BaseMvcTest;
 import bc1.gream.test.ProductTest;
@@ -32,7 +32,7 @@ class ProductLikeControllerTest extends BaseMvcTest implements ProductTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private ProductCommendService productCommendService;
+    private ProductLikeService productLikeService;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +44,7 @@ class ProductLikeControllerTest extends BaseMvcTest implements ProductTest {
     @Test
     public void 사용자_관심상품_추가() throws Exception {
         // WHEN
-        productCommendService.likeProduct(TEST_USER, TEST_PRODUCT_ID);
+        productLikeService.likeProduct(TEST_USER, TEST_PRODUCT_ID);
 
         // THEN
         this.mockMvc.perform(post("/api/products/" + TEST_PRODUCT_ID + "/like"))
@@ -55,7 +55,7 @@ class ProductLikeControllerTest extends BaseMvcTest implements ProductTest {
     @Test
     public void 사용자_관심상품_삭제() throws Exception {
         // WHEN
-        productCommendService.dislikeProduct(TEST_USER, TEST_PRODUCT_ID);
+        productLikeService.dislikeProduct(TEST_USER, TEST_PRODUCT_ID);
 
         // THEN
         this.mockMvc.perform(delete("/api/products/" + TEST_PRODUCT_ID + "/dislike"))
