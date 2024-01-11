@@ -30,14 +30,14 @@ public interface CouponTest extends UserTest {
 
     CouponStatus TEST_COUPON_STATUS_ALREADY_USED = ALREADY_USED;
 
-    Coupon TEST_COUPON_WON = Coupon.builder()
+    Coupon TEST_COUPON_FIX = Coupon.builder()
         .name(TEST_COUPON_NAME)
         .discountType(TEST_DISCOUNT_TYPE_WON)
         .discount(TEST_DISCOUNT)
         .status(TEST_COUPON_STATUS_AVAILABLE)
         .build();
 
-    Coupon TEST_COUPON_PERCENT = Coupon.builder()
+    Coupon TEST_COUPON_RATE = Coupon.builder()
         .name(TEST_COUPON_NAME)
         .discountType(TEST_DISCOUNT_TYPE_PERCENT)
         .discount(TEST_DISCOUNT_PERCENT)

@@ -7,28 +7,46 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
+import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.BuyRepository;
-import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.order.repository.GifticonRepository;
+import bc1.gream.domain.order.repository.OrderRepository;
+import bc1.gream.domain.order.repository.SellRepository;
+import bc1.gream.domain.product.service.BuyOrderQueryService;
+import bc1.gream.domain.user.entity.User;
+import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.test.BuyTest;
-import bc1.gream.test.ProductTest;
-import bc1.gream.test.UserTest;
+import bc1.gream.test.CouponTest;
+import bc1.gream.test.GifticonTest;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-class BuyServiceTest implements UserTest, ProductTest, BuyTest {
+class BuyServiceTest implements BuyTest, GifticonTest, CouponTest {
 
     @Mock
     BuyRepository buyRepository;
+    @Mock
+    SellRepository sellRepository;
+    @Mock
+    OrderRepository orderRepository;
+    @Mock
+    GifticonRepository gifticonRepository;
+
 
     @Mock
-    ProductRepository productRepository;
+    BuyOrderQueryService buyOrderQueryService;
+    @Mock
+    CouponService couponService;
 
     @InjectMocks
     BuyService buyService;
@@ -41,7 +59,7 @@ class BuyServiceTest implements UserTest, ProductTest, BuyTest {
             .price(TEST_BUY_PRICE)
             .build();
 
-        given(productRepository.findById(TEST_PRODUCT_ID)).willReturn(Optional.of(TEST_PRODUCT));
+        given(buyOrderQueryService.findById(any())).willReturn(TEST_PRODUCT);
         given(buyRepository.save(any(Buy.class))).willReturn(TEST_BUY);
 
         // when
@@ -62,6 +80,25 @@ class BuyServiceTest implements UserTest, ProductTest, BuyTest {
 
         // then
         verify(buyRepository, times(1)).delete(any(Buy.class));
+    }
+
+    @Test
+    void buyNowProductTest() {
+        BuyNowRequestDto requestDto = BuyNowRequestDto.builder()
+            .price(TEST_BUY_PRICE)
+            .couponId(TEST_COUPON_ID)
+            .build();
+        ReflectionTestUtils.setField(TEST_SELL, "id", 1L);
+        Long price = requestDto.price();
+        given(sellRepository.findByProductIdAndPrice(TEST_PRODUCT_ID, price)).willReturn(Optional.of(TEST_SELL));
+        given(couponService.findCouponById(any(Long.class), any(User.class))).willReturn(TEST_COUPON_FIX);
+        given(orderRepository.save(any(Order.class))).willReturn(TEST_ORDER);
+        given(gifticonRepository.findBySell_Id(any(Long.class))).willReturn(Optional.of(TEST_GIFTICON));
+
+        BuyNowResponseDto responseDto = buyService.buyNowProduct(TEST_BUYER, requestDto, TEST_PRODUCT_ID);
+
+        assertThat(responseDto.finalPrice()).isEqualTo(TEST_ORDER_FINAL_PRICE);
+        assertThat(responseDto.expectedPrice()).isEqualTo(TEST_ORDER_EXPECTED_PRICE);
     }
 
     @Test
