@@ -2,7 +2,7 @@ package bc1.gream.domain.order.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import bc1.gream.domain.product.dto.TradeResponseDto;
+import bc1.gream.domain.product.dto.response.TradeResponseDto;
 import bc1.gream.test.OrderTest;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;

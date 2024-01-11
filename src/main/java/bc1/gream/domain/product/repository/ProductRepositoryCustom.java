@@ -1,6 +1,6 @@
 package bc1.gream.domain.product.repository;
 
-import bc1.gream.domain.product.dto.ProductCondition;
+import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import java.util.List;
 import org.springframework.data.domain.Page;
