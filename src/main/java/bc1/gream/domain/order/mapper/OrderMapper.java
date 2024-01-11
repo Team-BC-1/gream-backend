@@ -12,7 +12,7 @@ public interface OrderMapper {
 
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
-    @Mapping(target = "finalPrice", source = "finalPrice")
+    @Mapping(target = "price", source = "finalPrice")
     @Mapping(target = "tradeDate", source = "createdAt")
-    TradeResponseDto toTradeResponseDto(Order order);
+    TradeResponseDto ofTradedOrder(Order order);
 }

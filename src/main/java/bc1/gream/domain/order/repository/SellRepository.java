@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface SellRepository extends JpaRepository<Sell, Long> {
+public interface SellRepository extends JpaRepository<Sell, Long>, SellRepositoryCustom {
 
     @Query("select s from Sell s "
         + "where s.price = :price and s.product.id = :productId "

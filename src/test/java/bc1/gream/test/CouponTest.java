@@ -23,7 +23,7 @@ public interface CouponTest extends UserTest{
 
     CouponStatus TEST_COUPON_STATUS_AVAILABLE = AVAILABLE;
 
-    CouponStatus TEST_COUPON_STATUS_INUSE = INUSE;
+    CouponStatus TEST_COUPON_STATUS_INUSE = IN_USE;
 
     CouponStatus TEST_COUPON_STATUS_ALREADY_USED = ALREADY_USED;
 

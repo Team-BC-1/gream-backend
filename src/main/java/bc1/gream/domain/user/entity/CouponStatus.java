@@ -2,6 +2,6 @@ package bc1.gream.domain.user.entity;
 
 public enum CouponStatus {
     AVAILABLE,
-    INUSE,
+    IN_USE,
     ALREADY_USED
 }

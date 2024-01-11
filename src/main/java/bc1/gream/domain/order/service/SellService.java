@@ -3,7 +3,6 @@ package bc1.gream.domain.order.service;
 import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.SEARCH_RESULT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
@@ -24,7 +23,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +54,6 @@ public class SellService {
             .build();
 
         Sell savedSell = sellRepository.save(sell);
-
         saveGifticon(requestDto.gifticonUrl(), savedSell, null); // Order는 우선 null로 입력 추후 즉시 구매 시 Order 넣어줄 예정
 
         return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);
@@ -107,5 +108,17 @@ public class SellService {
         );
 
         gifticonRepository.delete(gifticon);
+    }
+
+    /**
+     * Product에 대한 판매입찰가 내역 페이징 조회
+     *
+     * @param product  이모티콘 상품
+     * @param pageable 페이징 요청 데이터
+     * @return 판매입찰가 내역 페이징 데이터
+     */
+    @Transactional(readOnly = true)
+    public Page<Sell> findAllSellBidsOf(Product product, Pageable pageable) {
+        return sellRepository.findAllPricesOf(product, pageable);
     }
 }
