@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +34,8 @@ public class WebSecurityConfig {
     private final RedisUtil redisUtil;
     private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final LogoutHandler logoutHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,21 +68,42 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
-
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        settingRequestAuthorization(http);
+        settingFilterOrder(http);
+        settingLogout(http);
+
+        return http.build();
+    }
+
+    private void settingRequestAuthorization(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz ->
             authz
+                // 정적 파일
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/api/users/signup").permitAll()
-                .requestMatchers("/api/users/login").permitAll()
+                // 유저 도메인
+                .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll() // 굿
+                // 상품 도메인
+                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                // 그 외
                 .anyRequest().authenticated()
         );
+    }
 
+    private void settingFilterOrder(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtAuthFilter(), JwtLoginFilter.class);
         http.addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
+    }
 
-        return http.build();
+    private void settingLogout(HttpSecurity http) throws Exception {
+        http.logout(
+            logout -> {
+                logout.logoutUrl("/api/users/logout");
+                logout.addLogoutHandler(logoutHandler);
+                logout.logoutSuccessHandler(logoutSuccessHandler);
+            });
     }
 }

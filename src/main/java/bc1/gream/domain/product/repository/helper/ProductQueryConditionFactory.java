@@ -21,7 +21,7 @@ public final class ProductQueryConditionFactory {
     }
 
     public static BooleanExpression hasPriceRangeOf(Long startPrice, Long endPrice) {
-        if (startPrice.equals(0L) || endPrice.equals(0L)) {
+        if (startPrice == null || endPrice == null || endPrice == 0L) {
             return null;
         }
         if (startPrice.compareTo(endPrice) > 0) {
