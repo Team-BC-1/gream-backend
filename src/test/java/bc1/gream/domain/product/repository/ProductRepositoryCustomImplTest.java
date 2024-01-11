@@ -3,7 +3,7 @@ package bc1.gream.domain.product.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import bc1.gream.domain.product.dto.ProductCondition;
+import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.jpa.AuditingConfig;
