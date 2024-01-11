@@ -83,8 +83,8 @@ public class WebSecurityConfig {
                 // 정적 파일
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // 유저 도메인
-                .requestMatchers("/api/users/signup").permitAll()
-                .requestMatchers("/api/users/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll() // 굿
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 // 그 외
