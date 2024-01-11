@@ -35,17 +35,18 @@ public enum ResultCase {
 
     // 구매 3000번대
     // 구매 요청 대상 상품이 이미 판매되었음 409
-    PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 3000, "구매 요청 대상 상품이 이미 판매되었습니다."),
+    BUY_PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 3000, "구매 요청 대상 상품이 이미 판매되었습니다."),
     // 구매 요청 대상 상품이 존재하지 않음 404
-    BUY_PRODUCT_SOLD_OUT(HttpStatus.NOT_FOUND, 3001, "구매 요청 대상 상품이 이미 판매되었습니다."),
-    BUY_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 3002, "해당 구매 입찰 건은 존재하지 않습니다."),
+    BUY_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 3001, "해당 구매 입찰 건은 존재하지 않습니다."),
     // 입찰 마감 기한 초과 409
-    DEADLINE_EXCEEDED(HttpStatus.CONFLICT, 3002, "구매 요청 대상 상품이 이미 판매되었습니다."),
+    DEADLINE_EXCEEDED(HttpStatus.CONFLICT, 3002, "요청 상품의 등록 기한이 마감되었습니다."),
 
     // 판매 4000번대
+    // 판매 요청 대상 상품이 이미 구매되었음 409
+    SELL_PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 4000, "판매 요청 대상 상품이 이미 구매되었습니다."),
     // 판매 요청에 대상 상품이 존재하지 않음 404
-    SELL_PRODUCT_SOLD_OUT(HttpStatus.NOT_FOUND, 4001, "판매 요청 대상 상품이 이미 구매되었습니다."),
-    SELL_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 4002, "해당 판매 입찰 건은 존재하지 않습니다."),
+    SELL_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 4001, "해당 판매 입찰 건은 존재하지 않습니다."),
+    GIFTICON_NOT_FOUND(HttpStatus.NOT_FOUND, 4002, "해당 id의 기프티콘은 존재하지 않습니다."),
     // 입찰 마감 기한 초과 409
 
     // 글로벌 5000번대
@@ -54,8 +55,14 @@ public enum ResultCase {
     // 잘못된 형식의 입력 400
     INVALID_INPUT(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 입력값"),
     // 시스템 에러 500
-    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다.");
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다."),
+    // 잘못된 도메인 정렬값 입력 400
+    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 도메인 정렬값"),
 
+    // 쿠폰 6000번대
+    // 쿠폰이 존재하지 않을 때 404
+    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, 6000, "해당 쿠폰은 존재하지 않습니다.")
+    ;
     private final HttpStatus httpStatus;
     private final Integer code;
     private final String message;

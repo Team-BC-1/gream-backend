@@ -5,7 +5,8 @@ import lombok.Builder;
 @Builder
 public record BuyBidRequestDto(
     Long price,
-    Integer period
+    Integer period,
+    Long couponId
 ) {
 
 }
