@@ -16,7 +16,7 @@ import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
-import bc1.gream.domain.product.service.BuyOrderQueryService;
+import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.test.BuyTest;
@@ -44,7 +44,7 @@ class BuyServiceTest implements BuyTest, GifticonTest, CouponTest {
 
 
     @Mock
-    BuyOrderQueryService buyOrderQueryService;
+    ProductService productService;
     @Mock
     CouponService couponService;
 
@@ -59,7 +59,7 @@ class BuyServiceTest implements BuyTest, GifticonTest, CouponTest {
             .price(TEST_BUY_PRICE)
             .build();
 
-        given(buyOrderQueryService.findById(any())).willReturn(TEST_PRODUCT);
+        given(productService.findBy(any())).willReturn(TEST_PRODUCT);
         given(buyRepository.save(any(Buy.class))).willReturn(TEST_BUY);
 
         // when

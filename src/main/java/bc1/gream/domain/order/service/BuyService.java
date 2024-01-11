@@ -21,7 +21,7 @@ import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.service.BuyOrderQueryService;
+import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.domain.user.entity.Coupon;
 import bc1.gream.domain.user.entity.DiscountType;
 import bc1.gream.domain.user.entity.User;
@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuyService {
 
     private final CouponService couponService;
-    private final BuyOrderQueryService buyOrderQueryService;
+    private final ProductService productService;
 
     private final BuyRepository buyRepository;
     private final SellRepository sellRepository;
@@ -55,7 +55,7 @@ public class BuyService {
         Long couponId = requestDto.couponId();
         LocalDate date = LocalDate.now();
         LocalDateTime deadlineAt = date.atTime(LocalTime.MAX).plusDays(period);
-        Product product = buyOrderQueryService.findById(productId);
+        Product product = productService.findBy(productId);
 
         Buy buy = Buy.builder()
             .price(price)
@@ -74,7 +74,7 @@ public class BuyService {
     public BuyCancelBidResponseDto buyCancelBid(User user, Long buyId) {
         Buy buyBid = findBuyById(buyId);
 
-        if (!isBuyerLoggedInUser(buyBid, user)) {
+        if (isBuyerLoggedInUser(buyBid, user)) {
             throw new GlobalException(NOT_AUTHORIZED);
         }
 
