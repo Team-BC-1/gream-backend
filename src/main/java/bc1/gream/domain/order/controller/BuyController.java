@@ -1,15 +1,16 @@
 package bc1.gream.domain.order.controller;
 
-import static bc1.gream.domain.user.entity.CouponStatus.*;
+import static bc1.gream.domain.user.entity.CouponStatus.AVAILABLE;
+import static bc1.gream.domain.user.entity.CouponStatus.IN_USE;
 
+import bc1.gream.domain.common.facade.ChangeCouponStatusFacade;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
-import bc1.gream.domain.common.facade.ChangeCouponStatusFacade;
 import bc1.gream.domain.order.service.BuyService;
-import bc1.gream.domain.user.entity.CouponStatus;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/buy")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 public class BuyController {
 
     private final BuyService buyService;
