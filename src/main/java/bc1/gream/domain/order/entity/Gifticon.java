@@ -1,6 +1,6 @@
 package bc1.gream.domain.order.entity;
 
-import bc1.gream.domain.model.BaseEntity;
+import bc1.gream.domain.common.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +39,10 @@ public class Gifticon extends BaseEntity {
     private Gifticon(String gifticonUrl, Sell sell, Order order) {
         this.gifticonUrl = gifticonUrl;
         this.sell = sell;
+        this.order = order;
+    }
+
+    public void updateOrder(Order order) {
         this.order = order;
     }
 }
