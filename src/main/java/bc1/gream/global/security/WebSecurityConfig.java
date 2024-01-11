@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +33,8 @@ public class WebSecurityConfig {
     private final RedisUtil redisUtil;
     private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final LogoutHandler logoutHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,9 +67,16 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
-
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        settingRequestAuthorization(http);
+        settingFilterOrder(http);
+        settingLogout(http);
+
+        return http.build();
+    }
+
+    private void settingRequestAuthorization(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz ->
             authz
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
@@ -73,11 +84,20 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/users/login").permitAll()
                 .anyRequest().authenticated()
         );
+    }
 
+    private void settingFilterOrder(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtAuthFilter(), JwtLoginFilter.class);
         http.addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
+    }
 
-        return http.build();
+    private void settingLogout(HttpSecurity http) throws Exception {
+        http.logout(
+            logout -> {
+                logout.logoutUrl("/api/users/logout");
+                logout.addLogoutHandler(logoutHandler);
+                logout.logoutSuccessHandler(logoutSuccessHandler);
+            });
     }
 }
