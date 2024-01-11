@@ -24,6 +24,7 @@ import java.time.LocalTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +54,6 @@ public class SellService {
             .build();
 
         Sell savedSell = sellRepository.save(sell);
-
         saveGifticon(requestDto.gifticonUrl(), savedSell, null); // Order는 우선 null로 입력 추후 즉시 구매 시 Order 넣어줄 예정
 
         return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);

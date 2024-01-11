@@ -46,7 +46,7 @@ public enum ResultCase {
     SELL_PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 4000, "판매 요청 대상 상품이 이미 구매되었습니다."),
     // 판매 요청에 대상 상품이 존재하지 않음 404
     SELL_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 4001, "해당 판매 입찰 건은 존재하지 않습니다."),
-    GIFTICON_NOT_FOUND(HttpStatus.NOT_FOUND, 4003, "해당 id의 기프티콘은 존재하지 않습니다."),
+    GIFTICON_NOT_FOUND(HttpStatus.NOT_FOUND, 4002, "해당 id의 기프티콘은 존재하지 않습니다."),
     // 입찰 마감 기한 초과 409
 
     // 글로벌 5000번대
@@ -56,6 +56,8 @@ public enum ResultCase {
     INVALID_INPUT(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 입력값"),
     // 시스템 에러 500
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다."),
+    // 잘못된 도메인 정렬값 입력 400
+    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 도메인 정렬값"),
 
     // 쿠폰 6000번대
     // 쿠폰이 존재하지 않을 때 404

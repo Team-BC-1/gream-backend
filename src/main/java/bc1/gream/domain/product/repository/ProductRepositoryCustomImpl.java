@@ -3,12 +3,12 @@ package bc1.gream.domain.product.repository;
 
 import static bc1.gream.domain.product.entity.QProduct.product;
 
+import bc1.gream.domain.product.dto.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.helper.ProductQueryConditionFactory;
 import bc1.gream.domain.product.repository.helper.ProductQueryOrderFactory;
-import bc1.gream.domain.product.service.query.unit.ProductCondition;
-import bc1.gream.global.config.QueryDslConfig;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,15 +19,15 @@ import org.springframework.data.support.PageableExecutionUtils;
 @RequiredArgsConstructor
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
-    private final QueryDslConfig qd;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Product> findAllBy(ProductCondition condition) {
-        return qd.query()
+        return queryFactory
             .selectFrom(product)
             .where(
                 ProductQueryConditionFactory.brandEquals(condition.brand()),
-                ProductQueryConditionFactory.nameEquals(condition.brand()),
+                ProductQueryConditionFactory.nameEquals(condition.name()),
                 ProductQueryConditionFactory.hasPriceRangeOf(condition.startPrice(), condition.endPrice())
             )
             .fetch();
@@ -39,11 +39,11 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         OrderSpecifier[] ordersOf = ProductQueryOrderFactory.getOrdersOf(pageable.getSort());
 
         // Query + Order + Paging
-        List<Product> products = qd.query()
+        List<Product> products = queryFactory
             .selectFrom(product)
             .where(
                 ProductQueryConditionFactory.brandEquals(condition.brand()),
-                ProductQueryConditionFactory.nameEquals(condition.brand()),
+                ProductQueryConditionFactory.nameEquals(condition.name()),
                 ProductQueryConditionFactory.hasPriceRangeOf(condition.startPrice(), condition.endPrice())
             )
             .orderBy(ordersOf)
