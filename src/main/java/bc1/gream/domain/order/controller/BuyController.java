@@ -5,7 +5,7 @@ import static bc1.gream.domain.user.entity.CouponStatus.*;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
-import bc1.gream.domain.order.service.BuyCouponService;
+import bc1.gream.domain.common.facade.ChangeCouponStatusFacade;
 import bc1.gream.domain.order.service.BuyService;
 import bc1.gream.domain.user.entity.CouponStatus;
 import bc1.gream.global.common.RestResponse;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuyController {
 
     private final BuyService buyService;
-    private final BuyCouponService buyCouponService;
+    private final ChangeCouponStatusFacade changeCouponStatusFacade;
 
     @PostMapping("/{productId}")
     public RestResponse<BuyBidResponseDto> buyBidProduct(
@@ -35,7 +35,7 @@ public class BuyController {
         @PathVariable Long productId
     ) {
         BuyBidResponseDto responseDto = buyService.buyBidProduct(userDetails.getUser(), requestDto, productId);
-        buyCouponService.changeCouponStatusByCouponId(requestDto.couponId(), INUSE);
+        changeCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), IN_USE);
         return RestResponse.success(responseDto);
     }
 
@@ -44,7 +44,7 @@ public class BuyController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long buyId
     ) {
-        buyCouponService.changeCouponStatus(buyId, AVAILABLE);
+        changeCouponStatusFacade.changeCouponStatus(buyId, userDetails.getUser(), AVAILABLE);
         BuyCancelBidResponseDto responseDto = buyService.buyCancelBid(userDetails.getUser(), buyId);
         return RestResponse.success(responseDto);
     }
