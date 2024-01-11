@@ -1,6 +1,6 @@
 package bc1.gream.domain.product.entity;
 
-import bc1.gream.domain.model.BaseEntity;
+import bc1.gream.domain.common.model.BaseEntity;
 import bc1.gream.domain.order.entity.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;

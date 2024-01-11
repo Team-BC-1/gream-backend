@@ -63,4 +63,16 @@ class BuyServiceTest implements UserTest, ProductTest, BuyTest {
         // then
         verify(buyRepository, times(1)).delete(any(Buy.class));
     }
+
+    @Test
+    void findBuyByIdTest() {
+
+        // given
+        given(buyRepository.findById(TEST_BUY_ID)).willReturn(Optional.of(TEST_BUY));
+        // when
+        Buy buy = buyService.findBuyById(TEST_BUY_ID);
+        // then
+        assertThat(buy.getPrice()).isEqualTo(TEST_BUY.getPrice());
+        assertThat(buy.getDeadlineAt()).isEqualTo(TEST_BUY.getDeadlineAt());
+    }
 }

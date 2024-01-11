@@ -1,6 +1,6 @@
 package bc1.gream.domain.order.entity;
 
-import bc1.gream.domain.model.BaseEntity;
+import bc1.gream.domain.common.model.BaseEntity;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,6 +32,9 @@ public class Buy extends BaseEntity {
     @Column
     private Long price;
 
+    @Column(name = "coupon_id")
+    private Long couponId;
+
     @Column(name = "deadline_at")
     private LocalDateTime deadlineAt;
 
@@ -46,8 +49,9 @@ public class Buy extends BaseEntity {
     private Product product;
 
     @Builder
-    private Buy(Long price, LocalDateTime deadlineAt, User user, Product product) {
+    private Buy(Long price, LocalDateTime deadlineAt, Long couponId, User user, Product product) {
         this.price = price;
+        this.couponId = couponId;
         this.deadlineAt = deadlineAt;
         this.user = user;
         this.product = product;
