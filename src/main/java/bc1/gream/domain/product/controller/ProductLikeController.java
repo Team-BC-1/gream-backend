@@ -2,7 +2,7 @@ package bc1.gream.domain.product.controller;
 
 import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
 import bc1.gream.domain.product.mapper.ProductMapper;
-import bc1.gream.domain.product.service.command.ProductCommendService;
+import bc1.gream.domain.product.service.command.ProductLikeService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "Bearer Authentication")
 public class ProductLikeController {
 
-    private final ProductCommendService productCommendService;
+    private final ProductLikeService productLikeService;
 
     @PostMapping("/{id}/like")
     public RestResponse<ProductLikeResponseDto> likeProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
     ) {
-        productCommendService.likeProduct(userDetails.getUser(), productId);
+        productLikeService.likeProduct(userDetails.getUser(), productId);
         ProductLikeResponseDto responseDto = ProductMapper.INSTANCE.toLikeResponseDto("관심상품 등록");
         return RestResponse.success(responseDto);
     }
@@ -37,7 +37,7 @@ public class ProductLikeController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
     ) {
-        productCommendService.dislikeProduct(userDetails.getUser(), productId);
+        productLikeService.dislikeProduct(userDetails.getUser(), productId);
         ProductLikeResponseDto responseDto = ProductMapper.INSTANCE.toLikeResponseDto("관심상품 등록 해제");
         return RestResponse.success(responseDto);
     }
