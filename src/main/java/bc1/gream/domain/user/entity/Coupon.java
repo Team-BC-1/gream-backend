@@ -3,6 +3,7 @@ package bc1.gream.domain.user.entity;
 import bc1.gream.domain.common.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,14 +30,14 @@ public class Coupon extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "discount_type", nullable = false)
     private DiscountType discountType;
 
     @Column(nullable = false)
     private Long discount;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     @Column
     private CouponStatus status;
 
