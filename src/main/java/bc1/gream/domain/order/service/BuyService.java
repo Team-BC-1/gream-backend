@@ -1,31 +1,20 @@
 package bc1.gream.domain.order.service;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_PRODUCT_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.COUPON_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
-import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
-import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.order.entity.Buy;
-import bc1.gream.domain.order.entity.Gifticon;
-import bc1.gream.domain.order.entity.Order;
-import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.mapper.BuyMapper;
-import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
-import bc1.gream.domain.user.entity.Coupon;
-import bc1.gream.domain.user.entity.DiscountType;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.repository.CouponRepository;
 import bc1.gream.global.exception.GlobalException;
