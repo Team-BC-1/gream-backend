@@ -1,4 +1,4 @@
-package bc1.gream.domain.model;
+package bc1.gream.domain.common.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,6 +1,6 @@
 package bc1.gream.domain.user.entity;
 
-import bc1.gream.domain.model.BaseEntity;
+import bc1.gream.domain.common.model.BaseEntity;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.entity.LikeProduct;
 import bc1.gream.domain.product.entity.Product;
