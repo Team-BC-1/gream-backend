@@ -3,10 +3,8 @@ package bc1.gream.domain.order.service;
 import static bc1.gream.global.common.ResultCase.BUY_BID_PRODUCT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
-import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
-import bc1.gream.domain.common.facade.FindCouponFacade;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
@@ -23,10 +21,11 @@ import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.product.service.BuyOrderQueryService;
 import bc1.gream.domain.user.entity.Coupon;
 import bc1.gream.domain.user.entity.DiscountType;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.global.exception.GlobalException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,10 +41,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BuyService {
 
-    private final FindCouponFacade findCouponFacade;
-    
+    private final CouponService couponService;
+    private final BuyOrderQueryService buyOrderQueryService;
+
     private final BuyRepository buyRepository;
-    private final ProductRepository productRepository;
     private final SellRepository sellRepository;
     private final OrderRepository orderRepository;
     private final GifticonRepository gifticonRepository;
@@ -56,7 +55,7 @@ public class BuyService {
         Long couponId = requestDto.couponId();
         LocalDate date = LocalDate.now();
         LocalDateTime deadlineAt = date.atTime(LocalTime.MAX).plusDays(period);
-        Product product = findProductById(productId);
+        Product product = buyOrderQueryService.findById(productId);
 
         Buy buy = Buy.builder()
             .price(price)
@@ -109,12 +108,6 @@ public class BuyService {
         return Objects.requireNonNullElse(period, 7);
     }
 
-    private Product findProductById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(
-            () -> new GlobalException(PRODUCT_NOT_FOUND)
-        );
-    }
-
     public Buy findBuyById(Long buyId) {
         return buyRepository.findById(buyId).orElseThrow(
             () -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND)
@@ -126,7 +119,7 @@ public class BuyService {
     }
 
     private Long calcDiscount(BuyNowRequestDto requestDto, User user) {
-        Coupon coupon = findCouponFacade.findByCouponId(requestDto.couponId(), user);
+        Coupon coupon = couponService.findCouponById(requestDto.couponId(), user);
         Long expectedPrice = 0L;
 
         if (coupon.getDiscountType().equals(DiscountType.FIX)) {
