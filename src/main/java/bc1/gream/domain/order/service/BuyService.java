@@ -120,15 +120,11 @@ public class BuyService {
 
     private Long calcDiscount(BuyNowRequestDto requestDto, User user) {
         Coupon coupon = couponService.findCouponById(requestDto.couponId(), user);
-        Long expectedPrice = 0L;
 
         if (coupon.getDiscountType().equals(DiscountType.FIX)) {
-            expectedPrice = requestDto.price() - coupon.getDiscount();
-        } else {
-            expectedPrice = requestDto.price() * (100 - coupon.getDiscount()) / 100;
+            return requestDto.price() - coupon.getDiscount();
         }
-
-        return expectedPrice;
+        return requestDto.price() * (100 - coupon.getDiscount()) / 100;
     }
 
     private void orderGifticon(Long sellId, Order order) {
