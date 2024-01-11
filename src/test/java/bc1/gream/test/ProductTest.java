@@ -18,4 +18,19 @@ public interface ProductTest {
         .description(TEST_PRODUCT_DESCRIPTION)
         .price(TEST_PRODUCT_PRICE)
         .build();
+
+    Long TEST_PRODUCT_SECOND_ID = 2L;
+    String TEST_PRODUCT_SECOND_BRAND = "이디야";
+    String TEST_PRODUCT_SECOND_NAME = "카페라떼";
+    String TEST_PRODUCT_SECOND_IMAGE_URL = "ediya_caffe_latte";
+    String TEST_PRODUCT_SECOND_DESCRIPTION = "더워죽어도 뜨거운 이디야 카페라떼가 좋아요";
+    Long TEST_PRODUCT_SECOND_PRICE = 5_500L;
+
+    Product TEST_PRODUCT_SECOND = Product.builder()
+        .brand(TEST_PRODUCT_SECOND_BRAND)
+        .name(TEST_PRODUCT_SECOND_NAME)
+        .imageUrl(TEST_PRODUCT_SECOND_IMAGE_URL)
+        .description(TEST_PRODUCT_SECOND_DESCRIPTION)
+        .price(TEST_PRODUCT_SECOND_PRICE)
+        .build();
 }
