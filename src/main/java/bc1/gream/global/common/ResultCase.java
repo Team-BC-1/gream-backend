@@ -54,7 +54,9 @@ public enum ResultCase {
     // 잘못된 형식의 입력 400
     INVALID_INPUT(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 입력값"),
     // 시스템 에러 500
-    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다.");
+    SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다."),
+    // 잘못된 도메인 정렬값 입력 400
+    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 도메인 정렬값");
 
     private final HttpStatus httpStatus;
     private final Integer code;
