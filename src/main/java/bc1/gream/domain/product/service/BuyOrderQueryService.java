@@ -30,4 +30,8 @@ public class BuyOrderQueryService {
         Product product = productQueryService.findBy(productId);
         return buyService.findAllBuyBidsOf(product, pageable).getContent();
     }
+
+    public Product findById(Long productId) {
+        return productQueryService.findBy(productId);
+    }
 }
