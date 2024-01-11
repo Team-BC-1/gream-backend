@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -79,9 +80,14 @@ public class WebSecurityConfig {
     private void settingRequestAuthorization(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz ->
             authz
+                // 정적 파일
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                // 유저 도메인
                 .requestMatchers("/api/users/signup").permitAll()
                 .requestMatchers("/api/users/login").permitAll()
+                // 상품 도메인
+                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                // 그 외
                 .anyRequest().authenticated()
         );
     }
