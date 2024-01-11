@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProductCommendService {
+public class ProductLikeService {
 
 
     private final ProductRepository productRepository;
