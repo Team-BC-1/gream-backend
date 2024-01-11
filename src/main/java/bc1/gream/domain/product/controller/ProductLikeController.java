@@ -5,7 +5,6 @@ import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.service.command.ProductLikeService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/products")
-@SecurityRequirement(name = "Bearer Authentication")
 public class ProductLikeController {
 
     private final ProductLikeService productLikeService;
