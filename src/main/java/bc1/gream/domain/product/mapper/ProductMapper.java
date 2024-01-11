@@ -1,7 +1,7 @@
 package bc1.gream.domain.product.mapper;
 
-import bc1.gream.domain.product.dto.ProductLikeResponseDto;
-import bc1.gream.domain.product.dto.ProductQueryResponseDto;
+import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
+import bc1.gream.domain.product.dto.response.ProductQueryResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

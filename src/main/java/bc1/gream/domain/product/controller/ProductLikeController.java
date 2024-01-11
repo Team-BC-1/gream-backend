@@ -1,6 +1,6 @@
 package bc1.gream.domain.product.controller;
 
-import bc1.gream.domain.product.dto.ProductLikeResponseDto;
+import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
 import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.service.command.ProductCommendService;
 import bc1.gream.global.common.RestResponse;

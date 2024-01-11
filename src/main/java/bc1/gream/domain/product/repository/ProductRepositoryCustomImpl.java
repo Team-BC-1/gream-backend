@@ -3,7 +3,7 @@ package bc1.gream.domain.product.repository;
 
 import static bc1.gream.domain.product.entity.QProduct.product;
 
-import bc1.gream.domain.product.dto.ProductCondition;
+import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.helper.ProductQueryConditionFactory;
 import bc1.gream.domain.product.repository.helper.ProductQueryOrderFactory;
