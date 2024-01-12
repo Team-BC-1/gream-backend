@@ -6,6 +6,13 @@ import bc1.gream.global.exception.GlobalException;
 
 public final class CouponCalculator {
 
+    /**
+     * CouponType 에 따라 price 에 대한 discount 진행
+     *
+     * @param coupon 쿠폰
+     * @param price  상품 가격
+     * @return 할인된 가격
+     */
     public static Long calculateDiscount(Coupon coupon, Long price) {
         CouponCalculatorStrategy couponCalculatorStrategy = CouponCalculatorStrategyFactory
             .getCouponCalculatorStrategy(coupon.getDiscountType())
