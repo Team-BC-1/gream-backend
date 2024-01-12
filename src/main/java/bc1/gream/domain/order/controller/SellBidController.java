@@ -4,6 +4,8 @@ import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
 import bc1.gream.domain.order.dto.response.SellCancelBidResponseDto;
 import bc1.gream.domain.order.service.SellBidService;
+import bc1.gream.domain.order.validator.ProductValidator;
+import bc1.gream.domain.order.validator.SellValidator;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -24,22 +26,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellBidController {
 
     private final SellBidService sellBidService;
+    private final ProductValidator productValidator;
+    private final SellValidator sellValidator;
 
     @PostMapping("/{productId}")
-    public RestResponse<SellBidResponseDto> sellBidProduct(
+    public RestResponse<SellBidResponseDto> createSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody SellBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        SellBidResponseDto responseDto = sellBidService.sellBidProduct(userDetails.getUser(), requestDto, productId);
+        productValidator.validateBy(productId);
+        SellBidResponseDto responseDto = sellBidService.createSellBid(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
     }
 
     @DeleteMapping("/bid/{sellId}")
-    public RestResponse<SellCancelBidResponseDto> sellCancelBid(
+    public RestResponse<SellCancelBidResponseDto> cancelSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long sellId
     ) {
+        sellValidator.validateBy(sellId);
         SellCancelBidResponseDto responseDto = sellBidService.sellCancelBid(userDetails.getUser(), sellId);
 
         return RestResponse.success(responseDto);
