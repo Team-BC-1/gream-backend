@@ -66,8 +66,8 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          zip -r $IMAGE_TAG.zip ./scripts appspec.yml
           aws s3 cp --region ap-northeast-2 --acl private ./$IMAGE_TAG.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
-
       - name: start deploy
         env:
           IMAGE_TAG: ${{ github.sha }}
