@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 public class GifticonService {
 
     private final GifticonRepository gifticonRepository;
-    
-    public void saveGifticon(String gifticonUrl, Order order) {
+
+    public Gifticon saveGifticon(String gifticonUrl, Order order) {
         Gifticon gifticon = Gifticon.builder()
             .gifticonUrl(gifticonUrl)
             .order(order)
             .build();
-        gifticonRepository.save(gifticon);
+        return gifticonRepository.save(gifticon);
     }
 }
