@@ -3,7 +3,7 @@ package bc1.gream.domain.order.service.command;
 import bc1.gream.domain.order.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
-import bc1.gream.domain.order.service.helper.CouponCalculator;
+import bc1.gream.domain.order.service.helper.coupon.CouponCalculator;
 import bc1.gream.domain.user.entity.Coupon;
 import bc1.gream.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;

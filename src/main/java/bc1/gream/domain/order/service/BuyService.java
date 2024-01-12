@@ -1,6 +1,6 @@
 package bc1.gream.domain.order.service;
 
-import static bc1.gream.global.common.ResultCase.BUY_BID_PRODUCT_NOT_FOUND;
+import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
@@ -111,7 +111,7 @@ public class BuyService {
 
     public Buy findBuyById(Long buyId) {
         return buyRepository.findById(buyId).orElseThrow(
-            () -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND)
+            () -> new GlobalException(BUY_BID_NOT_FOUND)
         );
     }
 
@@ -160,6 +160,6 @@ public class BuyService {
      */
     public Buy getRecentBuyBidOf(Long productId, Long price) {
         return buyRepository.findByProductIdAndPrice(productId, price)
-            .orElseThrow(() -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND));
+            .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
 }
