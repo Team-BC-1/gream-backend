@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Getter
 @Builder
@@ -27,12 +28,16 @@ public class RestResponse<T> implements Serializable {
             .build();
     }
 
-    public static <T> RestResponse<T> error(ResultCase ResultCase, T data) {
-        return RestResponse.<T>builder()
-            .status(ResultCase.getHttpStatus())
-            .code(ResultCase.getCode())
-            .message(ResultCase.getMessage())
+    public static <T> ResponseEntity<RestResponse<T>> error(ResultCase resultCase, T data) {
+        RestResponse<T> response = RestResponse.<T>builder()
+            .status(resultCase.getHttpStatus())
+            .code(resultCase.getCode())
+            .message(resultCase.getMessage())
             .data(data)
             .build();
+
+        return ResponseEntity
+            .status(resultCase.getHttpStatus())
+            .body(response);
     }
 }
