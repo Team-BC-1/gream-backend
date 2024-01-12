@@ -22,8 +22,8 @@ import org.springframework.util.StringUtils;
 @Component
 public class JwtUtil {
 
-    public static final String ACCESS_TOKEN_HEADER = "AccessToken"; // Access Token Header KEY 값
-    public static final String REFRESH_TOKEN_HEADER = "RefreshToken"; // Refresh Token Header KEY 값
+    public static final String ACCESS_TOKEN_HEADER = "Access-Token"; // Access Token Header KEY 값
+    public static final String REFRESH_TOKEN_HEADER = "Refresh-Token"; // Refresh Token Header KEY 값
     public static final String AUTHORIZATION_KEY = "auth"; // JWT 내의 사용자 권한 값의 KEY
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
     public static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // Access token 만료시간 60분
