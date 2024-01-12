@@ -27,12 +27,11 @@ public class Gifticon extends BaseEntity {
     @Column(name = "gifticon_url")
     private String gifticonUrl;
 
-    @OneToOne
-    @JoinColumn(name = "sell_id", nullable = false, unique = true)
+    @OneToOne(mappedBy = "gifticon")
     private Sell sell;
 
     @OneToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", unique = true)
     private Order order;
 
     @Builder
