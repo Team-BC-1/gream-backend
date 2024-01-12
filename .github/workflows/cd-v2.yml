@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_NAME: gream-v2
+  PROJECT_NAME: gream
   BUCKET_NAME: bc1-gream-s3-01
   CODE_DEPLOY_APP_NAME: gream-v2
   DEPLOYMENT_GROUP_NAME: gream-developer-v2
