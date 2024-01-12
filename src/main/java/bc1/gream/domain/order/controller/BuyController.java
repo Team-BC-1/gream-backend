@@ -11,7 +11,6 @@ import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
-
 import bc1.gream.domain.order.service.BuyService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
@@ -41,8 +40,8 @@ public class BuyController {
         @Valid @RequestBody BuyBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        BuyBidResponseDto responseDto = buyService.buyBidProduct(userDetails.getUser(), requestDto, productId);
         changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), IN_USE);
+        BuyBidResponseDto responseDto = buyService.buyBidProduct(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
     }
 
@@ -64,7 +63,6 @@ public class BuyController {
     ) {
         changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), ALREADY_USED);
         BuyNowResponseDto responseDto = buyService.buyNowProduct(userDetails.getUser(), requestDto, productId);
-
         return RestResponse.success(responseDto);
     }
 }
