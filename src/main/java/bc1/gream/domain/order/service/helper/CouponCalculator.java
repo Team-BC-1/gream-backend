@@ -6,10 +6,10 @@ import bc1.gream.global.exception.GlobalException;
 
 public final class CouponCalculator {
 
-    public static Long calculatedDiscout(Coupon coupon, Long price) {
+    public static Long calculateDiscount(Coupon coupon, Long price) {
         CouponCalculatorStrategy couponCalculatorStrategy = CouponCalculatorStrategyFactory
             .getCouponCalculatorStrategy(coupon.getDiscountType())
             .orElseThrow(() -> new GlobalException(ResultCase.COUPON_TYPE_NOT_FOUND));
-        return couponCalculatorStrategy.calculatedDiscout(coupon, price);
+        return couponCalculatorStrategy.calculateDiscount(coupon, price);
     }
 }
