@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.service.helper;
+package bc1.gream.domain.order.service.helper.coupon;
 
 import bc1.gream.domain.user.entity.DiscountType;
 import java.util.Optional;
