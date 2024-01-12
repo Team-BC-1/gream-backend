@@ -9,7 +9,7 @@ public record SellBidRequestDto(
     @NotNull(message = "가격 필드는 비울 수 없습니다.")
     Long price,
     Integer period,
-    @NotBlank(message = "판매 할 기프티콘의 경로를 알려주세요")
+    @NotBlank(message = "기프티콘을 업로드해 주세요")
     String gifticonUrl
 ) {
 

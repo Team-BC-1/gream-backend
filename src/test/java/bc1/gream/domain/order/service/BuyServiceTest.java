@@ -21,7 +21,7 @@ import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
-import bc1.gream.test.GifticonTest;
+import bc1.gream.test.SellTest;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-class BuyServiceTest implements BuyTest, GifticonTest, CouponTest {
+class BuyServiceTest implements BuyTest, SellTest, CouponTest {
 
     @Mock
     BuyRepository buyRepository;

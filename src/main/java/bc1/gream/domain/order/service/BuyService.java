@@ -88,7 +88,7 @@ public class BuyService {
         Sell sell = sellRepository.findByProductIdAndPrice(productId, price).orElseThrow(
             () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
         );
-        Long expectedPrice = calcDiscount(requestDto, user);
+        Long expectedPrice = calcDiscount(requestDto.couponId(), price, user);
 
         Order order = Order.builder()
             .product(sell.getProduct())
@@ -99,7 +99,8 @@ public class BuyService {
             .build();
 
         Order savedOrder = orderRepository.save(order);
-        orderGifticon(sell.getId(), savedOrder);
+        orderGifticonBySellId(sell.getId(), savedOrder);
+        sellRepository.delete(sell);
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(savedOrder);
     }
@@ -118,16 +119,19 @@ public class BuyService {
         return buy.getUser().getLoginId().equals(user.getLoginId());
     }
 
-    private Long calcDiscount(BuyNowRequestDto requestDto, User user) {
-        Coupon coupon = couponService.findCouponById(requestDto.couponId(), user);
+    public Long calcDiscount(Long couponId, Long price, User user) {
+        if (couponId == null) {
+            return price;
+        }
+        Coupon coupon = couponService.findCouponById(couponId, user);
 
         if (coupon.getDiscountType().equals(DiscountType.FIX)) {
-            return requestDto.price() - coupon.getDiscount();
+            return price - coupon.getDiscount();
         }
-        return requestDto.price() * (100 - coupon.getDiscount()) / 100;
+        return price * (100 - coupon.getDiscount()) / 100;
     }
 
-    private void orderGifticon(Long sellId, Order order) {
+    private void orderGifticonBySellId(Long sellId, Order order) {
         Gifticon gifticon = gifticonRepository.findBySell_Id(sellId).orElseThrow(
             () -> new GlobalException(GIFTICON_NOT_FOUND)
         );
