@@ -1,9 +1,8 @@
 name: CD
 
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
-
 
 env:
   PROJECT_NAME: gream-v2
