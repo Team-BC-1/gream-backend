@@ -27,7 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 
 @ExtendWith(MockitoExtension.class)
-class SellServiceTest implements GifticonTest {
+class SellBidServiceTest implements GifticonTest {
 
     @Mock
     SellRepository sellRepository;
@@ -39,7 +39,7 @@ class SellServiceTest implements GifticonTest {
     GifticonRepository gifticonRepository;
 
     @InjectMocks
-    SellService sellService;
+    SellBidService sellBidService;
 
     @Test
     void sellBidProductTest() throws IOException {
@@ -58,7 +58,7 @@ class SellServiceTest implements GifticonTest {
         given(gifticonRepository.save(any(Gifticon.class))).willReturn(TEST_GIFTICON);
 
         // when
-        SellBidResponseDto responseDto = sellService.sellBidProduct(TEST_USER, requestDto, TEST_PRODUCT_ID);
+        SellBidResponseDto responseDto = sellBidService.sellBidProduct(TEST_USER, requestDto, TEST_PRODUCT_ID);
 
         // then
         verify(gifticonRepository, times(1)).save(any());
@@ -73,7 +73,7 @@ class SellServiceTest implements GifticonTest {
         given(gifticonRepository.findById(any())).willReturn(Optional.of(TEST_GIFTICON));
 
         // when
-        sellService.sellCancelBid(TEST_USER, TEST_SELL_ID);
+        sellBidService.sellCancelBid(TEST_USER, TEST_SELL_ID);
 
         // then
         verify(sellRepository, times(1)).delete(any(Sell.class));
