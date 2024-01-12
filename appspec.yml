@@ -18,4 +18,4 @@ hooks:
   AfterInstall:
     - location: deploy.sh
       timeout: 200
-      runas: root
+      runas: ubuntu
