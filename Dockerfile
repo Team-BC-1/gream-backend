@@ -1,4 +1,4 @@
-FROM adoptopenjdk:17 AS builder
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17 AS builder
 COPY .editorconfig .
 COPY gradlew .
 COPY settings.gradle.kts .
@@ -9,7 +9,7 @@ COPY backend-config backend-config
 RUN chmod +x ./gradlew
 RUN ./gradlew build
 
-FROM adoptopenjdk:17
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
 RUN mkdir /opt/app
 COPY --from=builder build/libs/*.jar /opt/app/spring-boot-application.jar
 EXPOSE 8080
