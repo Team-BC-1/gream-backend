@@ -6,6 +6,7 @@ import bc1.gream.domain.order.service.SellNowService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class SellNowController {
     public RestResponse<SellNowResponseDto> sellNowProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long productId,
-        @RequestBody SellNowRequestDto requestDto
+        @Valid @RequestBody SellNowRequestDto requestDto
     ) {
         SellNowResponseDto responseDto = sellNowService.sellNowProduct(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
