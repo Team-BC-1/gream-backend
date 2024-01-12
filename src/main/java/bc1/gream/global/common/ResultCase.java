@@ -61,8 +61,9 @@ public enum ResultCase {
 
     // 쿠폰 6000번대
     // 쿠폰이 존재하지 않을 때 404
-    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, 6000, "해당 쿠폰은 존재하지 않습니다.")
-    ;
+    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, 6000, "해당 쿠폰은 존재하지 않습니다."),
+    COUPON_STATUS_CHANGE_FAIL(HttpStatus.CONFLICT, 6001, "쿠폰의 상태 변경에 실패했습니다."),
+    COUPON_ALREADY_USED(HttpStatus.NOT_FOUND, 6002, "해당 쿠폰은 이미 사용하였습니다.");
     private final HttpStatus httpStatus;
     private final Integer code;
     private final String message;
