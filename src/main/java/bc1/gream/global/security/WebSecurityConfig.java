@@ -5,16 +5,19 @@ import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
 import bc1.gream.global.jwt.JwtUtil;
 import bc1.gream.global.redis.RedisUtil;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -69,12 +73,24 @@ public class WebSecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.cors(getCorsConfigurerCustomizer());
 
         settingRequestAuthorization(http);
         settingFilterOrder(http);
         settingLogout(http);
 
         return http.build();
+    }
+
+    private Customizer<CorsConfigurer<HttpSecurity>> getCorsConfigurerCustomizer() {
+        return corsConfigurer -> corsConfigurer.configurationSource(request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(Collections.singletonList("*")); // 모든 오리진 허용
+            config.setAllowedMethods(Collections.singletonList("*")); // 모든 메서드 허용
+            config.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+            config.setExposedHeaders(Collections.singletonList("*"));
+            return config;
+        });
     }
 
     private void settingRequestAuthorization(HttpSecurity http) throws Exception {
@@ -84,7 +100,6 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // 유저 도메인
                 .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll() // 굿
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 // 그 외
