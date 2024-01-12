@@ -1,7 +1,9 @@
 package bc1.gream.domain.order.service;
 
+import static bc1.gream.test.SellTest.TEST_SELL;
+import static bc1.gream.test.SellTest.TEST_SELL_ID;
+import static bc1.gream.test.SellTest.TEST_SELL_PRICE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -15,7 +17,6 @@ import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.test.GifticonTest;
-import bc1.gream.test.SellTest;
 import java.io.IOException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ class SellServiceTest implements GifticonTest {
 
         // given
         given(sellRepository.findById(TEST_SELL_ID)).willReturn(Optional.of(TEST_SELL));
-        given(gifticonRepository.findBySell_Id(TEST_SELL_ID)).willReturn(Optional.of(TEST_GIFTICON));
+        given(gifticonRepository.findById(any())).willReturn(Optional.of(TEST_GIFTICON));
 
         // when
         sellService.sellCancelBid(TEST_USER, TEST_SELL_ID);
