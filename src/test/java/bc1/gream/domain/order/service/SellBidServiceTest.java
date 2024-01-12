@@ -9,16 +9,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import bc1.gream.domain.gifticon.repository.GifticonRepository;
+import bc1.gream.domain.gifticon.service.GifticonService;
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
-import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.repository.SellRepository;
-import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.GifticonTest;
 import java.io.IOException;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,12 +29,10 @@ class SellBidServiceTest implements GifticonTest {
 
     @Mock
     SellRepository sellRepository;
-
     @Mock
-    ProductRepository productRepository;
-
+    GifticonService gifticonService;
     @Mock
-    GifticonRepository gifticonRepository;
+    SellService sellService;
 
     @InjectMocks
     SellBidService sellBidService;
@@ -53,30 +49,26 @@ class SellBidServiceTest implements GifticonTest {
             .gifticonUrl(fileResource.getURL().getPath())
             .build();
 
-        given(productRepository.findById(1L)).willReturn(Optional.of(TEST_PRODUCT));
+        given(gifticonService.saveGifticon(requestDto.gifticonUrl(), null)).willReturn(TEST_GIFTICON);
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
-        given(gifticonRepository.save(any(Gifticon.class))).willReturn(TEST_GIFTICON);
 
         // when
-        SellBidResponseDto responseDto = sellBidService.sellBidProduct(TEST_USER, requestDto, TEST_PRODUCT_ID);
+        SellBidResponseDto responseDto = sellBidService.createSellBid(TEST_USER, requestDto, TEST_PRODUCT);
 
         // then
-        verify(gifticonRepository, times(1)).save(any());
         assertThat(responseDto.price()).isEqualTo(TEST_SELL_PRICE);
     }
 
     @Test
     void sellCancelBidTest() {
-
         // given
-        given(sellRepository.findById(TEST_SELL_ID)).willReturn(Optional.of(TEST_SELL));
-        given(gifticonRepository.findById(any())).willReturn(Optional.of(TEST_GIFTICON));
+        given(sellService.deleteSellByIdAndUser(TEST_SELL_ID, TEST_USER)).willReturn(TEST_SELL);
 
         // when
         sellBidService.sellCancelBid(TEST_USER, TEST_SELL_ID);
 
         // then
-        verify(sellRepository, times(1)).delete(any(Sell.class));
-        verify(gifticonRepository, times(1)).delete(any(Gifticon.class));
+        verify(sellService, times(1)).deleteSellByIdAndUser(any(Long.class), any(User.class));
+//        verify(gifticonRepository, times(1)).delete(any(Gifticon.class));
     }
 }
