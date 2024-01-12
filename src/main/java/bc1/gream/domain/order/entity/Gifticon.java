@@ -35,9 +35,8 @@ public class Gifticon extends BaseEntity {
     private Order order;
 
     @Builder
-    private Gifticon(String gifticonUrl, Sell sell, Order order) {
+    private Gifticon(String gifticonUrl, Order order) {
         this.gifticonUrl = gifticonUrl;
-        this.sell = sell;
         this.order = order;
     }
 
