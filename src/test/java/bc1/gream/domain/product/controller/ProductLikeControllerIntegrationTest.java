@@ -14,6 +14,7 @@ import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.UserTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WithMockCustomUser
 @ActiveProfiles("test")
 @Rollback
+@Disabled("통합테스트는 로컬에서만 실행합니다.")
 class ProductLikeControllerIntegrationTest implements ProductTest, UserTest {
 
     @Autowired
