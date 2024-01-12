@@ -2,9 +2,9 @@ package bc1.gream.domain.sell.repository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Sell;
-import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.order.repository.SellRepositoryCustomImpl;
 import bc1.gream.domain.product.entity.Product;
