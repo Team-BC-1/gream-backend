@@ -19,4 +19,8 @@ public class GifticonService {
             .build();
         return gifticonRepository.save(gifticon);
     }
+
+    public void delete(Gifticon gifticon) {
+        gifticonRepository.delete(gifticon);
+    }
 }
