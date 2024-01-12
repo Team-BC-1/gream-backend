@@ -65,7 +65,8 @@ jobs:
       - name: upload to s3
         env:
           IMAGE_TAG: ${{ github.sha }}
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        run: |
+          aws s3 cp --region ap-northeast-2 --acl private ./$IMAGE_TAG.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: start deploy
         env:
