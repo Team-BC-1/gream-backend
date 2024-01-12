@@ -1,6 +1,7 @@
-package bc1.gream.domain.user.entity;
+package bc1.gream.domain.coupon.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
+import bc1.gream.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
