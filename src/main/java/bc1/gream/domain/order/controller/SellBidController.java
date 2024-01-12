@@ -5,7 +5,7 @@ import bc1.gream.domain.order.dto.response.SellBidResponseDto;
 import bc1.gream.domain.order.dto.response.SellCancelBidResponseDto;
 import bc1.gream.domain.order.service.SellBidService;
 import bc1.gream.domain.order.validator.ProductValidator;
-import bc1.gream.domain.order.validator.SellValidator;
+import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -27,7 +27,6 @@ public class SellBidController {
 
     private final SellBidService sellBidService;
     private final ProductValidator productValidator;
-    private final SellValidator sellValidator;
 
     @PostMapping("/{productId}")
     public RestResponse<SellBidResponseDto> createSellBid(
@@ -35,8 +34,8 @@ public class SellBidController {
         @Valid @RequestBody SellBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        productValidator.validateBy(productId);
-        SellBidResponseDto responseDto = sellBidService.createSellBid(userDetails.getUser(), requestDto, productId);
+        Product product = productValidator.validateBy(productId);
+        SellBidResponseDto responseDto = sellBidService.createSellBid(userDetails.getUser(), requestDto, product);
         return RestResponse.success(responseDto);
     }
 
@@ -45,7 +44,6 @@ public class SellBidController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long sellId
     ) {
-        sellValidator.validateBy(sellId);
         SellCancelBidResponseDto responseDto = sellBidService.sellCancelBid(userDetails.getUser(), sellId);
 
         return RestResponse.success(responseDto);
