@@ -109,7 +109,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 에러 반환
         response.setStatus(USER_NOT_FOUND.getHttpStatus().value()); // HttpStatus 설정
-        settingResponse(response, RestResponse.error(USER_NOT_FOUND, new ErrorResponseDto())); // 응답 설정
+        settingResponse(response, RestResponse.error(USER_NOT_FOUND, new ErrorResponseDto()).getBody()); // 응답 설정
     }
 
     /**
