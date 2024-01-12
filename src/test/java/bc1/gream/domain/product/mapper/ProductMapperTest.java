@@ -2,8 +2,8 @@ package bc1.gream.domain.product.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import bc1.gream.domain.product.dto.ProductLikeResponseDto;
-import bc1.gream.domain.product.dto.ProductQueryResponseDto;
+import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
+import bc1.gream.domain.product.dto.response.ProductQueryResponseDto;
 import bc1.gream.test.ProductTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

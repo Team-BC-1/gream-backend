@@ -5,12 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
+import bc1.gream.domain.common.facade.ProductOrderQueryFacade;
+import bc1.gream.domain.common.facade.SellOrderQueryFacade;
 import bc1.gream.domain.product.controller.ProductQueryController;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.service.BuyOrderQueryService;
-import bc1.gream.domain.product.service.SellOrderQueryService;
-import bc1.gream.domain.product.service.query.ProductOrderQueryService;
-import bc1.gream.domain.product.service.query.ProductQueryService;
+import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.test.ProductTest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,22 +30,22 @@ class ProductQueryControllerTest implements ProductTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ProductQueryService productQueryService;
+    private ProductService productService;
     @MockBean
-    private ProductOrderQueryService productOrderQueryService;
+    private ProductOrderQueryFacade productOrderQueryFacade;
     @MockBean
-    private SellOrderQueryService sellOrderQueryService;
+    private SellOrderQueryFacade sellOrderQueryFacade;
     @MockBean
-    private BuyOrderQueryService buyOrderQueryService;
+    private BuyOrderQueryFacade buyOrderQueryFacade;
 
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(
                 new ProductQueryController(
-                    productQueryService,
-                    productOrderQueryService,
-                    sellOrderQueryService,
-                    buyOrderQueryService
+                    productService,
+                    productOrderQueryFacade,
+                    sellOrderQueryFacade,
+                    buyOrderQueryFacade
                 ))
             .setCustomArgumentResolvers(
                 new PageableHandlerMethodArgumentResolver()
@@ -57,7 +57,7 @@ class ProductQueryControllerTest implements ProductTest {
     public void 상품_전체조회() throws Exception {
         // GIVEN
         List<Product> products = List.of();
-        lenient().when(productQueryService.findAll()).thenReturn(products);
+        lenient().when(productService.findAll()).thenReturn(products);
 
         // WHEN
         // THEN

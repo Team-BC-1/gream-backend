@@ -1,4 +1,4 @@
-package bc1.gream.domain.product.dto;
+package bc1.gream.domain.product.dto.response;
 
 public record ProductQueryResponseDto(
     String brand,

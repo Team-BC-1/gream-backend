@@ -7,7 +7,7 @@ public interface BuyTest extends UserTest, ProductTest {
 
     Long TEST_BUY_ID = 1L;
 
-    Long TEST_BUY_PRICE = 20000L;
+    Long TEST_BUY_PRICE = 4_500L;
 
     LocalDateTime TEST_DEADLINE_AT = LocalDateTime.now().plusDays(7);
 

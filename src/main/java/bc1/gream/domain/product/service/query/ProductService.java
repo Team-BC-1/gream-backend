@@ -1,6 +1,6 @@
 package bc1.gream.domain.product.service.query;
 
-import bc1.gream.domain.product.dto.ProductCondition;
+import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.global.common.ResultCase;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ProductQueryService {
+public class ProductService {
 
     private final ProductRepository productRepository;
 

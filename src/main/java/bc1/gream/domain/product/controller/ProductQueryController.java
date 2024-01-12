@@ -1,19 +1,19 @@
 package bc1.gream.domain.product.controller;
 
+import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
+import bc1.gream.domain.common.facade.ProductOrderQueryFacade;
+import bc1.gream.domain.common.facade.SellOrderQueryFacade;
 import bc1.gream.domain.order.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.mapper.BuyMapper;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.mapper.SellMapper;
-import bc1.gream.domain.product.dto.ProductQueryResponseDto;
-import bc1.gream.domain.product.dto.TradeResponseDto;
+import bc1.gream.domain.product.dto.response.ProductQueryResponseDto;
+import bc1.gream.domain.product.dto.response.TradeResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
-import bc1.gream.domain.product.service.BuyOrderQueryService;
-import bc1.gream.domain.product.service.SellOrderQueryService;
-import bc1.gream.domain.product.service.query.ProductOrderQueryService;
-import bc1.gream.domain.product.service.query.ProductQueryService;
+import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.validator.OrderCriteriaValidator;
 import java.util.List;
@@ -31,14 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/products")
 public class ProductQueryController {
 
-    private final ProductQueryService productQueryService;
-    private final ProductOrderQueryService productOrderQueryService;
-    private final SellOrderQueryService sellOrderQueryService;
-    private final BuyOrderQueryService buyOrderQueryService;
+    private final ProductService productService;
+    private final ProductOrderQueryFacade productOrderQueryFacade;
+    private final SellOrderQueryFacade sellOrderQueryFacade;
+    private final BuyOrderQueryFacade buyOrderQueryFacade;
 
     @GetMapping
     public RestResponse<List<ProductQueryResponseDto>> findAll() {
-        List<Product> products = productQueryService.findAll();
+        List<Product> products = productService.findAll();
         List<ProductQueryResponseDto> responseDtos = products.stream()
             .map(ProductMapper.INSTANCE::toQueryResponseDto)
             .toList();
@@ -49,7 +49,7 @@ public class ProductQueryController {
     public RestResponse<ProductQueryResponseDto> findAllBy(
         @PathVariable("id") Long productId
     ) {
-        Product product = productQueryService.findBy(productId);
+        Product product = productService.findBy(productId);
         ProductQueryResponseDto responseDto = ProductMapper.INSTANCE.toQueryResponseDto(product);
         return RestResponse.success(responseDto);
     }
@@ -58,7 +58,7 @@ public class ProductQueryController {
     public RestResponse<List<TradeResponseDto>> findAllTrades(
         @PathVariable("id") Long productId
     ) {
-        List<Order> allTrades = productOrderQueryService.findAllTradesOf(productId);
+        List<Order> allTrades = productOrderQueryFacade.findAllTradesOf(productId);
         List<TradeResponseDto> tradeResponseDtos = allTrades.stream()
             .map(OrderMapper.INSTANCE::ofTradedOrder)
             .toList();
@@ -71,7 +71,7 @@ public class ProductQueryController {
         @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Sell.class, pageable);
-        List<Sell> allSellBids = sellOrderQueryService.findAllSellBidsOf(productId, pageable);
+        List<Sell> allSellBids = sellOrderQueryFacade.findAllSellBidsOf(productId, pageable);
         List<TradeResponseDto> tradeResponseDtos = allSellBids.stream()
             .map(SellMapper.INSTANCE::toTradeResponseDto)
             .toList();
@@ -84,7 +84,7 @@ public class ProductQueryController {
         @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Buy.class, pageable);
-        List<Buy> allBuyBids = buyOrderQueryService.findAllBuyBidsOf(productId, pageable);
+        List<Buy> allBuyBids = buyOrderQueryFacade.findAllBuyBidsOf(productId, pageable);
         List<TradeResponseDto> tradeResponseDtos = allBuyBids.stream()
             .map(BuyMapper.INSTANCE::toTradeResponseDto)
             .toList();

@@ -7,7 +7,7 @@ public interface SellTest extends UserTest, ProductTest {
 
     Long TEST_SELL_ID = 1L;
 
-    Long TEST_SELL_PRICE = 20000L;
+    Long TEST_SELL_PRICE = 4_500L;
 
     LocalDateTime TEST_DEADLINE_AT = LocalDateTime.now().plusDays(7);
 
