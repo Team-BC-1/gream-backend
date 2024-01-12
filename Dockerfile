@@ -1,8 +1,8 @@
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:17 AS builder
 COPY .editorconfig .
 COPY gradlew .
-COPY settings.gradle.kts .
-COPY build.gradle.kts .
+COPY settings.gradle .
+COPY build.gradle .
 COPY gradle gradle
 COPY src src
 #COPY backend-config backend-config
