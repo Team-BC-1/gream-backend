@@ -29,7 +29,7 @@ public class OrderCommandService {
             .product(buy.getProduct())
             .buyer(buy.getUser())
             .seller(seller)
-            .finalPrice(CouponCalculator.calculateDiscount(coupon, buy.getPrice()))
+            .finalPrice(finalPrice)
             .expectedPrice(buy.getPrice())
             .build();
         return orderRepository.save(order);

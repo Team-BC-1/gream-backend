@@ -5,13 +5,13 @@ import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.PRODUCT_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
 import bc1.gream.domain.order.dto.response.SellCancelBidResponseDto;
 import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.mapper.SellMapper;
-import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;

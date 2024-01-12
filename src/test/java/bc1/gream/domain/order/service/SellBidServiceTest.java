@@ -9,11 +9,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
 import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Sell;
-import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.test.GifticonTest;

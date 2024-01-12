@@ -5,6 +5,7 @@ import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
@@ -17,7 +18,6 @@ import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.mapper.BuyMapper;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.repository.BuyRepository;
-import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
@@ -149,5 +149,17 @@ public class BuyService {
     @Transactional(readOnly = true)
     public Page<Buy> findAllBuyBidsOf(Product product, Pageable pageable) {
         return buyRepository.findAllPricesOf(product, pageable);
+    }
+
+    /**
+     * 해당상품과 가격에 대한 구매입찰을 가져옴
+     *
+     * @param productId 상품 아이디
+     * @param price     구매를 원하는 상품 가격
+     * @return 구매입찰
+     */
+    public Buy getRecentBuyBidOf(Long productId, Long price) {
+        return buyRepository.findByProductIdAndPrice(productId, price)
+            .orElseThrow(() -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND));
     }
 }
