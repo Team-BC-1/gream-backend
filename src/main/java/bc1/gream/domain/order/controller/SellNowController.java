@@ -2,7 +2,7 @@ package bc1.gream.domain.order.controller;
 
 import bc1.gream.domain.order.dto.request.SellNowRequestDto;
 import bc1.gream.domain.order.dto.response.SellNowResponseDto;
-import bc1.gream.domain.order.service.SellService;
+import bc1.gream.domain.order.service.SellNowService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "Bearer Authentication")
 public class SellNowController {
 
-    private final SellService sellService;
+    private final SellNowService sellNowService;
 
     @PostMapping("/{productId}/now")
     public RestResponse<SellNowResponseDto> sellNowProduct(
@@ -28,7 +28,7 @@ public class SellNowController {
         @PathVariable Long productId,
         @RequestBody SellNowRequestDto requestDto
     ) {
-        SellNowResponseDto responseDto = sellService.sellNowProduct(userDetails.getUser(), requestDto, productId);
+        SellNowResponseDto responseDto = sellNowService.sellNowProduct(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
     }
 }
