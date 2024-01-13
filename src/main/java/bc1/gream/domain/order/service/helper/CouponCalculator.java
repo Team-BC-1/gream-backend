@@ -1,8 +1,7 @@
 package bc1.gream.domain.order.service.helper;
 
 import bc1.gream.domain.user.entity.Coupon;
-import bc1.gream.global.common.ResultCase;
-import bc1.gream.global.exception.GlobalException;
+import bc1.gream.domain.user.entity.DiscountType;
 
 public final class CouponCalculator {
 
@@ -14,9 +13,7 @@ public final class CouponCalculator {
      * @return 할인된 가격
      */
     public static Long calculateDiscount(Coupon coupon, Long price) {
-        CouponCalculatorStrategy couponCalculatorStrategy = CouponCalculatorStrategyFactory
-            .getCouponCalculatorStrategy(coupon.getDiscountType())
-            .orElseThrow(() -> new GlobalException(ResultCase.COUPON_TYPE_NOT_FOUND));
-        return couponCalculatorStrategy.calculateDiscount(coupon, price);
+        DiscountType discountType = coupon.getDiscountType();
+        return discountType.calculateDiscount(coupon, price);
     }
 }
