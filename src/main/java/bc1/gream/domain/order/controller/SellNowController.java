@@ -3,6 +3,7 @@ package bc1.gream.domain.order.controller;
 import bc1.gream.domain.order.dto.request.SellNowRequestDto;
 import bc1.gream.domain.order.dto.response.SellNowResponseDto;
 import bc1.gream.domain.order.service.SellNowService;
+import bc1.gream.domain.order.validator.ProductValidator;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellNowController {
 
     private final SellNowService sellNowService;
+    private final ProductValidator productValidator;
 
     @PostMapping("/{productId}/now")
     public RestResponse<SellNowResponseDto> sellNowProduct(
@@ -29,6 +31,7 @@ public class SellNowController {
         @PathVariable Long productId,
         @Valid @RequestBody SellNowRequestDto requestDto
     ) {
+        productValidator.validateBy(productId);
         SellNowResponseDto responseDto = sellNowService.sellNowProduct(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
     }
