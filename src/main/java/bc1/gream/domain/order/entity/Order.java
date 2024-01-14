@@ -5,6 +5,7 @@ import bc1.gream.domain.common.model.BaseEntity;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,11 +35,11 @@ public class Order extends BaseEntity {
     private Product product;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private User buyer;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private User seller;
 
     @Id
