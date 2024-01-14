@@ -1,8 +1,14 @@
 package bc1.gream.domain.user.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 
-@JsonIgnoreProperties
-public record UserLoginResponseDto() {
+@Builder
+public record UserLoginResponseDto(
+    Long userId,
+    String loginId,
+    String nickname,
+    String role,
+    String provider
+) {
 
 }
