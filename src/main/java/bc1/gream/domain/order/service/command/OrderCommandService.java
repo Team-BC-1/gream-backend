@@ -1,6 +1,6 @@
 package bc1.gream.domain.order.service.command;
 
-import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.service.helper.coupon.CouponCalculator;
