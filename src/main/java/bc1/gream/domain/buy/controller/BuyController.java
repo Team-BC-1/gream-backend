@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.controller;
+package bc1.gream.domain.buy.controller;
 
 
 import static bc1.gream.domain.user.entity.CouponStatus.ALREADY_USED;
@@ -6,12 +6,12 @@ import static bc1.gream.domain.user.entity.CouponStatus.AVAILABLE;
 import static bc1.gream.domain.user.entity.CouponStatus.IN_USE;
 
 import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
-import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
-import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
-import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
-import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
-import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
-import bc1.gream.domain.order.service.BuyService;
+import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
+import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
+import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
+import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
