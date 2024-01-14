@@ -1,7 +1,6 @@
 package bc1.gream.domain.buy.repository;
 
-
-import static bc1.gream.domain.order.entity.QBuy.buy;
+import static bc1.gream.domain.buy.entity.QBuy.buy;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.helper.BuyQueryOrderFactory;
