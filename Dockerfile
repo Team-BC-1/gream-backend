@@ -1,7 +1,7 @@
 # Dockerfile
 
 # jdk17 Image Start
-FROM openjdk:17
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17 AS builder
 
 # 인자 설정 - JAR_File
 ARG JAR_FILE=build/libs/*.jar
@@ -13,4 +13,4 @@ COPY ${JAR_FILE} app.jar
 #COPY build/libs/*.jar app.jar
 
 # 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=prod", "app.jar"]
