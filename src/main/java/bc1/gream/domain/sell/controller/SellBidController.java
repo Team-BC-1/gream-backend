@@ -1,9 +1,9 @@
-package bc1.gream.domain.order.controller;
+package bc1.gream.domain.sell.controller;
 
-import bc1.gream.domain.order.dto.request.SellBidRequestDto;
-import bc1.gream.domain.order.dto.response.SellBidResponseDto;
-import bc1.gream.domain.order.dto.response.SellCancelBidResponseDto;
-import bc1.gream.domain.order.service.SellBidService;
+import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
+import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
+import bc1.gream.domain.sell.dto.response.SellCancelBidResponseDto;
+import bc1.gream.domain.sell.service.SellBidService;
 import bc1.gream.domain.order.validator.ProductValidator;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.common.RestResponse;

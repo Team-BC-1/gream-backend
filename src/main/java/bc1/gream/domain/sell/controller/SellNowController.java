@@ -1,8 +1,8 @@
-package bc1.gream.domain.order.controller;
+package bc1.gream.domain.sell.controller;
 
-import bc1.gream.domain.order.dto.request.SellNowRequestDto;
-import bc1.gream.domain.order.dto.response.SellNowResponseDto;
-import bc1.gream.domain.order.service.SellNowService;
+import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
+import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
+import bc1.gream.domain.sell.service.SellNowService;
 import bc1.gream.domain.order.validator.ProductValidator;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
