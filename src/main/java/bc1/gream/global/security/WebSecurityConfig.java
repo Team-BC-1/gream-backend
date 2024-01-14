@@ -102,6 +102,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                 // Swagger
                 .requestMatchers(HttpMethod.GET, "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 // 그 외
