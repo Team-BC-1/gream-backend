@@ -10,11 +10,13 @@ import bc1.gream.domain.order.service.command.OrderCommandService;
 import bc1.gream.domain.user.entity.Coupon;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SellNowService {
 
     private final BuyService buyService;
