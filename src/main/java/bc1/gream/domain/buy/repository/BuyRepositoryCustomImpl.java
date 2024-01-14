@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.repository;
+package bc1.gream.domain.buy.repository;
 
 import static bc1.gream.domain.buy.entity.QBuy.buy;
 
