@@ -15,7 +15,7 @@ import bc1.gream.domain.order.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
-import bc1.gream.domain.order.repository.SellRepository;
+import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;

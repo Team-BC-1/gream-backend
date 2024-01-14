@@ -1,9 +1,9 @@
-package bc1.gream.domain.order.service;
+package bc1.gream.domain.sell.service;
 
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
-import bc1.gream.domain.order.entity.Sell;
-import bc1.gream.domain.order.repository.SellRepository;
+import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;

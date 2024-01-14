@@ -1,8 +1,9 @@
-package bc1.gream.domain.order.service;
+package bc1.gream.domain.sell.service;
 
 import bc1.gream.domain.gifticon.service.GifticonService;
-import bc1.gream.domain.order.dto.request.SellNowRequestDto;
-import bc1.gream.domain.order.dto.response.SellNowResponseDto;
+import bc1.gream.domain.order.service.BuyService;
+import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
+import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
 import bc1.gream.domain.order.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
