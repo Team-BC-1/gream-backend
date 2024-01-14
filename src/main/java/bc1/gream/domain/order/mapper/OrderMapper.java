@@ -1,7 +1,7 @@
 package bc1.gream.domain.order.mapper;
 
 import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
-import bc1.gream.domain.order.dto.response.SellNowResponseDto;
+import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.dto.response.TradeResponseDto;
 import org.mapstruct.Mapper;
