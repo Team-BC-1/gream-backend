@@ -1,6 +1,7 @@
-package bc1.gream.domain.order.entity;
+package bc1.gream.domain.sell.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
+import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
