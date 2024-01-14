@@ -1,10 +1,10 @@
-package bc1.gream.domain.order.repository;
+package bc1.gream.domain.buy.repository;
 
 
 import static bc1.gream.domain.order.entity.QBuy.buy;
 
-import bc1.gream.domain.order.entity.Buy;
-import bc1.gream.domain.order.repository.helper.BuyQueryOrderFactory;
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.repository.helper.BuyQueryOrderFactory;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.entity.QProduct;
 import com.querydsl.core.types.OrderSpecifier;

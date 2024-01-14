@@ -1,6 +1,6 @@
-package bc1.gream.domain.order.repository;
+package bc1.gream.domain.buy.repository;
 
-import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.buy.entity.Buy;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
