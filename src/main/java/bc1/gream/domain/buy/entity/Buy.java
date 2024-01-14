@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.entity;
+package bc1.gream.domain.buy.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
 import bc1.gream.domain.product.entity.Product;
