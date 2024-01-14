@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.service.helper.deadline;
+package bc1.gream.domain.sell.service.helper.deadline;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
