@@ -1,5 +1,6 @@
 package bc1.gream.domain.product.mapper;
 
+import bc1.gream.domain.product.dto.ProductDislikeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductQueryResponseDto;
 import bc1.gream.domain.product.entity.Product;
@@ -15,4 +16,6 @@ public interface ProductMapper {
     ProductQueryResponseDto toQueryResponseDto(Product product);
 
     ProductLikeResponseDto toLikeResponseDto(String message);
+
+    ProductDislikeResponseDto toDislikeResponseDto(String message);
 }
