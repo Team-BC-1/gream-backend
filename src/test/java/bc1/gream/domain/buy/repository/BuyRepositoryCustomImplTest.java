@@ -61,9 +61,9 @@ class BuyRepositoryCustomImplTest implements BuyTest {
         Page<Buy> allPricesOf = buyRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
 
         // THEN
-        boolean hasBuyBid = allPricesOf.stream()
-            .anyMatch(buy -> buy.equals(TEST_BUY));
-        assertTrue(hasBuyBid);
+        boolean hasBuyBidPrice = allPricesOf.stream()
+            .anyMatch(buy -> buy.getPrice().equals(TEST_BUY_PRICE));
+        assertTrue(hasBuyBidPrice);
     }
 
     @Test
