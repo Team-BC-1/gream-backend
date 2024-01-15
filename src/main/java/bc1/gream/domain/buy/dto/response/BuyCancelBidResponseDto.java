@@ -1,8 +1,8 @@
 package bc1.gream.domain.buy.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 
-@JsonIgnoreProperties
+@Builder
 public record BuyCancelBidResponseDto(
     Long buyId
 ) {
