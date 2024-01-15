@@ -47,7 +47,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .selectFrom(QBuy.buy)
             .leftJoin(QBuy.buy.product, QProduct.product)
             .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
-            .orderBy(QBuy.buy.createdAt.desc())
+            .orderBy(QBuy.buy.createdAt.asc())
             .fetchFirst();
         return Optional.ofNullable(buy);
     }
