@@ -1,13 +1,18 @@
 package bc1.gream.domain.buy.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.repository.UserRepository;
+import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.config.QueryDslConfig;
+import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.BuyTest;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,5 +63,30 @@ class BuyRepositoryCustomImplTest implements BuyTest {
         boolean hasBuyBid = allPricesOf.stream()
             .anyMatch(buy -> buy.equals(savedBuy));
         assertTrue(hasBuyBid);
+    }
+
+    @Test
+    public void 가장마지막구매입찰조회() {
+        // GIVEN
+        int buySaveCount = 10;
+        List<Buy> buys = new ArrayList<>();
+        for (int i = 0; i < buySaveCount; i++) {
+            Buy tempSaveBuy = buyRepository.save(
+                Buy.builder()
+                    .price(TEST_BUY_PRICE)
+                    .deadlineAt(TEST_DEADLINE_AT)
+                    .user(TEST_USER)
+                    .product(TEST_PRODUCT)
+                    .build()
+            );
+            buys.add(tempSaveBuy);
+        }
+
+        // WHEN
+        Buy foundBuy = buyRepositoryCustom.findByProductIdAndPrice(TEST_PRODUCT_ID, TEST_BUY_PRICE)
+            .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
+
+        // THEN
+        assertEquals(buys.get(buys.size() - 1).getCreatedAt(), foundBuy.getCreatedAt());
     }
 }
