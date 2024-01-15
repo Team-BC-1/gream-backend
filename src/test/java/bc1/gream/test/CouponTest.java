@@ -16,7 +16,7 @@ public interface CouponTest extends UserTest {
 
     String TEST_COUPON_NAME = "TEST COUPON";
 
-    Long TEST_DISCOUNT = 5000L;
+    Long TEST_DISCOUNT = 500L;
 
     Long TEST_DISCOUNT_PERCENT = 10L;
 
@@ -42,5 +42,13 @@ public interface CouponTest extends UserTest {
         .discountType(TEST_DISCOUNT_TYPE_PERCENT)
         .discount(TEST_DISCOUNT_PERCENT)
         .status(TEST_COUPON_STATUS_AVAILABLE)
+        .build();
+
+    Coupon TEST_COUPON_OF_TEST_USER = Coupon.builder()
+        .name(TEST_COUPON_NAME)
+        .discountType(TEST_DISCOUNT_TYPE_WON)
+        .discount(TEST_DISCOUNT)
+        .status(TEST_COUPON_STATUS_AVAILABLE)
+        .user(TEST_USER)
         .build();
 }

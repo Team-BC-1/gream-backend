@@ -37,7 +37,7 @@ public class CouponService {
         return coupon;
     }
 
-    private boolean isMatchCouponUser(User user, Coupon coupon) {
-        return !coupon.getUser().getLoginId().equals(user.getLoginId());
+    boolean isMatchCouponUser(User user, Coupon coupon) {
+        return coupon.getUser().getLoginId().equals(user.getLoginId());
     }
 }

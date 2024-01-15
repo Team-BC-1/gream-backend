@@ -1,7 +1,7 @@
 package bc1.gream.domain.common.facade;
 
-import bc1.gream.domain.order.entity.Buy;
-import bc1.gream.domain.order.service.BuyService;
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.domain.user.coupon.entity.CouponStatus;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;

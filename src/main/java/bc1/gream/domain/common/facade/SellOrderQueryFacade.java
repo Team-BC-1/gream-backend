@@ -1,7 +1,7 @@
 package bc1.gream.domain.common.facade;
 
-import bc1.gream.domain.order.entity.Sell;
-import bc1.gream.domain.order.service.SellService;
+import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductService;
 import java.util.List;

@@ -1,6 +1,6 @@
 package bc1.gream.domain.order.service.command;
 
-import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.user.coupon.entity.Coupon;
@@ -8,9 +8,11 @@ import bc1.gream.domain.user.coupon.helper.CouponCalculator;
 import bc1.gream.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderCommandService {
 
     private final OrderRepository orderRepository;
