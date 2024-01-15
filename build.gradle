@@ -68,6 +68,10 @@ dependencies {
     testCompileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     testRuntimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     testRuntimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    //health check
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 // Querydsl 설정부
