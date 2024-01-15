@@ -74,7 +74,7 @@ class SellRepositoryTest implements SellTest {
         }
 
         // WHEN
-        Sell foundSell = sellRepository.findByProductIdAndPrice(TEST_PRODUCT_ID, TEST_SELL_PRICE)
+        Sell foundSell = sellRepository.findByProductIdAndPrice(savedProduct.getId(), TEST_SELL_PRICE)
             .orElseThrow(() -> new GlobalException(ResultCase.SELL_BID_PRODUCT_NOT_FOUND));
 
         // THEN
