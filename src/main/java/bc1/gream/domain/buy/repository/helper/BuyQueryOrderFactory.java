@@ -1,6 +1,5 @@
 package bc1.gream.domain.buy.repository.helper;
 
-
 import static bc1.gream.domain.buy.entity.QBuy.buy;
 
 import bc1.gream.domain.product.repository.helper.QueryDslUtil;

@@ -3,7 +3,8 @@ package bc1.gream.domain.order.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.repository.CouponRepository;
 import bc1.gream.domain.user.repository.UserRepository;
