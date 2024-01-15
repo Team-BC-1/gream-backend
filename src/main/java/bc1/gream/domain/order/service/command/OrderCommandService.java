@@ -25,6 +25,7 @@ public class OrderCommandService {
      * @param coupon 쿠폰
      * @return 새로운 주문
      */
+    @Transactional
     public Order saveOrderOfBuy(Buy buy, User seller, Coupon coupon) {
         Long finalPrice = CouponCalculator.calculateDiscount(coupon, buy.getPrice());
         Order order = Order.builder()

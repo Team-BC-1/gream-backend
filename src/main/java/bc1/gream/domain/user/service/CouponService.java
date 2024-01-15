@@ -8,9 +8,9 @@ import bc1.gream.domain.user.coupon.entity.CouponStatus;
 import bc1.gream.domain.user.coupon.repository.CouponRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,7 @@ public class CouponService {
         coupon.changeStatus(couponStatus);
     }
 
+    @Transactional(readOnly = true)
     public Coupon findCouponById(Long couponId, User user) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(
             () -> new GlobalException(COUPON_NOT_FOUND)
