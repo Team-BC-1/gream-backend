@@ -35,7 +35,7 @@ public class BuyController {
     private final ChangingCouponStatusFacade changingCouponStatusFacade;
 
     /**
-     *
+     * 구매입찰 생성
      */
     @PostMapping("/{productId}")
     public RestResponse<BuyBidResponseDto> buyBidProduct(
@@ -49,7 +49,7 @@ public class BuyController {
     }
 
     /**
-     *
+     * 구매입찰 취소
      */
     @DeleteMapping("/bid/{buyId}")
     public RestResponse<BuyCancelBidResponseDto> buyCancelBid(
@@ -62,7 +62,7 @@ public class BuyController {
     }
 
     /**
-     *
+     * 즉시구매
      */
     @PostMapping("/{productId}/now")
     public RestResponse<BuyNowResponseDto> buyNowProduct(

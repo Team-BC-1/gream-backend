@@ -1,5 +1,6 @@
 package bc1.gream.domain.product.controller;
 
+import bc1.gream.domain.product.dto.response.ProductDislikeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
 import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.service.command.ProductLikeService;
@@ -31,12 +32,12 @@ public class ProductLikeController {
     }
 
     @DeleteMapping("/{id}/dislike")
-    public RestResponse<ProductLikeResponseDto> dislikeProduct(
+    public RestResponse<ProductDislikeResponseDto> dislikeProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
     ) {
         productLikeService.dislikeProduct(userDetails.getUser(), productId);
-        ProductLikeResponseDto responseDto = ProductMapper.INSTANCE.toLikeResponseDto("관심상품 등록 해제");
+        ProductDislikeResponseDto responseDto = ProductMapper.INSTANCE.toDislikeResponseDto("관심상품 등록 해제");
         return RestResponse.success(responseDto);
     }
 }
