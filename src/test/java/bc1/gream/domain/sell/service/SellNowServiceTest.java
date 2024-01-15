@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.service;
+package bc1.gream.domain.sell.service;
 
 import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.domain.gifticon.service.GifticonService;

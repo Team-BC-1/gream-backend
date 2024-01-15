@@ -1,8 +1,9 @@
 package bc1.gream.domain.sell.repository;
 
-import static bc1.gream.domain.order.entity.QSell.sell;
-
+import static bc1.gream.domain.order.entity.QGifticon.gifticon;
+import static bc1.gream.domain.product.entity.QProduct.product;
 import static bc1.gream.domain.sell.entity.QSell.sell;
+import static bc1.gream.domain.user.entity.QUser.user;
 
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.entity.QProduct;

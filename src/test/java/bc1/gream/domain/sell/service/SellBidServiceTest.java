@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.service;
+package bc1.gream.domain.sell.service;
 
 import static bc1.gream.test.SellTest.TEST_SELL;
 import static bc1.gream.test.SellTest.TEST_SELL_ID;
@@ -14,8 +14,6 @@ import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
-import bc1.gream.domain.sell.service.SellBidService;
-import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.GifticonTest;
 import java.io.IOException;
