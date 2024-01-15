@@ -162,4 +162,8 @@ public class BuyService {
         return buyRepository.findByProductIdAndPrice(productId, price)
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
+
+    public void delete(Buy buy) {
+        buyRepository.delete(buy);
+    }
 }

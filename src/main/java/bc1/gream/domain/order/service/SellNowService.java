@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class SellNowService {
 
-    private final BuyRepository buyRepository;
     private final BuyService buyService;
     private final CouponService couponService;
     private final OrderCommandService orderCommandService;
@@ -38,7 +37,7 @@ public class SellNowService {
         gifticonService.saveGifticon(requestDto.gifticonUrl(), order);
 
         // 구매입찰 삭제
-        buyRepository.delete(buy);
+        buyService.delete(buy);
 
         // 매퍼를 통해 변환
         return OrderMapper.INSTANCE.toSellNowResponseDto(order);

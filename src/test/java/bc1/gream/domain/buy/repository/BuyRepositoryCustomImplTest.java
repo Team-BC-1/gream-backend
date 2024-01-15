@@ -1,11 +1,14 @@
 package bc1.gream.domain.buy.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.repository.UserRepository;
+import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.config.QueryDslConfig;
+import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.BuyTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,12 +39,13 @@ class BuyRepositoryCustomImplTest implements BuyTest {
     private ProductRepository productRepository;
     @Autowired
     private BuyRepository buyRepository;
+    private Buy savedBuy;
 
     @BeforeEach
     void setUp() {
         userRepository.save(TEST_USER);
         productRepository.save(TEST_PRODUCT);
-        buyRepository.save(TEST_BUY);
+        savedBuy = buyRepository.save(TEST_BUY);
     }
 
     @Test
@@ -55,7 +59,32 @@ class BuyRepositoryCustomImplTest implements BuyTest {
 
         // THEN
         boolean hasBuyBid = allPricesOf.stream()
-            .anyMatch(buy -> buy.equals(TEST_BUY));
+            .anyMatch(buy -> buy.equals(savedBuy));
         assertTrue(hasBuyBid);
+    }
+
+    @Test
+    public void 가장첫구매입찰조회() {
+        // GIVEN
+        int buySaveCount = 10;
+
+        for (int i = 0; i < buySaveCount; i++) {
+            buyRepository.save(
+                Buy.builder()
+                    .price(TEST_BUY_PRICE)
+                    .deadlineAt(TEST_DEADLINE_AT)
+                    .user(TEST_USER)
+                    .product(TEST_PRODUCT)
+                    .build()
+            );
+
+        }
+
+        // WHEN
+        Buy foundBuy = buyRepositoryCustom.findByProductIdAndPrice(TEST_PRODUCT_ID, TEST_BUY_PRICE)
+            .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
+
+        // THEN
+        assertEquals(savedBuy.getCreatedAt(), foundBuy.getCreatedAt());
     }
 }
