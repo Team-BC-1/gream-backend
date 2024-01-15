@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "tb_sell")
+@Table(name = "tb_buy")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Buy extends BaseEntity {
 

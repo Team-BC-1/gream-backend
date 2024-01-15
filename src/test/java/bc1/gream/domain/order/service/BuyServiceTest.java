@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
@@ -13,7 +14,6 @@ import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.order.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.BuyRepository;
-import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.service.query.ProductService;
@@ -21,7 +21,7 @@ import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
-import bc1.gream.test.GifticonTest;
+import bc1.gream.test.SellTest;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-class BuyServiceTest implements BuyTest, GifticonTest, CouponTest {
+class BuyServiceTest implements BuyTest, SellTest, CouponTest {
 
     @Mock
     BuyRepository buyRepository;

@@ -4,6 +4,7 @@ import static bc1.gream.global.common.ResultCase.USER_NOT_FOUND;
 
 import bc1.gream.domain.user.dto.request.UserLoginRequestDto;
 import bc1.gream.domain.user.dto.response.UserLoginResponseDto;
+import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ErrorResponseDto;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.common.ResultCase;
@@ -76,21 +77,26 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // JWT 에 들어갈 loginId 를 userDetails 로부터 가져와서
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        String loginId = userDetails.getUsername();
+        User user = userDetails.getUser();
 
         // JWT 토큰을 생성하고,
         String role = getRoleInAuthentication(authentication);
-        String accessToken = jwtUtil.createAccessToken(loginId, role);
-        String refreshToken = jwtUtil.createRefreshToken(loginId, role);
+        String accessToken = jwtUtil.createAccessToken(user.getLoginId(), role);
+        String refreshToken = jwtUtil.createRefreshToken(user.getLoginId(), role);
 
         // response 객체의 헤더에 Bearer 접두사를 붙여 넣어준 뒤,
         response.addHeader(JwtUtil.ACCESS_TOKEN_HEADER, jwtUtil.setTokenWithBearer(accessToken));
         response.addHeader(JwtUtil.REFRESH_TOKEN_HEADER, jwtUtil.setTokenWithBearer(refreshToken));
 
         // 레디스에 loginId 을 키로, Bearer 없는 refresh token 를 벨류로 리프레쉬 토큰 만료 시간만큼 넣어줌.
-        redisUtil.set(loginId, jwtUtil.getTokenWithoutBearer(refreshToken), JwtUtil.REFRESH_TOKEN_TIME);
+        redisUtil.set(user.getLoginId(), jwtUtil.getTokenWithoutBearer(refreshToken), JwtUtil.REFRESH_TOKEN_TIME);
 
-        return new UserLoginResponseDto();
+        return new UserLoginResponseDto(
+            user.getId(),
+            user.getLoginId(),
+            user.getNickname(),
+            user.getRole().getValue(),
+            user.getProvider().name());
     }
 
     private String getRoleInAuthentication(Authentication authResult) {
@@ -109,7 +115,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 에러 반환
         response.setStatus(USER_NOT_FOUND.getHttpStatus().value()); // HttpStatus 설정
-        settingResponse(response, RestResponse.error(USER_NOT_FOUND, new ErrorResponseDto())); // 응답 설정
+        settingResponse(response, RestResponse.error(USER_NOT_FOUND, new ErrorResponseDto()).getBody()); // 응답 설정
     }
 
     /**

@@ -3,7 +3,9 @@ package bc1.gream.domain.order.controller;
 import bc1.gream.domain.order.dto.request.SellBidRequestDto;
 import bc1.gream.domain.order.dto.response.SellBidResponseDto;
 import bc1.gream.domain.order.dto.response.SellCancelBidResponseDto;
-import bc1.gream.domain.order.service.SellService;
+import bc1.gream.domain.order.service.SellBidService;
+import bc1.gream.domain.order.validator.ProductValidator;
+import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,26 +23,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/sell")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
-public class SellController {
+public class SellBidController {
 
-    private final SellService sellService;
+    private final SellBidService sellBidService;
+    private final ProductValidator productValidator;
 
     @PostMapping("/{productId}")
-    public RestResponse<SellBidResponseDto> sellBidProduct(
+    public RestResponse<SellBidResponseDto> createSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody SellBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
-        SellBidResponseDto responseDto = sellService.sellBidProduct(userDetails.getUser(), requestDto, productId);
+        Product product = productValidator.validateBy(productId);
+        SellBidResponseDto responseDto = sellBidService.createSellBid(userDetails.getUser(), requestDto, product);
         return RestResponse.success(responseDto);
     }
 
-    @DeleteMapping("/{sellId}")
-    public RestResponse<SellCancelBidResponseDto> sellCancelBid(
+    @DeleteMapping("/bid/{sellId}")
+    public RestResponse<SellCancelBidResponseDto> cancelSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long sellId
     ) {
-        SellCancelBidResponseDto responseDto = sellService.sellCancelBid(userDetails.getUser(), sellId);
+        SellCancelBidResponseDto responseDto = sellBidService.sellCancelBid(userDetails.getUser(), sellId);
 
         return RestResponse.success(responseDto);
     }

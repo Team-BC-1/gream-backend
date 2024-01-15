@@ -38,12 +38,13 @@ class BuyRepositoryCustomImplTest implements BuyTest {
     private ProductRepository productRepository;
     @Autowired
     private BuyRepository buyRepository;
+    private Buy savedBuy;
 
     @BeforeEach
     void setUp() {
         userRepository.save(TEST_USER);
         productRepository.save(TEST_PRODUCT);
-        buyRepository.save(TEST_BUY);
+        savedBuy = buyRepository.save(TEST_BUY);
     }
 
     @Test
@@ -57,7 +58,7 @@ class BuyRepositoryCustomImplTest implements BuyTest {
 
         // THEN
         boolean hasBuyBid = allPricesOf.stream()
-            .anyMatch(buy -> buy.equals(TEST_BUY));
+            .anyMatch(buy -> buy.equals(savedBuy));
         assertTrue(hasBuyBid);
     }
 }

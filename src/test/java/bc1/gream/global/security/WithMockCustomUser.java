@@ -1,5 +1,6 @@
 package bc1.gream.global.security;
 
+import bc1.gream.test.UserTest;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import org.springframework.security.test.context.support.WithSecurityContext;
@@ -8,7 +9,7 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 @WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory.class)
 public @interface WithMockCustomUser {
 
-    String loginId() default "loginId";
+    String loginId() default UserTest.TEST_USER_LOGIN_ID;
 
-    String password() default "password";
+    String password() default UserTest.TEST_USER_PASSWORD;
 }

@@ -6,6 +6,7 @@ import bc1.gream.global.common.InvalidInputResponseDto;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.common.ResultCase;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public RestResponse<List<InvalidInputResponseDto>> handlerValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<RestResponse<List<InvalidInputResponseDto>>> handlerValidationException(MethodArgumentNotValidException ex) {
         List<InvalidInputResponseDto> invalidInputList = ex.getBindingResult()
             .getFieldErrors()
             .stream()
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(GlobalException.class)
-    public RestResponse<ErrorResponseDto> handleGlobalException(GlobalException e) {
+    public ResponseEntity<RestResponse<ErrorResponseDto>> handleGlobalException(GlobalException e) {
         return RestResponse.error(e.getResultCase(), new ErrorResponseDto());
     }
 }

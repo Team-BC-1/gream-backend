@@ -2,6 +2,8 @@ package bc1.gream.domain.sell.repository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
+import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.order.repository.SellRepositoryCustomImpl;
@@ -35,7 +37,8 @@ class SellRepositoryCustomImplTest implements SellTest {
     User user;
     Product product;
     Sell sell;
-    
+    Gifticon gifticon;
+
     @Autowired
     private SellRepositoryCustomImpl sellRepositoryCustom;
     @Autowired
@@ -43,12 +46,15 @@ class SellRepositoryCustomImplTest implements SellTest {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
+    private GifticonRepository gifticonRepository;
+    @Autowired
     private SellRepository sellRepository;
 
     @BeforeEach
     void setUp() {
         user = userRepository.save(TEST_USER);
         product = productRepository.save(TEST_PRODUCT);
+        gifticon = gifticonRepository.save(TEST_GIFTICON);
         sell = sellRepository.save(TEST_SELL);
     }
 

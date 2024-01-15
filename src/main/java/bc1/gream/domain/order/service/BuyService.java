@@ -1,10 +1,11 @@
 package bc1.gream.domain.order.service;
 
-import static bc1.gream.global.common.ResultCase.BUY_BID_PRODUCT_NOT_FOUND;
+import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
@@ -17,7 +18,6 @@ import bc1.gream.domain.order.entity.Sell;
 import bc1.gream.domain.order.mapper.BuyMapper;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.repository.BuyRepository;
-import bc1.gream.domain.order.repository.GifticonRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
@@ -88,7 +88,7 @@ public class BuyService {
         Sell sell = sellRepository.findByProductIdAndPrice(productId, price).orElseThrow(
             () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
         );
-        Long expectedPrice = calcDiscount(requestDto, user);
+        Long expectedPrice = calcDiscount(requestDto.couponId(), price, user);
 
         Order order = Order.builder()
             .product(sell.getProduct())
@@ -99,7 +99,8 @@ public class BuyService {
             .build();
 
         Order savedOrder = orderRepository.save(order);
-        orderGifticon(sell.getId(), savedOrder);
+        orderGifticonBySellId(sell.getId(), savedOrder);
+        sellRepository.delete(sell);
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(savedOrder);
     }
@@ -110,7 +111,7 @@ public class BuyService {
 
     public Buy findBuyById(Long buyId) {
         return buyRepository.findById(buyId).orElseThrow(
-            () -> new GlobalException(BUY_BID_PRODUCT_NOT_FOUND)
+            () -> new GlobalException(BUY_BID_NOT_FOUND)
         );
     }
 
@@ -118,16 +119,19 @@ public class BuyService {
         return buy.getUser().getLoginId().equals(user.getLoginId());
     }
 
-    private Long calcDiscount(BuyNowRequestDto requestDto, User user) {
-        Coupon coupon = couponService.findCouponById(requestDto.couponId(), user);
+    public Long calcDiscount(Long couponId, Long price, User user) {
+        if (couponId == null) {
+            return price;
+        }
+        Coupon coupon = couponService.findCouponById(couponId, user);
 
         if (coupon.getDiscountType().equals(DiscountType.FIX)) {
-            return requestDto.price() - coupon.getDiscount();
+            return price - coupon.getDiscount();
         }
-        return requestDto.price() * (100 - coupon.getDiscount()) / 100;
+        return price * (100 - coupon.getDiscount()) / 100;
     }
 
-    private void orderGifticon(Long sellId, Order order) {
+    private void orderGifticonBySellId(Long sellId, Order order) {
         Gifticon gifticon = gifticonRepository.findBySell_Id(sellId).orElseThrow(
             () -> new GlobalException(GIFTICON_NOT_FOUND)
         );
@@ -145,5 +149,21 @@ public class BuyService {
     @Transactional(readOnly = true)
     public Page<Buy> findAllBuyBidsOf(Product product, Pageable pageable) {
         return buyRepository.findAllPricesOf(product, pageable);
+    }
+
+    /**
+     * 해당상품과 가격에 대한 구매입찰을 가져옴
+     *
+     * @param productId 상품 아이디
+     * @param price     구매를 원하는 상품 가격
+     * @return 구매입찰
+     */
+    public Buy getRecentBuyBidOf(Long productId, Long price) {
+        return buyRepository.findByProductIdAndPrice(productId, price)
+            .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
+    }
+
+    public void delete(Buy buy) {
+        buyRepository.delete(buy);
     }
 }
