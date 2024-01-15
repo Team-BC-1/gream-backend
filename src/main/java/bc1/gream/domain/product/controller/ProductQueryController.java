@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 읽기 전용
- **/
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
@@ -40,7 +40,7 @@ public class ProductQueryController {
 
     /**
      * 상품 전체 조회
-     **/
+     */
     @GetMapping
     public RestResponse<List<ProductQueryResponseDto>> findAll() {
         List<Product> products = productService.findAll();
@@ -52,7 +52,7 @@ public class ProductQueryController {
 
     /**
      * 상품 상세조회
-     **/
+     */
     @GetMapping("/{id}")
     public RestResponse<ProductQueryResponseDto> findAllBy(
         @PathVariable("id") Long productId
@@ -64,7 +64,7 @@ public class ProductQueryController {
 
     /**
      * 상품 체결내역 조회
-     **/
+     */
     @GetMapping("/{id}/trade")
     public RestResponse<List<TradeResponseDto>> findAllTrades(
         @PathVariable("id") Long productId
@@ -78,7 +78,7 @@ public class ProductQueryController {
 
     /**
      * 판매 입찰가 조회
-     **/
+     */
     @GetMapping("/{id}/sell")
     public RestResponse<List<TradeResponseDto>> findAllSellBidPrices(
         @PathVariable("id") Long productId,
@@ -94,7 +94,7 @@ public class ProductQueryController {
 
     /**
      * 구매 입찰가 조회
-     **/
+     */
     @GetMapping("/{id}/buy")
     public RestResponse<List<TradeResponseDto>> findAllBuyBidPrices(
         @PathVariable("id") Long productId,
