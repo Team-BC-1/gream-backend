@@ -53,6 +53,6 @@ public class SellBidService {
         Sell deletedSell = sellService.deleteSellByIdAndUser(sellId, seller);
         gifticonService.delete(deletedSell.getGifticon());
 
-        return new SellCancelBidResponseDto();
+        return new SellCancelBidResponseDto(sellId);
     }
 }

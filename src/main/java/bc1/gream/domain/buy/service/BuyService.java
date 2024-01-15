@@ -80,7 +80,7 @@ public class BuyService {
 
         buyRepository.delete(buyBid);
 
-        return new BuyCancelBidResponseDto();
+        return new BuyCancelBidResponseDto(buyId);
     }
 
     public BuyNowResponseDto buyNowProduct(User user, BuyNowRequestDto requestDto, Long productId) {

@@ -1,19 +1,19 @@
 package bc1.gream.domain.product.controller;
 
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
 import bc1.gream.domain.common.facade.ProductOrderQueryFacade;
 import bc1.gream.domain.common.facade.SellOrderQueryFacade;
-import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
-import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.order.mapper.OrderMapper;
-import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.domain.product.dto.response.ProductQueryResponseDto;
 import bc1.gream.domain.product.dto.response.TradeResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.validator.OrderCriteriaValidator;
 import java.util.List;
@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/* 읽기 전용 */
+/**
+ * 읽기 전용
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
@@ -36,6 +38,9 @@ public class ProductQueryController {
     private final SellOrderQueryFacade sellOrderQueryFacade;
     private final BuyOrderQueryFacade buyOrderQueryFacade;
 
+    /**
+     * 상품 전체 조회
+     */
     @GetMapping
     public RestResponse<List<ProductQueryResponseDto>> findAll() {
         List<Product> products = productService.findAll();
@@ -45,6 +50,9 @@ public class ProductQueryController {
         return RestResponse.success(responseDtos);
     }
 
+    /**
+     * 상품 상세조회
+     */
     @GetMapping("/{id}")
     public RestResponse<ProductQueryResponseDto> findAllBy(
         @PathVariable("id") Long productId
@@ -54,6 +62,9 @@ public class ProductQueryController {
         return RestResponse.success(responseDto);
     }
 
+    /**
+     * 상품 체결내역 조회
+     */
     @GetMapping("/{id}/trade")
     public RestResponse<List<TradeResponseDto>> findAllTrades(
         @PathVariable("id") Long productId
@@ -65,6 +76,9 @@ public class ProductQueryController {
         return RestResponse.success(tradeResponseDtos);
     }
 
+    /**
+     * 판매 입찰가 조회
+     */
     @GetMapping("/{id}/sell")
     public RestResponse<List<TradeResponseDto>> findAllSellBidPrices(
         @PathVariable("id") Long productId,
@@ -78,6 +92,9 @@ public class ProductQueryController {
         return RestResponse.success(tradeResponseDtos);
     }
 
+    /**
+     * 구매 입찰가 조회
+     */
     @GetMapping("/{id}/buy")
     public RestResponse<List<TradeResponseDto>> findAllBuyBidPrices(
         @PathVariable("id") Long productId,
