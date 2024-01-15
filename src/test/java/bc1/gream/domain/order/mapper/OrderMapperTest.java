@@ -2,7 +2,7 @@ package bc1.gream.domain.order.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import bc1.gream.domain.product.dto.response.TradeResponseDto;
+import bc1.gream.domain.product.dto.response.OrderTradeResponseDto;
 import bc1.gream.test.OrderTest;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +18,10 @@ class OrderMapperTest implements OrderTest {
     public void 주문_toTradeResponseDto() {
         // WHEN
         ReflectionTestUtils.setField(TEST_ORDER, "createdAt", LocalDateTime.of(2024, 1, 1, 12, 12));
-        TradeResponseDto tradeResponseDto = orderMapper.ofTradedOrder(TEST_ORDER);
+        OrderTradeResponseDto orderTradeResponseDto = orderMapper.toOrderTradeResponseDto(TEST_ORDER);
 
         // THEN
-        assertEquals(TEST_ORDER_FINAL_PRICE, tradeResponseDto.price());
-        assertEquals(TEST_ORDER.getCreatedAt(), tradeResponseDto.tradeDate());
+        assertEquals(TEST_ORDER_FINAL_PRICE, orderTradeResponseDto.finalPrice());
+        assertEquals(TEST_ORDER.getCreatedAt(), orderTradeResponseDto.tradeDate());
     }
 }

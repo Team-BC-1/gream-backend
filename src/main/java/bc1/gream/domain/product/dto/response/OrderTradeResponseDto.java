@@ -2,9 +2,9 @@ package bc1.gream.domain.product.dto.response;
 
 import java.time.LocalDateTime;
 
-public record TradeResponseDto(
+public record OrderTradeResponseDto(
     Long id,
-    Long price,
+    Long finalPrice,
     LocalDateTime tradeDate
 ) {
 
