@@ -13,8 +13,6 @@ import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.BuyTest;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,9 +69,9 @@ class BuyRepositoryCustomImplTest implements BuyTest {
     public void 가장첫구매입찰조회() {
         // GIVEN
         int buySaveCount = 10;
-        List<Buy> buys = new ArrayList<>();
+
         for (int i = 0; i < buySaveCount; i++) {
-            Buy tempSaveBuy = buyRepository.save(
+            buyRepository.save(
                 Buy.builder()
                     .price(TEST_BUY_PRICE)
                     .deadlineAt(TEST_DEADLINE_AT)
@@ -81,7 +79,7 @@ class BuyRepositoryCustomImplTest implements BuyTest {
                     .product(TEST_PRODUCT)
                     .build()
             );
-            buys.add(tempSaveBuy);
+
         }
 
         // WHEN
@@ -89,6 +87,6 @@ class BuyRepositoryCustomImplTest implements BuyTest {
             .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
 
         // THEN
-        assertEquals(buys.get(0).getCreatedAt(), foundBuy.getCreatedAt());
+        assertEquals(savedBuy.getCreatedAt(), foundBuy.getCreatedAt());
     }
 }
