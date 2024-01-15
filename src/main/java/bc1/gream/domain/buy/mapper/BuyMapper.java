@@ -17,7 +17,6 @@ public interface BuyMapper {
     @Mapping(source = "id", target = "buyId")
     BuyBidResponseDto toBuyBidResponseDto(Buy buy);
 
-    @Mapping(source = "price", target = "price")
     @Mapping(source = "createdAt", target = "tradeDate")
     TradeResponseDto toTradeResponseDto(Buy buy);
 
