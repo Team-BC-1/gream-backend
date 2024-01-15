@@ -1,16 +1,16 @@
 package bc1.gream.domain.sell.service;
 
 import bc1.gream.domain.gifticon.service.GifticonService;
+import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.dto.response.SellCancelBidResponseDto;
-import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
-import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -55,6 +55,6 @@ public class SellBidService {
         Sell deletedSell = sellService.deleteSellByIdAndUser(sellId, seller);
         gifticonService.delete(deletedSell.getGifticon());
 
-        return new SellCancelBidResponseDto();
+        return new SellCancelBidResponseDto(deletedSell.getGifticon().getId());
     }
 }
