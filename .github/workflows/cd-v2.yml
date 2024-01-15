@@ -60,7 +60,7 @@ jobs:
           touch scripts/deploy.sh
           echo "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $ECR_REGISTRY" >> scripts/deploy.sh
           echo "docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
-          echo "docker run -p 8080:8080 -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} -e REDIS_URL=${{ secrets.REDIS_URL }} -e DB_ID=${{ secrets.DB_ID }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_URL=${{ secrets.DB_URL }} PROFILE=prod -d --restart always --name csbroker-api $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
+          echo "docker run -p 8080:8080 -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} -e REDIS_URL=${{ secrets.REDIS_URL }} -e DB_ID=${{ secrets.DB_ID }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_URL=${{ secrets.DB_URL }} -e PROFILE=prod -d --restart always --name csbroker-api $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
 
       - name: upload to s3
         env:
