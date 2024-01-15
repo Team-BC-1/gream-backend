@@ -28,7 +28,9 @@ public class SellBidController {
     private final SellBidService sellBidService;
     private final ProductValidator productValidator;
 
-    /* 판매 입찰 생성 */
+    /**
+     * 판매 입찰 생성
+     **/
     @PostMapping("/{productId}")
     public RestResponse<SellBidResponseDto> createSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -40,7 +42,9 @@ public class SellBidController {
         return RestResponse.success(responseDto);
     }
 
-    /* 판매 입찰 취소 */
+    /**
+     * 판매 입찰 취소
+     **/
     @DeleteMapping("/bid/{sellId}")
     public RestResponse<SellCancelBidResponseDto> cancelSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
