@@ -50,8 +50,8 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .leftJoin(sell.gifticon, gifticon)
             .leftJoin(sell.user, user)
             .where(sell.product.id.eq(productId), sell.price.eq(price))
-            .orderBy(sell.createdAt.desc())
+            .orderBy(sell.createdAt.asc())
             .fetchFirst();
-        return Optional.of(foundSell);
+        return Optional.ofNullable(foundSell);
     }
 }
