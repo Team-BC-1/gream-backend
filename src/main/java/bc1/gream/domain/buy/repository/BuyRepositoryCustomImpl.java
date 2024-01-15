@@ -1,15 +1,16 @@
-package bc1.gream.domain.order.repository;
+package bc1.gream.domain.buy.repository;
 
+import static bc1.gream.domain.buy.entity.QBuy.buy;
 
-import static bc1.gream.domain.order.entity.QBuy.buy;
-
-import bc1.gream.domain.order.entity.Buy;
-import bc1.gream.domain.order.repository.helper.BuyQueryOrderFactory;
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.entity.QBuy;
+import bc1.gream.domain.buy.repository.helper.BuyQueryOrderFactory;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.entity.QProduct;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,5 +39,16 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .fetch();
 
         return PageableExecutionUtils.getPage(buys, pageable, buys::size);
+    }
+
+    @Override
+    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price) {
+        Buy buy = queryFactory
+            .selectFrom(QBuy.buy)
+            .leftJoin(QBuy.buy.product, QProduct.product)
+            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
+            .orderBy(QBuy.buy.createdAt.asc())
+            .fetchFirst();
+        return Optional.ofNullable(buy);
     }
 }

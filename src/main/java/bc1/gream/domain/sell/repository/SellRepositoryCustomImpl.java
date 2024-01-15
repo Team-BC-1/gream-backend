@@ -1,5 +1,6 @@
 package bc1.gream.domain.sell.repository;
 
+import static bc1.gream.domain.order.entity.QSell.sell;
 
 import static bc1.gream.domain.sell.entity.QSell.sell;
 
@@ -10,6 +11,7 @@ import bc1.gream.domain.sell.repository.helper.SellQueryOrderFactory;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,5 +40,17 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .fetch();
 
         return PageableExecutionUtils.getPage(sells, pageable, sells::size);
+    }
+
+    @Override
+    public Optional<Sell> findByProductIdAndPrice(Long productId, Long price) {
+        Sell foundSell = queryFactory.selectFrom(sell)
+            .leftJoin(sell.product, product)
+            .leftJoin(sell.gifticon, gifticon)
+            .leftJoin(sell.user, user)
+            .where(sell.product.id.eq(productId), sell.price.eq(price))
+            .orderBy(sell.createdAt.asc())
+            .fetchFirst();
+        return Optional.ofNullable(foundSell);
     }
 }
