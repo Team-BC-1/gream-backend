@@ -16,6 +16,6 @@ public class OrderQueryService {
     private final OrderRepository orderRepository;
 
     public List<Order> findAllTradesOf(Product product) {
-        return orderRepository.findAllByProduct(product);
+        return orderRepository.findAllByProductOrderByCreatedAtDesc(product);
     }
 }
