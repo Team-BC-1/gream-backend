@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
-import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;
@@ -53,8 +53,20 @@ class SellRepositoryCustomImplTest implements SellTest {
     void setUp() {
         user = userRepository.save(TEST_USER);
         product = productRepository.save(TEST_PRODUCT);
-        gifticon = gifticonRepository.save(TEST_GIFTICON);
-        sell = sellRepository.save(TEST_SELL);
+        Gifticon gifticon = gifticonRepository.save(Gifticon.builder()
+            .gifticonUrl(TEST_GIFTICON_URL)
+            .order(null)
+            .build()
+        );
+        sell = sellRepository.save(
+            Sell.builder()
+                .price(TEST_SELL_PRICE)
+                .deadlineAt(TEST_DEADLINE_AT)
+                .product(product)
+                .user(user)
+                .gifticon(gifticon)
+                .build()
+        );
     }
 
     @Test
@@ -64,7 +76,7 @@ class SellRepositoryCustomImplTest implements SellTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
 
         // WHEN
-        Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
+        Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(product, pageable);
 
         // THEN
         boolean hasSellBid = allPricesOf.stream()
