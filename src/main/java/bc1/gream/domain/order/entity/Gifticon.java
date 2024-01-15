@@ -1,6 +1,7 @@
 package bc1.gream.domain.order.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
+import bc1.gream.domain.sell.entity.Sell;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
