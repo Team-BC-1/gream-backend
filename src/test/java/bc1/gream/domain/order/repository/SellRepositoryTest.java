@@ -46,15 +46,20 @@ class SellRepositoryTest implements SellTest {
     void setUp() {
         savedProduct = productRepository.save(TEST_PRODUCT);
         savedUser = userRepository.save(TEST_USER);
-        Gifticon savedGifticon = gifticonRepository.save(TEST_GIFTICON);
-        Sell TEST_SELL = Sell.builder()
+
+        Gifticon gifticon = Gifticon.builder()
+            .gifticonUrl(TEST_GIFTICON_URL)
+            .order(null)
+            .build();
+        Gifticon savedGifticon = gifticonRepository.save(gifticon);
+        Sell sell = Sell.builder()
             .price(TEST_SELL_PRICE)
             .deadlineAt(TEST_DEADLINE_AT)
             .product(savedProduct)
             .user(savedUser)
             .gifticon(savedGifticon)
             .build();
-        savedSell = sellRepository.save(TEST_SELL);
+        savedSell = sellRepository.save(sell);
     }
 
     @Test
