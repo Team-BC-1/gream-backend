@@ -1,14 +1,14 @@
 package bc1.gream.test;
 
-import static bc1.gream.domain.user.entity.CouponStatus.ALREADY_USED;
-import static bc1.gream.domain.user.entity.CouponStatus.AVAILABLE;
-import static bc1.gream.domain.user.entity.CouponStatus.IN_USE;
-import static bc1.gream.domain.user.entity.DiscountType.FIX;
-import static bc1.gream.domain.user.entity.DiscountType.RATE;
+import static bc1.gream.domain.user.coupon.entity.CouponStatus.ALREADY_USED;
+import static bc1.gream.domain.user.coupon.entity.CouponStatus.AVAILABLE;
+import static bc1.gream.domain.user.coupon.entity.CouponStatus.IN_USE;
+import static bc1.gream.domain.user.coupon.entity.DiscountType.FIX;
+import static bc1.gream.domain.user.coupon.entity.DiscountType.RATE;
 
-import bc1.gream.domain.user.entity.Coupon;
-import bc1.gream.domain.user.entity.CouponStatus;
-import bc1.gream.domain.user.entity.DiscountType;
+import bc1.gream.domain.user.coupon.entity.Coupon;
+import bc1.gream.domain.user.coupon.entity.CouponStatus;
+import bc1.gream.domain.user.coupon.entity.DiscountType;
 
 public interface CouponTest extends UserTest {
 

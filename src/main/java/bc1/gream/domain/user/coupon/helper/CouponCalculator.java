@@ -1,7 +1,7 @@
-package bc1.gream.domain.order.service.helper.coupon;
+package bc1.gream.domain.user.coupon.helper;
 
-import bc1.gream.domain.user.entity.Coupon;
-import bc1.gream.domain.user.entity.DiscountType;
+import bc1.gream.domain.user.coupon.entity.Coupon;
+import bc1.gream.domain.user.coupon.entity.DiscountType;
 
 public final class CouponCalculator {
 
