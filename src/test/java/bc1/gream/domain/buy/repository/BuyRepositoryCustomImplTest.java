@@ -43,12 +43,13 @@ class BuyRepositoryCustomImplTest implements BuyTest {
     private ProductRepository productRepository;
     @Autowired
     private BuyRepository buyRepository;
+    private Buy savedBuy;
 
     @BeforeEach
     void setUp() {
         userRepository.save(TEST_USER);
         productRepository.save(TEST_PRODUCT);
-        buyRepository.save(TEST_BUY);
+        savedBuy = buyRepository.save(TEST_BUY);
     }
 
     @Test
@@ -61,9 +62,9 @@ class BuyRepositoryCustomImplTest implements BuyTest {
         Page<Buy> allPricesOf = buyRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
 
         // THEN
-        boolean hasBuyBidPrice = allPricesOf.stream()
-            .anyMatch(buy -> buy.getPrice().equals(TEST_BUY_PRICE));
-        assertTrue(hasBuyBidPrice);
+        boolean hasBuyBid = allPricesOf.stream()
+            .anyMatch(buy -> buy.equals(savedBuy));
+        assertTrue(hasBuyBid);
     }
 
     @Test
