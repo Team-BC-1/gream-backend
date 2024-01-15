@@ -1,6 +1,9 @@
 package bc1.gream.domain.product.dto.response;
 
-public record ProductQueryResponseDto(
+import lombok.Builder;
+
+@Builder
+public record ProductDetailsResponseDto(
     Long id,
     String brand,
     String name,
