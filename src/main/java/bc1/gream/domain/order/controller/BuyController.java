@@ -1,9 +1,9 @@
 package bc1.gream.domain.order.controller;
 
 
-import static bc1.gream.domain.user.entity.CouponStatus.ALREADY_USED;
-import static bc1.gream.domain.user.entity.CouponStatus.AVAILABLE;
-import static bc1.gream.domain.user.entity.CouponStatus.IN_USE;
+import static bc1.gream.domain.user.coupon.entity.CouponStatus.ALREADY_USED;
+import static bc1.gream.domain.user.coupon.entity.CouponStatus.AVAILABLE;
+import static bc1.gream.domain.user.coupon.entity.CouponStatus.IN_USE;
 
 import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
 import bc1.gream.domain.order.dto.request.BuyBidRequestDto;

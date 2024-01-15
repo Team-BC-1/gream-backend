@@ -3,10 +3,10 @@ package bc1.gream.domain.user.service;
 import static bc1.gream.global.common.ResultCase.COUPON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
-import bc1.gream.domain.user.entity.Coupon;
-import bc1.gream.domain.user.entity.CouponStatus;
+import bc1.gream.domain.user.coupon.entity.Coupon;
+import bc1.gream.domain.user.coupon.entity.CouponStatus;
+import bc1.gream.domain.user.coupon.repository.CouponRepository;
 import bc1.gream.domain.user.entity.User;
-import bc1.gream.domain.user.repository.CouponRepository;
 import bc1.gream.global.exception.GlobalException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
