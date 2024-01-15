@@ -1,23 +1,21 @@
 package bc1.gream.domain.sell.service;
 
+import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.domain.gifticon.service.GifticonService;
-import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
-import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
-import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
+import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
+import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
 import bc1.gream.domain.user.coupon.entity.Coupon;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SellNowService {
 
     private final BuyService buyService;

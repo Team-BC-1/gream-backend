@@ -2,9 +2,9 @@ package bc1.gream.domain.sell.service;
 
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
+import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
-import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +47,7 @@ public class SellService {
      * @param seller 판매입찰자
      * @return 삭제된 판매입찰
      */
+    @Transactional
     public Sell deleteSellByIdAndUser(Long sellId, User seller) {
         Sell sell = findByIdAndUser(sellId, seller);
         sellRepository.delete(sell);

@@ -158,11 +158,13 @@ public class BuyService {
      * @param price     구매를 원하는 상품 가격
      * @return 구매입찰
      */
+    @Transactional(readOnly = true)
     public Buy getRecentBuyBidOf(Long productId, Long price) {
         return buyRepository.findByProductIdAndPrice(productId, price)
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
 
+    @Transactional
     public void delete(Buy buy) {
         buyRepository.delete(buy);
     }
