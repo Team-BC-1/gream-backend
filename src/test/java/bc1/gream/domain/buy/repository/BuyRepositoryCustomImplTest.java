@@ -68,7 +68,7 @@ class BuyRepositoryCustomImplTest implements BuyTest {
     }
 
     @Test
-    public void 가장마지막구매입찰조회() {
+    public void 가장첫구매입찰조회() {
         // GIVEN
         int buySaveCount = 10;
         List<Buy> buys = new ArrayList<>();
@@ -89,6 +89,6 @@ class BuyRepositoryCustomImplTest implements BuyTest {
             .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
 
         // THEN
-        assertEquals(buys.get(buys.size() - 1).getCreatedAt(), foundBuy.getCreatedAt());
+        assertEquals(buys.get(0).getCreatedAt(), foundBuy.getCreatedAt());
     }
 }
