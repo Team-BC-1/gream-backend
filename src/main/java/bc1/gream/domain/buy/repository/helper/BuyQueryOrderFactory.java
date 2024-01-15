@@ -1,7 +1,6 @@
-package bc1.gream.domain.order.repository.helper;
+package bc1.gream.domain.buy.repository.helper;
 
-
-import static bc1.gream.domain.order.entity.QBuy.buy;
+import static bc1.gream.domain.buy.entity.QBuy.buy;
 
 import bc1.gream.domain.product.repository.helper.QueryDslUtil;
 import com.querydsl.core.types.Order;

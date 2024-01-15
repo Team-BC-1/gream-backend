@@ -2,10 +2,10 @@ package bc1.gream.domain.order.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.order.dto.request.SellNowRequestDto;
 import bc1.gream.domain.order.dto.response.SellNowResponseDto;
-import bc1.gream.domain.order.entity.Buy;
-import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.test.BaseIntegrationTest;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;

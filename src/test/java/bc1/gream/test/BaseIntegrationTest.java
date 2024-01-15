@@ -1,7 +1,7 @@
 package bc1.gream.test;
 
+import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-
 
 @SpringBootTest
 @WithMockCustomUser

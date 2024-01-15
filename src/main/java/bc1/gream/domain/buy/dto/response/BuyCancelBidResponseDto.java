@@ -1,8 +1,8 @@
-package bc1.gream.domain.order.dto.request;
+package bc1.gream.domain.buy.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties
-public record BuyCancelBidRequestDto() {
+public record BuyCancelBidResponseDto() {
 
 }

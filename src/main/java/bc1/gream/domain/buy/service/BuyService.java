@@ -1,4 +1,4 @@
-package bc1.gream.domain.order.service;
+package bc1.gream.domain.buy.service;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
@@ -6,18 +6,18 @@ import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.order.dto.request.BuyBidRequestDto;
-import bc1.gream.domain.order.dto.request.BuyNowRequestDto;
-import bc1.gream.domain.order.dto.response.BuyBidResponseDto;
-import bc1.gream.domain.order.dto.response.BuyCancelBidResponseDto;
-import bc1.gream.domain.order.dto.response.BuyNowResponseDto;
-import bc1.gream.domain.order.entity.Buy;
+import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
+import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
+import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
+import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.entity.Sell;
-import bc1.gream.domain.order.mapper.BuyMapper;
+import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.order.mapper.OrderMapper;
-import bc1.gream.domain.order.repository.BuyRepository;
+import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.order.repository.SellRepository;
 import bc1.gream.domain.product.entity.Product;
