@@ -8,7 +8,7 @@ import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.repository.BuyRepository;
 import bc1.gream.domain.order.service.command.OrderCommandService;
-import bc1.gream.domain.user.entity.Coupon;
+import bc1.gream.domain.user.coupon.entity.Coupon;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
 import jakarta.transaction.Transactional;
