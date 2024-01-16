@@ -1,18 +1,17 @@
 package bc1.gream.domain.buy.provider;
 
-import static bc1.gream.domain.user.coupon.entity.CouponStatus.ALREADY_USED;
-
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
+import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.entity.CouponStatus;
+import bc1.gream.domain.coupon.service.CouponService;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.service.SellService;
-import bc1.gream.domain.user.coupon.entity.Coupon;
 import bc1.gream.domain.user.entity.User;
-import bc1.gream.domain.user.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,7 +35,7 @@ public class BuyNowProvider {
         sell.getGifticon().updateOrder(order);
         sellService.delete(sell);
 
-        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), buyer, ALREADY_USED);
+        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), buyer, CouponStatus.ALREADY_USED);
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(order);
     }
