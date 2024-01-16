@@ -3,11 +3,13 @@ package bc1.gream.domain.buy.service;
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
+import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,5 +68,9 @@ public class BuyService {
     @Transactional
     public void delete(Buy buy) {
         buyRepository.delete(buy);
+    }
+
+    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+        return buyRepository.findAllBuyBidCoupon(user);
     }
 }
