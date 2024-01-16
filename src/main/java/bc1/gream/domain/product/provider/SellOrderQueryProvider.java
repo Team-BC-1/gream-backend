@@ -1,9 +1,9 @@
-package bc1.gream.domain.common.facade;
+package bc1.gream.domain.product.provider;
 
-import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
+import bc1.gream.domain.sell.service.SellService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class   SellOrderQueryFacade {
+public class SellOrderQueryProvider {
 
     private final ProductService productService;
     private final SellService sellService;
@@ -27,7 +27,7 @@ public class   SellOrderQueryFacade {
      * @return 해당 상품에 대한 판매입찰 내역
      * @author 임지훈
      */
-    public List<Sell> findAllSellBidsOf(Long productId, Pageable pageable) {
+    public List<SellPriceToQuantityResponseDto> findAllSellBidsOf(Long productId, Pageable pageable) {
         Product product = productService.findBy(productId);
         return sellService.findAllSellBidsOf(product, pageable).getContent();
     }

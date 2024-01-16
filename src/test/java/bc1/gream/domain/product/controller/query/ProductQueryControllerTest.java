@@ -6,11 +6,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
-import bc1.gream.domain.common.facade.ProductOrderQueryFacade;
-import bc1.gream.domain.common.facade.SellOrderQueryFacade;
 import bc1.gream.domain.product.controller.ProductQueryController;
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.provider.SellOrderQueryProvider;
 import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.test.ProductTest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,9 +32,9 @@ class ProductQueryControllerTest implements ProductTest {
     @MockBean
     private ProductService productService;
     @MockBean
-    private ProductOrderQueryFacade productOrderQueryFacade;
+    private ProductOrderQueryProvider productOrderQueryProvider;
     @MockBean
-    private SellOrderQueryFacade sellOrderQueryFacade;
+    private SellOrderQueryProvider sellOrderQueryProvider;
     @MockBean
     private BuyOrderQueryFacade buyOrderQueryFacade;
 
@@ -43,8 +43,8 @@ class ProductQueryControllerTest implements ProductTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(
                 new ProductQueryController(
                     productService,
-                    productOrderQueryFacade,
-                    sellOrderQueryFacade,
+                    productOrderQueryProvider,
+                    sellOrderQueryProvider,
                     buyOrderQueryFacade
                 ))
             .setCustomArgumentResolvers(

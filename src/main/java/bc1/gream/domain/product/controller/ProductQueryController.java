@@ -3,8 +3,6 @@ package bc1.gream.domain.product.controller;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
-import bc1.gream.domain.common.facade.ProductOrderQueryFacade;
-import bc1.gream.domain.common.facade.SellOrderQueryFacade;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.product.dto.response.BuyTradeResponseDto;
@@ -13,10 +11,11 @@ import bc1.gream.domain.product.dto.response.ProductDetailsResponseDto;
 import bc1.gream.domain.product.dto.response.ProductPreviewResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
+import bc1.gream.domain.product.provider.SellOrderQueryProvider;
 import bc1.gream.domain.product.service.query.ProductService;
-import bc1.gream.domain.sell.dto.response.SellTradeResponseDto;
+import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.sell.mapper.SellMapper;
+import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.validator.OrderCriteriaValidator;
 import java.util.List;
@@ -37,8 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductQueryController {
 
     private final ProductService productService;
-    private final ProductOrderQueryFacade productOrderQueryFacade;
-    private final SellOrderQueryFacade sellOrderQueryFacade;
+    private final ProductOrderQueryProvider productOrderQueryProvider;
+    private final SellOrderQueryProvider sellOrderQueryProvider;
     private final BuyOrderQueryFacade buyOrderQueryFacade;
 
     /**
@@ -72,7 +71,7 @@ public class ProductQueryController {
     public RestResponse<List<OrderTradeResponseDto>> findAllTrades(
         @PathVariable("id") Long productId
     ) {
-        List<Order> allTrades = productOrderQueryFacade.findAllTradesOf(productId);
+        List<Order> allTrades = productOrderQueryProvider.findAllTradesOf(productId);
         List<OrderTradeResponseDto> orderTradeResponseDtos = allTrades.stream()
             .map(OrderMapper.INSTANCE::toOrderTradeResponseDto)
             .toList();
@@ -83,16 +82,14 @@ public class ProductQueryController {
      * 판매 입찰가 조회
      */
     @GetMapping("/{id}/sell")
-    public RestResponse<List<SellTradeResponseDto>> findAllSellBidPrices(
+    public RestResponse<List<SellPriceToQuantityResponseDto>> findAllSellBidPrices(
         @PathVariable("id") Long productId,
         @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Sell.class, pageable);
-        List<Sell> allSellBids = sellOrderQueryFacade.findAllSellBidsOf(productId, pageable);
-        List<SellTradeResponseDto> sellTradeResponseDtos = allSellBids.stream()
-            .map(SellMapper.INSTANCE::toSellTradeResponseDto)
-            .toList();
-        return RestResponse.success(sellTradeResponseDtos);
+        List<SellPriceToQuantityResponseDto> sellPriceToQuantityResponseDtos = sellOrderQueryProvider.findAllSellBidsOf(productId,
+            pageable);
+        return RestResponse.success(sellPriceToQuantityResponseDtos);
     }
 
     /**
