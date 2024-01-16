@@ -3,6 +3,7 @@ package bc1.gream.domain.sell.service;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
@@ -28,8 +29,8 @@ public class SellService {
      * @return 판매입찰가 내역 페이징 데이터
      */
     @Transactional(readOnly = true)
-    public Page<Sell> findAllSellBidsOf(Product product, Pageable pageable) {
-        return sellRepository.findAllPricesOf(product, pageable);
+    public Page<SellPriceToQuantityResponseDto> findAllSellBidsOf(Product product, Pageable pageable) {
+        return sellRepository.findAllPriceToQuantityOf(product, pageable);
     }
 
 
