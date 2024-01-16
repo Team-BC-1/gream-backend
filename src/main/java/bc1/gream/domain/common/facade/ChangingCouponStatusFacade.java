@@ -7,6 +7,7 @@ import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.coupon.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class ChangingCouponStatusFacade { // 순환 참조를 예방하기 위�
     private final BuyService buyService;
 
 
+    @Transactional
     public void changeCouponStatus(Long buyId, User user, CouponStatus couponStatus) { // 쿠폰의 상태를 바꾸는 서비스
 
         Buy buy = checkBuy(buyId);
@@ -24,6 +26,7 @@ public class ChangingCouponStatusFacade { // 순환 참조를 예방하기 위�
         changeCouponStatusByCouponId(couponId, user, couponStatus);
     }
 
+    @Transactional
     public void changeCouponStatusByCouponId(Long couponId, User user, CouponStatus couponStatus) {
         if (couponId == null) {
             return;
