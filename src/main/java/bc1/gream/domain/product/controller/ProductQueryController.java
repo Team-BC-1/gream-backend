@@ -1,19 +1,18 @@
 package bc1.gream.domain.product.controller;
 
 import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.buy.mapper.BuyMapper;
-import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
-import bc1.gream.domain.product.dto.response.BuyTradeResponseDto;
+import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.dto.response.OrderTradeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductDetailsResponseDto;
 import bc1.gream.domain.product.dto.response.ProductPreviewResponseDto;
+import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
+import bc1.gream.domain.product.provider.BuyOrderQueryProvider;
 import bc1.gream.domain.product.provider.SellOrderQueryProvider;
 import bc1.gream.domain.product.service.query.ProductService;
-import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.global.common.RestResponse;
@@ -38,7 +37,7 @@ public class ProductQueryController {
     private final ProductService productService;
     private final ProductOrderQueryProvider productOrderQueryProvider;
     private final SellOrderQueryProvider sellOrderQueryProvider;
-    private final BuyOrderQueryFacade buyOrderQueryFacade;
+    private final BuyOrderQueryProvider buyOrderQueryProvider;
 
     /**
      * 상품 전체 조회
@@ -96,15 +95,12 @@ public class ProductQueryController {
      * 구매 입찰가 조회
      */
     @GetMapping("/{id}/buy")
-    public RestResponse<List<BuyTradeResponseDto>> findAllBuyBidPrices(
+    public RestResponse<List<BuyPriceToQuantityResponseDto>> findAllBuyBidPrices(
         @PathVariable("id") Long productId,
         @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Buy.class, pageable);
-        List<Buy> allBuyBids = buyOrderQueryFacade.findAllBuyBidsOf(productId, pageable);
-        List<BuyTradeResponseDto> buyTradeResponseDtos = allBuyBids.stream()
-            .map(BuyMapper.INSTANCE::toBuyTradeResponseDto)
-            .toList();
-        return RestResponse.success(buyTradeResponseDtos);
+        List<BuyPriceToQuantityResponseDto> buyPriceToQuantityResponseDtos = buyOrderQueryProvider.findAllBuyBidsOf(productId, pageable);
+        return RestResponse.success(buyPriceToQuantityResponseDtos);
     }
 }

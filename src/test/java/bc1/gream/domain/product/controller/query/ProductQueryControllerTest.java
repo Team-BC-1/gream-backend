@@ -5,9 +5,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import bc1.gream.domain.common.facade.BuyOrderQueryFacade;
 import bc1.gream.domain.product.controller.ProductQueryController;
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.provider.BuyOrderQueryProvider;
 import bc1.gream.domain.product.provider.SellOrderQueryProvider;
 import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
@@ -36,7 +36,7 @@ class ProductQueryControllerTest implements ProductTest {
     @MockBean
     private SellOrderQueryProvider sellOrderQueryProvider;
     @MockBean
-    private BuyOrderQueryFacade buyOrderQueryFacade;
+    private BuyOrderQueryProvider buyOrderQueryProvider;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +45,7 @@ class ProductQueryControllerTest implements ProductTest {
                     productService,
                     productOrderQueryProvider,
                     sellOrderQueryProvider,
-                    buyOrderQueryFacade
+                    buyOrderQueryProvider
                 ))
             .setCustomArgumentResolvers(
                 new PageableHandlerMethodArgumentResolver()
