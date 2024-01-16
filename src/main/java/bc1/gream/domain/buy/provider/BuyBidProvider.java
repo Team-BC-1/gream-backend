@@ -1,4 +1,4 @@
-package bc1.gream.domain.buy.service;
+package bc1.gream.domain.buy.provider;
 
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
@@ -8,8 +8,11 @@ import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
+import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.sell.service.helper.deadline.Deadline;
+import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.coupon.entity.CouponStatus;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -23,20 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class BuyBidService {
+public class BuyBidProvider {
 
     private final BuyRepository buyRepository;
     private final BuyService buyService;
     private final ChangingCouponStatusFacade changingCouponStatusFacade;
 
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public BuyBidResponseDto buyBidProduct(User user, BuyBidRequestDto requestDto, Product product) {
         Long price = requestDto.price();
-        Integer period = buyService.getPeriod(requestDto.period());
+        Integer period = Deadline.getPeriod(requestDto.period());
+        LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX, period);
         Long couponId = requestDto.couponId();
-        LocalDate date = LocalDate.now();
-        LocalDateTime deadlineAt = date.atTime(LocalTime.MAX).plusDays(period);
 
         Buy buy = Buy.builder()
             .price(price)
