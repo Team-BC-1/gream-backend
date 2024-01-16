@@ -53,8 +53,8 @@ public class BuyBidProvider {
 
     @Transactional
     public BuyCancelBidResponseDto buyCancelBid(User buyer, Long buyId) {
-        buyService.deleteBuyByIdAndUser(buyId, buyer);
         changingCouponStatusFacade.changeCouponStatus(buyId, buyer, CouponStatus.AVAILABLE);
+        buyService.deleteBuyByIdAndUser(buyId, buyer);
 
         return new BuyCancelBidResponseDto(buyId);
     }
