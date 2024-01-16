@@ -3,6 +3,7 @@ package bc1.gream.domain.order.service.command;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
+import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.user.coupon.entity.Coupon;
 import bc1.gream.domain.user.coupon.helper.CouponCalculator;
 import bc1.gream.domain.user.entity.User;
@@ -35,6 +36,20 @@ public class OrderCommandService {
             .finalPrice(finalPrice)
             .expectedPrice(buy.getPrice())
             .build();
+        return orderRepository.save(order);
+    }
+
+    public Order saveOrderOfSell(Sell sell, User buyer, Coupon coupon) {
+        Long finalPrice = CouponCalculator.calculateDiscount(coupon, sell.getPrice());
+
+        Order order = Order.builder()
+            .product(sell.getProduct())
+            .buyer(buyer)
+            .seller(sell.getUser())
+            .finalPrice(finalPrice)
+            .expectedPrice(sell.getPrice())
+            .build();
+        
         return orderRepository.save(order);
     }
 }
