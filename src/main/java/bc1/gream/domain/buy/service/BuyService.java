@@ -1,7 +1,6 @@
 package bc1.gream.domain.buy.service;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
@@ -14,7 +13,6 @@ import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.repository.OrderRepository;
@@ -98,8 +96,9 @@ public class BuyService {
             .expectedPrice(expectedPrice)
             .build();
 
+        sell.getGifticon().updateOrder(order);
+
         Order savedOrder = orderRepository.save(order);
-        orderGifticonBySellId(sell.getId(), savedOrder);
         sellRepository.delete(sell);
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(savedOrder);
@@ -129,14 +128,6 @@ public class BuyService {
             return price - coupon.getDiscount();
         }
         return price * (100 - coupon.getDiscount()) / 100;
-    }
-
-    private void orderGifticonBySellId(Long sellId, Order order) {
-        Gifticon gifticon = gifticonRepository.findBySell_Id(sellId).orElseThrow(
-            () -> new GlobalException(GIFTICON_NOT_FOUND)
-        );
-
-        gifticon.updateOrder(order);
     }
 
     /**

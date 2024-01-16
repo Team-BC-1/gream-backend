@@ -6,18 +6,18 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import bc1.gream.domain.buy.service.BuyService;
-import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.buy.repository.BuyRepository;
+import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
+import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
-import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.test.BuyTest;
@@ -94,7 +94,6 @@ class BuyServiceTest implements BuyTest, SellTest, CouponTest {
         given(sellRepository.findByProductIdAndPrice(TEST_PRODUCT_ID, price)).willReturn(Optional.of(TEST_SELL));
         given(couponService.findCouponById(any(Long.class), any(User.class))).willReturn(TEST_COUPON_FIX);
         given(orderRepository.save(any(Order.class))).willReturn(TEST_ORDER);
-        given(gifticonRepository.findBySell_Id(any(Long.class))).willReturn(Optional.of(TEST_GIFTICON));
 
         BuyNowResponseDto responseDto = buyService.buyNowProduct(TEST_BUYER, requestDto, TEST_PRODUCT_ID);
 
