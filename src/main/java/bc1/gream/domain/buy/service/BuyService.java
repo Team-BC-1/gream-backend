@@ -5,7 +5,6 @@ import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
-import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -20,11 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuyService {
 
     private final BuyRepository buyRepository;
-    private final GifticonRepository gifticonRepository;
 
-    public void deleteBuyByIdAndUser(Long buyId, User buyer) {
-        Buy buy = findBuyById(buyId);
-
+    public void deleteBuyByIdAndUser(Buy buy, User buyer) {
         if (!isBuyerLoggedInUser(buy, buyer)) {
             throw new GlobalException(NOT_AUTHORIZED);
         }
