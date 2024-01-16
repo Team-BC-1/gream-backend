@@ -39,8 +39,42 @@ public class OrderCommandService {
         return orderRepository.save(order);
     }
 
+    @Transactional
+    public Order saveOrderOfBuyNotCoupon(Buy buy, User seller) {
+
+        Long finalPrice = buy.getPrice();
+
+        Order order = Order.builder()
+            .product(buy.getProduct())
+            .buyer(buy.getUser())
+            .seller(seller)
+            .finalPrice(finalPrice)
+            .expectedPrice(buy.getPrice())
+            .build();
+        
+        return orderRepository.save(order);
+    }
+
+
+    @Transactional
     public Order saveOrderOfSell(Sell sell, User buyer, Coupon coupon) {
         Long finalPrice = CouponCalculator.calculateDiscount(coupon, sell.getPrice());
+
+        Order order = Order.builder()
+            .product(sell.getProduct())
+            .buyer(buyer)
+            .seller(sell.getUser())
+            .finalPrice(finalPrice)
+            .expectedPrice(sell.getPrice())
+            .build();
+
+        return orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order saveOrderOfSellNotCoupon(Sell sell, User buyer) {
+
+        Long finalPrice = sell.getPrice();
 
         Order order = Order.builder()
             .product(sell.getProduct())
