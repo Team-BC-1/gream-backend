@@ -41,7 +41,7 @@ public class BuyNowService {
             .build();
 
         Order savedOrder = orderRepository.save(order);
-        buyService.orderGifticonBySellId(sell.getId(), savedOrder);
+        sell.getGifticon().updateOrder(savedOrder);
         sellRepository.delete(sell);
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(savedOrder);
