@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping("/points")
-    public RestResponse<UserPointResponseDto> points(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UserPointResponseDto response = userService.points(userDetails);
+    public RestResponse<UserPointResponseDto> pointsCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserPointResponseDto response = userService.pointsCheck(userDetails);
         return RestResponse.success(response);
     }
 }
