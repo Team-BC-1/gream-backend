@@ -3,6 +3,7 @@ package bc1.gream.domain.product.repository.helper;
 
 import static bc1.gream.domain.product.entity.QProduct.product;
 
+import bc1.gream.global.querydsl.QueryDslUtil;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import java.util.ArrayList;

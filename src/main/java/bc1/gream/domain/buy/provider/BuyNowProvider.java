@@ -1,6 +1,7 @@
 package bc1.gream.domain.buy.provider;
 
-import static bc1.gream.domain.user.coupon.entity.CouponStatus.ALREADY_USED;
+
+import static bc1.gream.domain.coupon.entity.CouponStatus.ALREADY_USED;
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;

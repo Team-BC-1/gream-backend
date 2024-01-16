@@ -1,4 +1,4 @@
-package bc1.gream.domain.product.controller;
+package bc1.gream.domain.sell.dto.response;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

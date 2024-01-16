@@ -1,4 +1,4 @@
-package bc1.gream.domain.user.coupon.entity;
+package bc1.gream.domain.coupon.entity;
 
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;

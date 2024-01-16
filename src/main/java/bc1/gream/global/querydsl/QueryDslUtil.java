@@ -1,4 +1,4 @@
-package bc1.gream.domain.product.repository.helper;
+package bc1.gream.global.querydsl;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;

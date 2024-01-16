@@ -1,6 +1,6 @@
 package bc1.gream.domain.sell.mapper;
 
-import bc1.gream.domain.product.controller.SellTradeResponseDto;
+import bc1.gream.domain.sell.dto.response.SellTradeResponseDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import org.mapstruct.Mapper;
