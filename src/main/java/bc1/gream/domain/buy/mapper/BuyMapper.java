@@ -1,9 +1,7 @@
 package bc1.gream.domain.buy.mapper;
 
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
-import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.dto.response.BuyTradeResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,9 +14,6 @@ public interface BuyMapper {
 
     @Mapping(source = "id", target = "buyId")
     BuyBidResponseDto toBuyBidResponseDto(Buy buy);
-
-    @Mapping(source = "id", target = "orderId")
-    BuyNowResponseDto toBuyNowResponseDto(Order order);
 
     @Mapping(source = "id", target = "buyId")
     @Mapping(source = "price", target = "buyPrice")
