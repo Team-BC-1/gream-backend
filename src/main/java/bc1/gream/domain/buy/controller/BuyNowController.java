@@ -1,10 +1,8 @@
 package bc1.gream.domain.buy.controller;
 
-import static bc1.gream.domain.user.coupon.entity.CouponStatus.ALREADY_USED;
-
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
-import bc1.gream.domain.buy.service.BuyNowService;
+import bc1.gream.domain.buy.provider.BuyNowProvider;
 import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "Bearer Authentication")
 public class BuyNowController {
 
-    private final BuyNowService buyNowService;
+    private final BuyNowProvider buyNowProvider;
     private final ChangingCouponStatusFacade changingCouponStatusFacade;
 
     /**
@@ -35,8 +33,7 @@ public class BuyNowController {
         @PathVariable Long productId,
         @RequestBody BuyNowRequestDto requestDto
     ) {
-        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), userDetails.getUser(), ALREADY_USED);
-        BuyNowResponseDto responseDto = buyNowService.buyNowProduct(userDetails.getUser(), requestDto, productId);
+        BuyNowResponseDto responseDto = buyNowProvider.buyNowProduct(userDetails.getUser(), requestDto, productId);
         return RestResponse.success(responseDto);
     }
 }
