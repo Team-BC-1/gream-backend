@@ -3,6 +3,7 @@ package bc1.gream.domain.order.mapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import bc1.gream.domain.product.dto.response.OrderTradeResponseDto;
+import bc1.gream.domain.sell.dto.response.UserSoldGifticonResponseDto;
 import bc1.gream.test.OrderTest;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -23,5 +24,23 @@ class OrderMapperTest implements OrderTest {
         // THEN
         assertEquals(TEST_ORDER_FINAL_PRICE, orderTradeResponseDto.finalPrice());
         assertEquals(TEST_ORDER.getCreatedAt(), orderTradeResponseDto.tradeDate());
+    }
+
+    @Test
+    public void 사용자가판매한내역Dto_매핑() {
+        // WHEN
+        ReflectionTestUtils.setField(TEST_ORDER, "id", 1L);
+        ReflectionTestUtils.setField(TEST_ORDER, "createdAt", LocalDateTime.now());
+        ReflectionTestUtils.setField(TEST_PRODUCT, "id", 1L);
+        UserSoldGifticonResponseDto responseDto = orderMapper.toUserBoughtGifticonResponseDto(TEST_ORDER);
+
+        // THEN
+        assertEquals(TEST_ORDER_ID, responseDto.orderId());
+        assertEquals(TEST_ORDER_FINAL_PRICE, responseDto.finalPrice());
+        assertEquals(TEST_ORDER.getCreatedAt(), responseDto.tradedDate());
+        assertEquals(TEST_PRODUCT_ID, responseDto.productId());
+        assertEquals(TEST_PRODUCT_BRAND, responseDto.brand());
+        assertEquals(TEST_PRODUCT_NAME, responseDto.name());
+        assertEquals(TEST_PRODUCT_IMAGE_URL, responseDto.iamgeUrl());
     }
 }
