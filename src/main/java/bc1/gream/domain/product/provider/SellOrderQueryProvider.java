@@ -1,8 +1,8 @@
 package bc1.gream.domain.product.provider;
 
+import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductService;
-import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.service.SellService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

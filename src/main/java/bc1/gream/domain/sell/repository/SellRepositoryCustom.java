@@ -1,7 +1,7 @@
 package bc1.gream.domain.sell.repository;
 
+import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

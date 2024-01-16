@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.order.entity.Gifticon;
-import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
+import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.entity.QSell;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.test.BaseDataRepositoryTest;
