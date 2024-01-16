@@ -1,6 +1,8 @@
 package bc1.gream.test;
 
 import bc1.gream.domain.buy.repository.BuyRepository;
+import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.repository.CouponRepository;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
@@ -8,8 +10,6 @@ import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.sell.repository.SellRepository;
-import bc1.gream.domain.user.coupon.entity.Coupon;
-import bc1.gream.domain.user.coupon.repository.CouponRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;
