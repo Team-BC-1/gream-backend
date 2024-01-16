@@ -16,10 +16,14 @@ public final class BuyQueryOrderFactory {
 
         List<OrderSpecifier> orders = new ArrayList<>();
 
+        if (sort.isEmpty()) {
+            OrderSpecifier<?> orderCreatedAt = QueryDslUtil.getSortedColumn(Order.DESC, buy, "createdAt");
+            orders.add(orderCreatedAt);
+        }
+
         if (!ObjectUtils.isEmpty(sort)) {
             for (Sort.Order order : sort) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
-
                 switch (order.getProperty()) {
                     case "id" -> {
                         OrderSpecifier<?> orderId = QueryDslUtil.getSortedColumn(direction, buy, "id");
@@ -38,6 +42,7 @@ public final class BuyQueryOrderFactory {
                 }
             }
         }
+
         return orders.toArray(OrderSpecifier[]::new);
     }
 }

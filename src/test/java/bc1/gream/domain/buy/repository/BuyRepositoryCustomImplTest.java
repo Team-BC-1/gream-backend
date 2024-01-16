@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.common.ResultCase;
@@ -40,11 +41,12 @@ class BuyRepositoryCustomImplTest implements BuyTest {
     @Autowired
     private BuyRepository buyRepository;
     private Buy savedBuy;
+    private Product savedProduct;
 
     @BeforeEach
     void setUp() {
         userRepository.save(TEST_USER);
-        productRepository.save(TEST_PRODUCT);
+        savedProduct = productRepository.save(TEST_PRODUCT);
         savedBuy = buyRepository.save(TEST_BUY);
     }
 
@@ -74,14 +76,14 @@ class BuyRepositoryCustomImplTest implements BuyTest {
                     .price(TEST_BUY_PRICE)
                     .deadlineAt(TEST_DEADLINE_AT)
                     .user(TEST_USER)
-                    .product(TEST_PRODUCT)
+                    .product(savedProduct)
                     .build()
             );
 
         }
 
         // WHEN
-        Buy foundBuy = buyRepositoryCustom.findByProductIdAndPrice(TEST_PRODUCT_ID, TEST_BUY_PRICE)
+        Buy foundBuy = buyRepositoryCustom.findByProductIdAndPrice(savedProduct.getId(), TEST_BUY_PRICE)
             .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
 
         // THEN

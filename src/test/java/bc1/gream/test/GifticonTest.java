@@ -15,5 +15,6 @@ public interface GifticonTest extends OrderTest {
 
     Gifticon TEST_GIFTICON = Gifticon.builder()
         .gifticonUrl(TEST_GIFTICON_URL)
+        .order(null)
         .build();
 }
