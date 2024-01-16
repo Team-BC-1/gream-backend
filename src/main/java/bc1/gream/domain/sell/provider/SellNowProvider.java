@@ -1,8 +1,8 @@
-package bc1.gream.domain.sell.service;
+package bc1.gream.domain.sell.provider;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.service.BuyService;
-import bc1.gream.domain.gifticon.service.GifticonService;
+import bc1.gream.domain.gifticon.service.GifticonCommandService;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SellNowService {
+public class SellNowProvider {
 
     private final BuyService buyService;
     private final CouponService couponService;
     private final OrderCommandService orderCommandService;
-    private final GifticonService gifticonService;
+    private final GifticonCommandService gifticonCommandService;
 
     public SellNowResponseDto sellNowProduct(User user, SellNowRequestDto requestDto, Long productId) {
         // 해당상품과 가격에 대한 구매입찰
@@ -31,7 +31,7 @@ public class SellNowService {
         // 새로운 주문
         Order order = orderCommandService.saveOrderOfBuy(buy, user, coupon);
         // 새로운 기프티콘 저장
-        gifticonService.saveGifticon(requestDto.gifticonUrl(), order);
+        gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), order);
 
         // 구매입찰 삭제
         buyService.delete(buy);

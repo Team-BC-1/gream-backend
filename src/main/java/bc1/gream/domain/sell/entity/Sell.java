@@ -5,6 +5,7 @@ import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,9 +47,8 @@ public class Sell extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
     @JsonIgnore
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "gifticon_id", nullable = false)
     private Gifticon gifticon;
 

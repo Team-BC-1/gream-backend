@@ -46,7 +46,7 @@ public class BuyNowProvider {
             .build();
 
         Order savedOrder = orderRepository.save(order);
-        buyService.orderGifticonBySellId(sell.getId(), savedOrder);
+        sell.getGifticon().updateOrder(savedOrder);
         sellRepository.delete(sell);
 
         changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), user, ALREADY_USED);

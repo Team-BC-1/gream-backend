@@ -1,14 +1,11 @@
 package bc1.gream.domain.buy.service;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.order.entity.Gifticon;
-import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -43,14 +40,6 @@ public class BuyService {
 
     public boolean isBuyerLoggedInUser(Buy buy, User user) {
         return buy.getUser().getLoginId().equals(user.getLoginId());
-    }
-
-    public void orderGifticonBySellId(Long sellId, Order order) {
-        Gifticon gifticon = gifticonRepository.findBySell_Id(sellId).orElseThrow(
-            () -> new GlobalException(GIFTICON_NOT_FOUND)
-        );
-
-        gifticon.updateOrder(order);
     }
 
     /**
