@@ -12,6 +12,12 @@ import org.springframework.util.ObjectUtils;
 
 public final class BuyQueryOrderFactory {
 
+    /**
+     * 정렬기준에 따른 Buy에 대한 정렬배열, 기본은 가격 내림차순
+     *
+     * @param sort 정렬 기준
+     * @return
+     */
     public static OrderSpecifier[] getOrdersOf(Sort sort) {
 
         List<OrderSpecifier> orders = new ArrayList<>();
