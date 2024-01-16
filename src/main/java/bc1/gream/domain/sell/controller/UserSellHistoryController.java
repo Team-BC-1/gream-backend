@@ -1,7 +1,7 @@
 package bc1.gream.domain.sell.controller;
 
-import bc1.gream.domain.gifticon.mapper.GifticonMapper;
-import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.order.entity.Order;
+import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.sell.dto.response.UserSoldGifticonResponseDto;
 import bc1.gream.domain.sell.provider.UserSoldGifticonProvider;
 import bc1.gream.global.common.RestResponse;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/buy")
+@RequestMapping("/api/sell")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
 public class UserSellHistoryController {
@@ -27,9 +27,9 @@ public class UserSellHistoryController {
     public RestResponse<List<UserSoldGifticonResponseDto>> getUserBoughtGifticon(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        List<Gifticon> gifticons = userBoughtGifticonProvider.getBoughtGifticonOf(userDetails.getUser());
-        List<UserSoldGifticonResponseDto> responseDtos = gifticons.stream()
-            .map(GifticonMapper.INSTANCE::toUserBoughtGifticonResponseDto)
+        List<Order> orders = userBoughtGifticonProvider.getBoughtGifticonOf(userDetails.getUser());
+        List<UserSoldGifticonResponseDto> responseDtos = orders.stream()
+            .map(OrderMapper.INSTANCE::toUserBoughtGifticonResponseDto)
             .toList();
         return RestResponse.success(responseDtos);
     }
