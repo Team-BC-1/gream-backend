@@ -9,6 +9,7 @@ import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,5 +71,10 @@ public class BuyService {
     @Transactional
     public void delete(Buy buy) {
         buyRepository.delete(buy);
+    }
+
+    @Transactional
+    public void deleteBuysOfDeadlineBefore(LocalDateTime dateTime) {
+        buyRepository.deleteBuysOfDeadlineBefore(dateTime);
     }
 }

@@ -1,6 +1,7 @@
 package bc1.gream.domain.buy.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.buy.entity.Buy;
@@ -12,6 +13,7 @@ import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.BuyTest;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,5 +90,27 @@ class BuyRepositoryCustomImplTest implements BuyTest {
 
         // THEN
         assertEquals(savedBuy.getCreatedAt(), foundBuy.getCreatedAt());
+    }
+
+    @Test
+    public void 마감기한이지난_구매입찰_삭제() {
+        // GIVEN
+        Buy outdatedBuyBid = buyRepository.save(
+            Buy.builder()
+                .price(TEST_BUY_PRICE)
+                .deadlineAt(TEST_DEADLINE_AT)
+                .user(TEST_USER)
+                .product(savedProduct)
+                .deadlineAt(LocalDateTime.now().plusDays(-3))
+                .build()
+        );
+
+        // WHEN
+        buyRepositoryCustom.deleteBuysOfDeadlineBefore(LocalDateTime.now());
+
+        // THEN
+        boolean hasOutdatedBuyBid = buyRepository.findAll().stream()
+            .anyMatch(buy -> buy.equals(outdatedBuyBid));
+        assertFalse(hasOutdatedBuyBid);
     }
 }
