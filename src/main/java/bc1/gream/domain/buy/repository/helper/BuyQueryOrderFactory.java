@@ -17,7 +17,7 @@ public final class BuyQueryOrderFactory {
         List<OrderSpecifier> orders = new ArrayList<>();
 
         if (sort.isEmpty()) {
-            OrderSpecifier<?> orderCreatedAt = QueryDslUtil.getSortedColumn(Order.DESC, buy, "createdAt");
+            OrderSpecifier<?> orderCreatedAt = QueryDslUtil.getSortedColumn(Order.DESC, buy, "price");
             orders.add(orderCreatedAt);
         }
 
