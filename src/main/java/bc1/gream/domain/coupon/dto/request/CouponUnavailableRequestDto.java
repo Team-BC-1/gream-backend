@@ -1,5 +1,5 @@
 package bc1.gream.domain.coupon.dto.request;
 
-public record CouponListRequestDto() {
+public record CouponUnavailableRequestDto() {
 
 }
