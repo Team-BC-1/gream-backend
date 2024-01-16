@@ -2,7 +2,7 @@ package bc1.gream.domain.buy.repository.helper;
 
 import static bc1.gream.domain.buy.entity.QBuy.buy;
 
-import bc1.gream.domain.product.repository.helper.QueryDslUtil;
+import bc1.gream.global.querydsl.QueryDslUtil;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import java.util.ArrayList;

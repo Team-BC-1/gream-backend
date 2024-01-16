@@ -57,6 +57,9 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false, length = 72) // BCrypt 암호화 시 72글자
     private String password;
 
+    @Column(name = "point") //
+    private Long point;
+
     @Column(name = "role", nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -72,6 +75,7 @@ public class User extends BaseEntity {
         this.password = password;
         this.role = role;
         this.provider = provider;
+        this.point = 100000L;
     }
 
     public void addLikeProduct(Product product) {

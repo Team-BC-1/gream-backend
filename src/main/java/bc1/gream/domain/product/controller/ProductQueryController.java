@@ -14,6 +14,7 @@ import bc1.gream.domain.product.dto.response.ProductPreviewResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.sell.dto.response.SellTradeResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.global.common.RestResponse;

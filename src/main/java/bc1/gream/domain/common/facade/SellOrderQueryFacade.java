@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class SellOrderQueryFacade {
+public class   SellOrderQueryFacade {
 
     private final ProductService productService;
     private final SellService sellService;

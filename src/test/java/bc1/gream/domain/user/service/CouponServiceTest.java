@@ -6,8 +6,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import bc1.gream.domain.user.coupon.entity.Coupon;
-import bc1.gream.domain.user.coupon.repository.CouponRepository;
+import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.repository.CouponRepository;
+import bc1.gream.domain.coupon.service.CouponService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.CouponTest;
 import org.junit.jupiter.api.DisplayName;
