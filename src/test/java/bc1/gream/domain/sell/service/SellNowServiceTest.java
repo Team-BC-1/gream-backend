@@ -3,7 +3,7 @@ package bc1.gream.domain.sell.service;
 import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.domain.gifticon.service.GifticonService;
 import bc1.gream.domain.order.service.command.OrderCommandService;
-import bc1.gream.domain.user.service.CouponService;
+import bc1.gream.domain.coupon.service.CouponService;
 import bc1.gream.test.BuyTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

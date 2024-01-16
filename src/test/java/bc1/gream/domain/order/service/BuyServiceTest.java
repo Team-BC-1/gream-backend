@@ -19,7 +19,7 @@ import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.domain.user.entity.User;
-import bc1.gream.domain.user.service.CouponService;
+import bc1.gream.domain.coupon.service.CouponService;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
 import bc1.gream.test.SellTest;
