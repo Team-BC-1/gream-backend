@@ -10,6 +10,7 @@ import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.product.dto.response.BuyTradeResponseDto;
 import bc1.gream.domain.product.dto.response.OrderTradeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductDetailsResponseDto;
+import bc1.gream.domain.product.dto.response.ProductPreviewByNameResponseDto;
 import bc1.gream.domain.product.dto.response.ProductPreviewResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
@@ -49,6 +50,20 @@ public class ProductQueryController {
         List<Product> products = productService.findAll();
         List<ProductPreviewResponseDto> responseDtos = products.stream()
             .map(ProductMapper.INSTANCE::toPreviewResponseDto)
+            .toList();
+        return RestResponse.success(responseDtos);
+    }
+
+    /**
+     * 상품명에 따른 목록 조회
+     */
+    @GetMapping("/{name}")
+    public RestResponse<List<ProductPreviewByNameResponseDto>> findAllByName(
+        @PathVariable("name") String name
+    ) {
+        List<Product> products = productService.findAllByNameContaining(name);
+        List<ProductPreviewByNameResponseDto> responseDtos = products.stream()
+            .map(ProductMapper.INSTANCE::toProductPreviewByNameResponseDto)
             .toList();
         return RestResponse.success(responseDtos);
     }
