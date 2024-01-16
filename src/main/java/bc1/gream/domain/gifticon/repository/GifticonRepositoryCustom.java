@@ -7,4 +7,6 @@ import java.util.List;
 public interface GifticonRepositoryCustom {
 
     List<Gifticon> findAllSoldBySeller(User user);
+
+    List<Gifticon> findAllBoughtByBuyer(User user);
 }

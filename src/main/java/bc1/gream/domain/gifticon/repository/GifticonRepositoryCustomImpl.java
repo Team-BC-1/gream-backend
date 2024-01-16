@@ -21,4 +21,13 @@ public class GifticonRepositoryCustomImpl implements GifticonRepositoryCustom {
             .where(QGifticon.gifticon.order.seller.eq(user))
             .fetch();
     }
+
+    @Override
+    public List<Gifticon> findAllBoughtByBuyer(User user) {
+        return queryFactory
+            .selectFrom(QGifticon.gifticon)
+            .leftJoin(QGifticon.gifticon.order, QOrder.order)
+            .where(QGifticon.gifticon.order.buyer.eq(user))
+            .fetch();
+    }
 }
