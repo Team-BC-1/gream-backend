@@ -15,7 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,14 +55,11 @@ public class Order extends BaseEntity {
     private Long expectedPrice; // 구매희망가격
 
     @Builder
-    private Order(Product product, User buyer, User seller, Long finalPrice, Long expectedPrice, LocalDateTime createdAt,
-        LocalDateTime modifiedAt) {
+    private Order(Product product, User buyer, User seller, Long finalPrice, Long expectedPrice) {
         this.product = product;
         this.buyer = buyer;
         this.seller = seller;
         this.finalPrice = finalPrice;
         this.expectedPrice = expectedPrice;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 }
