@@ -2,22 +2,16 @@ package bc1.gream.domain.buy.service;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.GIFTICON_NOT_FOUND;
+import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
-import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.service.query.ProductService;
-import bc1.gream.domain.sell.repository.SellRepository;
-import bc1.gream.domain.user.coupon.entity.Coupon;
-import bc1.gream.domain.user.coupon.entity.DiscountType;
 import bc1.gream.domain.user.entity.User;
-import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.global.exception.GlobalException;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BuyService {
 
-    private final CouponService couponService;
-    private final ProductService productService;
-
     private final BuyRepository buyRepository;
-    private final SellRepository sellRepository;
-    private final OrderRepository orderRepository;
     private final GifticonRepository gifticonRepository;
 
+    public void deleteBuyByIdAndUser(Long buyId, User buyer) {
+        Buy buy = findBuyById(buyId);
 
-    public Integer getPeriod(Integer period) {
-        return Objects.requireNonNullElse(period, 7);
+        if (!isBuyerLoggedInUser(buy, buyer)) {
+            throw new GlobalException(NOT_AUTHORIZED);
+        }
+
+        buyRepository.delete(buy);
     }
 
     public Buy findBuyById(Long buyId) {
@@ -49,18 +43,6 @@ public class BuyService {
 
     public boolean isBuyerLoggedInUser(Buy buy, User user) {
         return buy.getUser().getLoginId().equals(user.getLoginId());
-    }
-
-    public Long calcDiscount(Long couponId, Long price, User user) {
-        if (couponId == null) {
-            return price;
-        }
-        Coupon coupon = couponService.findCouponById(couponId, user);
-
-        if (coupon.getDiscountType().equals(DiscountType.FIX)) {
-            return price - coupon.getDiscount();
-        }
-        return price * (100 - coupon.getDiscount()) / 100;
     }
 
     public void orderGifticonBySellId(Long sellId, Order order) {
