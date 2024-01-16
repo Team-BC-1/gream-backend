@@ -1,8 +1,9 @@
 package bc1.gream.domain.sell.service;
 
 import bc1.gream.domain.buy.service.BuyService;
-import bc1.gream.domain.gifticon.service.GifticonService;
+import bc1.gream.domain.gifticon.service.GifticonCommandService;
 import bc1.gream.domain.order.service.command.OrderCommandService;
+import bc1.gream.domain.sell.provider.SellNowProvider;
 import bc1.gream.domain.user.service.CouponService;
 import bc1.gream.test.BuyTest;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(MockitoExtension.class)
 @Rollback(value = true)
 @Transactional
-class SellNowServiceTest implements BuyTest {
+class SellNowProviderTest implements BuyTest {
 
     @InjectMocks
-    private SellNowService sellNowService;
+    private SellNowProvider sellNowProvider;
     @Mock
     private BuyService buyService;
     @Mock
@@ -27,7 +28,7 @@ class SellNowServiceTest implements BuyTest {
     @Mock
     private OrderCommandService orderCommandService;
     @Mock
-    private GifticonService gifticonService;
+    private GifticonCommandService gifticonCommandService;
 
     @Test
     public void 구매입찰() {

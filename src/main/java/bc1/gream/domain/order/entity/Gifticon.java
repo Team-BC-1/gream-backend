@@ -1,7 +1,6 @@
 package bc1.gream.domain.order.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
-import bc1.gream.domain.sell.entity.Sell;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,9 +27,6 @@ public class Gifticon extends BaseEntity {
 
     @Column(name = "gifticon_url")
     private String gifticonUrl;
-
-    @OneToOne(mappedBy = "gifticon")
-    private Sell sell;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "order_id", unique = true)
