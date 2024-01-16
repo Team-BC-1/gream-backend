@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -32,12 +33,11 @@ class OrderQueryServiceTest implements OrderTest {
     public void 가장최근순_거래가_조회() {
         // GIVEN
         Product mockProduct = mock(Product.class);
-        Order pastOrder = Order.builder()
-            .createdAt(LocalDateTime.of(2024, 1, 1, 12, 12))
-            .build();
-        Order recentOrder = Order.builder()
-            .createdAt(LocalDateTime.of(2024, 1, 13, 12, 12))
-            .build();
+        Order pastOrder = Order.builder().build();
+        ReflectionTestUtils.setField(pastOrder, "createdAt", LocalDateTime.of(2024, 1, 13, 12, 12));
+
+        Order recentOrder = Order.builder().build();
+        ReflectionTestUtils.setField(recentOrder, "createdAt", LocalDateTime.of(2024, 1, 13, 12, 12));
         List<Order> mockOrders = List.of(recentOrder, pastOrder);
 
         // WHEN
