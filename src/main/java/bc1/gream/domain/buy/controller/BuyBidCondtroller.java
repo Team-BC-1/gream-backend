@@ -3,7 +3,7 @@ package bc1.gream.domain.buy.controller;
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
-import bc1.gream.domain.buy.service.BuyBidService;
+import bc1.gream.domain.buy.provider.BuyBidProvider;
 import bc1.gream.domain.order.validator.ProductValidator;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.common.RestResponse;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "Bearer Authentication")
 public class BuyBidCondtroller {
 
-    private final BuyBidService buyBidService;
+    private final BuyBidProvider buyBidProvider;
     private final ProductValidator productValidator;
 
     /**
@@ -38,7 +38,7 @@ public class BuyBidCondtroller {
         @PathVariable Long productId
     ) {
         Product product = productValidator.validateBy(productId);
-        BuyBidResponseDto responseDto = buyBidService.buyBidProduct(userDetails.getUser(), requestDto, product);
+        BuyBidResponseDto responseDto = buyBidProvider.buyBidProduct(userDetails.getUser(), requestDto, product);
         return RestResponse.success(responseDto);
     }
 
@@ -50,7 +50,7 @@ public class BuyBidCondtroller {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long buyId
     ) {
-        BuyCancelBidResponseDto responseDto = buyBidService.buyCancelBid(userDetails.getUser(), buyId);
+        BuyCancelBidResponseDto responseDto = buyBidProvider.buyCancelBid(userDetails.getUser(), buyId);
         return RestResponse.success(responseDto);
     }
 }
