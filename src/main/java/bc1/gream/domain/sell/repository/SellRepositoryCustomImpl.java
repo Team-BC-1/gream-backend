@@ -7,6 +7,7 @@ import static bc1.gream.domain.user.entity.QUser.user;
 
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.entity.QProduct;
+import bc1.gream.domain.sell.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.helper.SellQueryOrderFactory;
 import com.querydsl.core.types.OrderSpecifier;
@@ -53,5 +54,29 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .orderBy(sell.createdAt.asc())
             .fetchFirst();
         return Optional.ofNullable(foundSell);
+    }
+
+    @Override
+    public Page<SellPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable) {
+        // Get Orders By Columns
+        OrderSpecifier[] orderSpecifiers = SellQueryOrderFactory.getOrdersOf(pageable.getSort());
+
+        // Query + Order + Paging
+        List<SellPriceToQuantityResponseDto> priceToQuantities = queryFactory
+            .select(sell.price, sell.count())
+            .from(sell)
+            .where(sell.product.eq(product))
+            .groupBy(sell.price)
+            .orderBy(orderSpecifiers)
+            .fetch()
+            .stream()
+            .map(tuple -> SellPriceToQuantityResponseDto.builder()
+                .sellPrice(tuple.get(sell.price))
+                .quantity(tuple.get(sell.count()))
+                .build()
+            )
+            .toList();
+
+        return PageableExecutionUtils.getPage(priceToQuantities, pageable, priceToQuantities::size);
     }
 }
