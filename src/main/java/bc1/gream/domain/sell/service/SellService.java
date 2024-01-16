@@ -53,4 +53,16 @@ public class SellService {
         sellRepository.delete(sell);
         return sell;
     }
+
+    @Transactional(readOnly = true)
+    public Sell getRecentSellBidof(Long productId, Long price) {
+        return sellRepository.findByProductIdAndPrice(productId, price).orElseThrow(
+            () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
+        );
+    }
+
+    @Transactional
+    public void delete(Sell sell) {
+        sellRepository.delete(sell);
+    }
 }
