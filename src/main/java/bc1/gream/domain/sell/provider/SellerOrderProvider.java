@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserSoldGifticonProvider {
+public class SellerOrderProvider {
 
     private final OrderQueryService gifticonQueryService;
 
-    public List<Order> getBoughtGifticonOf(User user) {
+    public List<Order> getSoldOrderOf(User user) {
         return gifticonQueryService.findAllOrderBySeller(user);
     }
 }
