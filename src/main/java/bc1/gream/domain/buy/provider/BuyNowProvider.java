@@ -2,10 +2,10 @@ package bc1.gream.domain.buy.provider;
 
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
-import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
-import bc1.gream.domain.coupon.service.CouponService;
+import bc1.gream.domain.coupon.service.command.CouponCommandService;
+import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
@@ -14,7 +14,6 @@ import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -22,20 +21,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuyNowProvider {
 
     private final SellService sellService;
-    private final CouponService couponService;
     private final OrderCommandService orderCommandService;
-    private final ChangingCouponStatusFacade changingCouponStatusFacade;
+    private final CouponQueryService couponQueryService;
+    private final CouponCommandService couponCommandService;
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public BuyNowResponseDto buyNowProduct(User buyer, BuyNowRequestDto requestDto, Long productId) {
+        Coupon coupon;
+        Order order;
+
         Sell sell = sellService.getRecentSellBidof(productId, requestDto.price());
-        Coupon coupon = couponService.findCouponById(requestDto.couponId(), buyer);
-        Order order = orderCommandService.saveOrderOfSell(sell, buyer, coupon);
+
+        if (requestDto.couponId() != null) {
+            coupon = couponQueryService.checkCoupon(requestDto.couponId(), buyer, CouponStatus.AVAILABLE);
+            couponCommandService.changeCouponStatus(coupon, CouponStatus.ALREADY_USED);
+            order = orderCommandService.saveOrderOfSell(sell, buyer, coupon);
+        } else {
+            order = orderCommandService.saveOrderOfSellNotCoupon(sell, buyer);
+        }
 
         sell.getGifticon().updateOrder(order);
         sellService.delete(sell);
-
-        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), buyer, CouponStatus.ALREADY_USED);
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(order);
     }
