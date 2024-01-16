@@ -9,10 +9,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import bc1.gream.domain.gifticon.service.GifticonService;
+import bc1.gream.domain.gifticon.service.GifticonCommandService;
 import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
+import bc1.gream.domain.sell.provider.SellBidProvider;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.GifticonTest;
@@ -25,17 +26,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 
 @ExtendWith(MockitoExtension.class)
-class SellBidServiceTest implements GifticonTest {
+class SellBidProviderTest implements GifticonTest {
 
     @Mock
     SellRepository sellRepository;
     @Mock
-    GifticonService gifticonService;
+    GifticonCommandService gifticonCommandService;
     @Mock
     SellService sellService;
 
     @InjectMocks
-    SellBidService sellBidService;
+    SellBidProvider sellBidProvider;
 
     @Test
     void sellBidProductTest() throws IOException {
@@ -49,11 +50,11 @@ class SellBidServiceTest implements GifticonTest {
             .gifticonUrl(fileResource.getURL().getPath())
             .build();
 
-        given(gifticonService.saveGifticon(requestDto.gifticonUrl(), null)).willReturn(TEST_GIFTICON);
+        given(gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), null)).willReturn(TEST_GIFTICON);
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
 
         // when
-        SellBidResponseDto responseDto = sellBidService.createSellBid(TEST_USER, requestDto, TEST_PRODUCT);
+        SellBidResponseDto responseDto = sellBidProvider.createSellBid(TEST_USER, requestDto, TEST_PRODUCT);
 
         // then
         assertThat(responseDto.price()).isEqualTo(TEST_SELL_PRICE);
@@ -65,7 +66,7 @@ class SellBidServiceTest implements GifticonTest {
         given(sellService.deleteSellByIdAndUser(TEST_SELL_ID, TEST_USER)).willReturn(TEST_SELL);
 
         // when
-        sellBidService.sellCancelBid(TEST_USER, TEST_SELL_ID);
+        sellBidProvider.sellCancelBid(TEST_USER, TEST_SELL_ID);
 
         // then
         verify(sellService, times(1)).deleteSellByIdAndUser(any(Long.class), any(User.class));
