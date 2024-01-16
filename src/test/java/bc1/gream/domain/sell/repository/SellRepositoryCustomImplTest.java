@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Gifticon;
-import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.config.QueryDslConfig;
@@ -36,7 +36,6 @@ class SellRepositoryCustomImplTest implements SellTest {
     User user;
     Product product;
     Sell sell;
-    Gifticon gifticon;
 
     @Autowired
     private SellRepositoryCustomImpl sellRepositoryCustom;

@@ -57,7 +57,7 @@ class BuyRepositoryCustomImplTest implements BuyTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
 
         // WHEN
-        Page<Buy> allPricesOf = buyRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
+        Page<Buy> allPricesOf = buyRepositoryCustom.findAllPricesOf(savedProduct, pageable);
 
         // THEN
         boolean hasBuyBid = allPricesOf.stream()
