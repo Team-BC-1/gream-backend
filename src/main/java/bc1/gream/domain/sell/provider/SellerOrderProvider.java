@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SellerOrderProvider {
 
-    private final OrderQueryService gifticonQueryService;
+    private final OrderQueryService orderQueryService;
 
     public List<Order> getSoldOrderOf(User user) {
-        return gifticonQueryService.findAllOrderBySeller(user);
+        return orderQueryService.findAllOrderBySeller(user);
     }
 }
