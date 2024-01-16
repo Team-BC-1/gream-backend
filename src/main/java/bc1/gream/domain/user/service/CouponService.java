@@ -10,6 +10,7 @@ import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -18,7 +19,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void changeCouponStatus(Long couponId, User user, CouponStatus couponStatus) {
         Coupon coupon = findCouponById(couponId, user);
 
