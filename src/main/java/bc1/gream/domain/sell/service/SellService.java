@@ -9,6 +9,7 @@ import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
 import java.util.List;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,5 +71,10 @@ public class SellService {
 
     public List<Sell> getUserSellOnProgressOf(User seller) {
         return sellRepository.findAllByUser(seller);
+    }
+
+    @Transactional
+    public void deleteSellsOfDeadlineBefore(LocalDateTime dateTime) {
+        sellRepository.deleteSellsOfDeadlineBefore(dateTime);
     }
 }
