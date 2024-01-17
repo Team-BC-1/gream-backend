@@ -3,11 +3,8 @@ package bc1.gream.domain.coupon.service;
 import static bc1.gream.global.common.ResultCase.COUPON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
-import bc1.gream.domain.coupon.dto.response.CouponAvailableResponseDto;
-import bc1.gream.domain.coupon.dto.response.CouponUnavailableResponseDto;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
-import bc1.gream.domain.coupon.mapper.CouponMapper;
 import bc1.gream.domain.coupon.repository.CouponRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -47,17 +44,14 @@ public class CouponService {
         return coupon.getUser().getLoginId().equals(user.getLoginId());
     }
 
-    public List<CouponAvailableResponseDto> couponList(UserDetailsImpl userDetails) {
+    public List<Coupon> availableCouponList(UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        List<Coupon> coupons = couponRepository.availableCoupon(user);
-        return coupons.stream().map(CouponMapper.INSTANCE::toCouponListResponseDto).toList();
+        return couponRepository.availableCoupon(user);
     }
 
-    public List<CouponUnavailableResponseDto> unavailableCouponList(UserDetailsImpl userDetails) {
+    public List<Coupon> unavailableCouponList(UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        List<Coupon> coupons = couponRepository.unavailable(user);
-        return coupons.stream().map(CouponMapper.INSTANCE::toCouponUsedListResponseDto).toList();
-
+        return couponRepository.unavailable(user);
     }
 
 }
