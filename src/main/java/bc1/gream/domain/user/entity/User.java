@@ -91,4 +91,8 @@ public class User extends BaseEntity {
         this.likeProducts.remove(likeProduct);
         product.getLikeProducts().remove(likeProduct);
     }
+
+    public void increasePoint(Long finalPrice) {
+        this.point += finalPrice;
+    }
 }
