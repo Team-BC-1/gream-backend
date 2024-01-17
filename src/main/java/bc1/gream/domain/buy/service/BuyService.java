@@ -5,7 +5,10 @@ import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
+import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.helper.CouponCalculator;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -71,6 +74,18 @@ public class BuyService {
     }
 
     public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
-        return buyRepository.findAllBuyBidCoupon(user);
+        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user);
+
+        return buyCheckBidResponseDtos.stream()
+            .map(bid -> BuyMapper.INSTANCE.toBuyCheckBidResponseDto(bid, getFinalPrice(bid.coupon(), bid.discountPrice())))
+            .toList();
+    }
+
+    private Long getFinalPrice(Coupon coupon, Long discountPrice) {
+        if (coupon == null) {
+            return discountPrice;
+        }
+
+        return CouponCalculator.calculateDiscount(coupon, discountPrice);
     }
 }
