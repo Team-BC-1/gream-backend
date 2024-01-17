@@ -3,11 +3,16 @@ package bc1.gream.domain.buy.service;
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
+import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
+import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
+import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.helper.CouponCalculator;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,5 +71,21 @@ public class BuyService {
     @Transactional
     public void delete(Buy buy) {
         buyRepository.delete(buy);
+    }
+
+    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user);
+
+        return buyCheckBidResponseDtos.stream()
+            .map(bid -> BuyMapper.INSTANCE.toBuyCheckBidResponseDto(bid, getFinalPrice(bid.coupon(), bid.discountPrice())))
+            .toList();
+    }
+
+    private Long getFinalPrice(Coupon coupon, Long discountPrice) {
+        if (coupon == null) {
+            return discountPrice;
+        }
+
+        return CouponCalculator.calculateDiscount(coupon, discountPrice);
     }
 }
