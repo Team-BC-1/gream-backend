@@ -1,13 +1,17 @@
 package bc1.gream.domain.buy.repository;
 
+
 import static bc1.gream.domain.buy.entity.QBuy.buy;
 
+import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.entity.QBuy;
 import bc1.gream.domain.buy.repository.helper.BuyQueryOrderFactory;
+import bc1.gream.domain.coupon.entity.QCoupon;
 import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.entity.QProduct;
+import bc1.gream.domain.user.entity.User;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -122,5 +126,35 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .delete(buy)
             .where(buy.deadlineAt.before(dateTime))
             .execute();
+    }
+
+    @Override
+    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+        return queryFactory.select(
+                buy.id,
+                buy.price,
+                buy.product.id,
+                buy.product.brand,
+                buy.product.name,
+                QCoupon.coupon.id,
+                QCoupon.coupon.name,
+                QCoupon.coupon
+            ).from(buy)
+            .leftJoin(QCoupon.coupon).on(QCoupon.coupon.id.eq(buy.couponId))
+            .where(buy.user.eq(user))
+            .fetch()
+            .stream()
+            .map(tuple -> BuyCheckBidResponseDto.builder()
+                .buyId(tuple.get(buy.id))
+                .price(tuple.get(buy.price))
+                .productId(tuple.get(buy.product.id))
+                .productName(tuple.get(buy.product.name))
+                .productBrand(tuple.get(buy.product.brand))
+                .couponId(tuple.get(QCoupon.coupon.id))
+                .couponName(tuple.get(QCoupon.coupon.name))
+                .discountPrice(tuple.get(buy.price))
+                .coupon(tuple.get(QCoupon.coupon))
+                .build()
+            ).toList();
     }
 }

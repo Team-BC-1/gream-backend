@@ -7,8 +7,10 @@ import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.buy.service.BuyService;
-import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
+import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
+import bc1.gream.domain.coupon.service.command.CouponCommandService;
+import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
@@ -26,7 +28,8 @@ public class BuyBidProvider {
 
     private final BuyRepository buyRepository;
     private final BuyService buyService;
-    private final ChangingCouponStatusFacade changingCouponStatusFacade;
+    private final CouponQueryService couponQueryService;
+    private final CouponCommandService couponCommandService;
 
 
     @Transactional
@@ -34,7 +37,13 @@ public class BuyBidProvider {
         Long price = requestDto.price();
         Integer period = Deadline.getPeriod(requestDto.period());
         LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX, period);
+
         Long couponId = requestDto.couponId();
+
+        if (couponId != null) {
+            Coupon coupon = couponQueryService.checkCoupon(couponId, buyer, CouponStatus.AVAILABLE);
+            couponCommandService.changeCouponStatus(coupon, CouponStatus.IN_USE);
+        }
 
         Buy buy = Buy.builder()
             .price(price)
@@ -46,15 +55,17 @@ public class BuyBidProvider {
 
         Buy savedBuy = buyRepository.save(buy);
 
-        changingCouponStatusFacade.changeCouponStatusByCouponId(requestDto.couponId(), buyer, CouponStatus.IN_USE);
-
         return BuyMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
     }
 
     @Transactional
     public BuyCancelBidResponseDto buyCancelBid(User buyer, Long buyId) {
-        changingCouponStatusFacade.changeCouponStatus(buyId, buyer, CouponStatus.AVAILABLE);
-        buyService.deleteBuyByIdAndUser(buyId, buyer);
+        Buy buy = buyService.findBuyById(buyId);
+        if (buy.getCouponId() != null) {
+            Coupon coupon = couponQueryService.checkCoupon(buy.getCouponId(), buyer, CouponStatus.IN_USE);
+            couponCommandService.changeCouponStatus(coupon, CouponStatus.AVAILABLE);
+        }
+        buyService.deleteBuyByIdAndUser(buy, buyer);
 
         return new BuyCancelBidResponseDto(buyId);
     }
