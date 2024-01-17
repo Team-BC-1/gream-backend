@@ -13,6 +13,7 @@ import bc1.gream.domain.sell.repository.helper.SellQueryOrderFactory;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -107,5 +108,13 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .toList();
 
         return PageableExecutionUtils.getPage(priceToQuantities, pageable, priceToQuantities::size);
+    }
+
+    @Override
+    public void deleteSellsOfDeadlineBefore(LocalDateTime dateTime) {
+        queryFactory
+            .delete(sell)
+            .where(sell.deadlineAt.before(dateTime))
+            .execute();
     }
 }
