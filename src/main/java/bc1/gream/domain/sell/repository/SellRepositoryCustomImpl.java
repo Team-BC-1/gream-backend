@@ -95,6 +95,7 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
         List<SellPriceToQuantityResponseDto> priceToQuantities = queryFactory
             .select(sell.price, sell.count())
             .from(sell)
+            .leftJoin(sell.product, QProduct.product)
             .where(sell.product.eq(product))
             .groupBy(sell.price)
             .orderBy(orderSpecifiers)
@@ -107,7 +108,15 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             )
             .toList();
 
-        return PageableExecutionUtils.getPage(priceToQuantities, pageable, priceToQuantities::size);
+        JPAQuery<Long> countQuery = queryFactory
+            .select(sell.count())
+            .from(sell)
+            .leftJoin(sell.product, QProduct.product)
+            .where(sell.product.eq(product))
+            .groupBy(sell.price)
+            .orderBy(orderSpecifiers);
+
+        return PageableExecutionUtils.getPage(priceToQuantities, pageable, countQuery::fetchOne);
     }
 
     @Override
