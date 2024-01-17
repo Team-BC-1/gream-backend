@@ -7,6 +7,7 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.util.List;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -65,6 +66,10 @@ public class SellService {
     @Transactional
     public void delete(Sell sell) {
         sellRepository.delete(sell);
+    }
+
+    public List<Sell> getUserSellOnProgressOf(User seller) {
+        return sellRepository.findAllByUser(seller);
     }
 
     @Transactional
