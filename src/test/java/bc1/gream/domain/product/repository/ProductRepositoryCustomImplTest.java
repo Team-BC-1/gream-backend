@@ -5,8 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.global.config.QueryDslConfig;
-import bc1.gream.global.jpa.AuditingConfig;
+import bc1.gream.test.BaseDataRepositoryTest;
 import bc1.gream.test.ProductTest;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -14,21 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import({QueryDslConfig.class, AuditingConfig.class})
-class ProductRepositoryCustomImplTest implements ProductTest {
+class ProductRepositoryCustomImplTest extends BaseDataRepositoryTest implements ProductTest {
 
     @Autowired
     ProductRepositoryCustomImpl productRepositoryCustom;
@@ -86,5 +76,20 @@ class ProductRepositoryCustomImplTest implements ProductTest {
         assertEquals(10, productPage.getSize());
         assertEquals(0, productPage.getNumber());
         assertTrue(hasProductInProducts);
+    }
+
+    @Test
+    @DisplayName("상품명과 부분일치하는 상품 목록을 조회합니다.")
+    public void 상품명부분일치_상품목록조회() {
+        // GIVEN
+        String subName = "아이스";
+
+        // WHEN
+        List<Product> nameContaining = productRepository.findAllByNameContaining(subName);
+
+        // THEN
+        boolean hasSubNameProduct = nameContaining.stream()
+            .anyMatch(product -> product.getName().equals(TEST_PRODUCT_NAME));
+        assertTrue(hasSubNameProduct);
     }
 }

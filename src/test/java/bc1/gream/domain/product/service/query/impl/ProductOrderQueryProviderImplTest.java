@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.BDDMockito.given;
 
-import bc1.gream.domain.common.facade.ProductOrderQueryFacade;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.service.query.OrderQueryService;
 import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.test.OrderTest;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.UserTest;
@@ -21,10 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ProductOrderQueryFacadeImplTest implements UserTest, ProductTest, OrderTest {
+class ProductOrderQueryProviderImplTest implements UserTest, ProductTest, OrderTest {
 
     @InjectMocks
-    ProductOrderQueryFacade productOrderQueryFacade;
+    ProductOrderQueryProvider productOrderQueryProvider;
 
     @Mock
     ProductService productService;
@@ -40,7 +40,7 @@ class ProductOrderQueryFacadeImplTest implements UserTest, ProductTest, OrderTes
         given(orderQueryService.findAllTradesOf(TEST_PRODUCT)).willReturn(List.of(TEST_ORDER));
 
         // WHEN
-        List<Order> allTradesOf = productOrderQueryFacade.findAllTradesOf(TEST_PRODUCT_ID);
+        List<Order> allTradesOf = productOrderQueryProvider.findAllTradesOf(TEST_PRODUCT_ID);
 
         // THEN
         assertFalse(allTradesOf.isEmpty());

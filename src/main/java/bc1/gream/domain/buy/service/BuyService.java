@@ -7,11 +7,14 @@ import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
+import bc1.gream.domain.gifticon.repository.GifticonRepository;
+import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.helper.CouponCalculator;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,8 +54,8 @@ public class BuyService {
      * @return 구매입찰가 내역 페이징 데이터
      */
     @Transactional(readOnly = true)
-    public Page<Buy> findAllBuyBidsOf(Product product, Pageable pageable) {
-        return buyRepository.findAllPricesOf(product, pageable);
+    public Page<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Product product, Pageable pageable) {
+        return buyRepository.findAllPriceToQuantityOf(product, pageable);
     }
 
     /**
@@ -71,6 +74,11 @@ public class BuyService {
     @Transactional
     public void delete(Buy buy) {
         buyRepository.delete(buy);
+    }
+
+    @Transactional
+    public void deleteBuysOfDeadlineBefore(LocalDateTime dateTime) {
+        buyRepository.deleteBuysOfDeadlineBefore(dateTime);
     }
 
     public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {

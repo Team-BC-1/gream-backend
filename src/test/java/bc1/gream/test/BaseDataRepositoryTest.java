@@ -1,5 +1,6 @@
 package bc1.gream.test;
 
+import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.repository.CouponRepository;
@@ -9,6 +10,7 @@ import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.repository.UserRepository;
@@ -33,6 +35,8 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
     protected Coupon savedCoupon;
     protected Order savedOrder;
     protected Gifticon savedGifticon;
+    protected Sell savedSell;
+    protected Buy savedBuy;
     @Autowired
     protected ProductRepository productRepository;
     @Autowired
@@ -76,16 +80,33 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
                 .gifticonUrl(TEST_GIFTICON_URL)
                 .order(savedOrder)
                 .build());
+        savedSell = sellRepository.save(
+            Sell.builder()
+                .price(TEST_SELL_PRICE)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(savedGifticon)
+                .build()
+        );
+        savedBuy = buyRepository.save(
+            Buy.builder()
+                .price(TEST_BUY_PRICE)
+                .deadlineAt(BuyTest.TEST_DEADLINE_AT)
+                .user(savedBuyer)
+                .product(savedProduct)
+                .build()
+        );
     }
 
     /**
      * {@link DataJpaTest} 는 롤백이 default라 무관하지만, 만약 롤백을 false로 하셨다면, tearDown()에서 해당메서드를 호출하여 저장된 데이터를 삭제합니다.
      */
     protected void tearDownBaseDataRepositoryTest() {
-        orderRepository.deleteAllInBatch();
-        sellRepository.deleteAllInBatch();
         buyRepository.deleteAllInBatch();
+        sellRepository.deleteAllInBatch();
         gifticonRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
         couponRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();

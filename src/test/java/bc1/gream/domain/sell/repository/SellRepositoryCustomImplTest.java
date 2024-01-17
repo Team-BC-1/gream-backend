@@ -1,71 +1,143 @@
 package bc1.gream.domain.sell.repository;
 
+import static bc1.gream.domain.product.entity.QProduct.product;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Gifticon;
-import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.repository.ProductRepository;
+import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
+import bc1.gream.domain.sell.entity.QSell;
 import bc1.gream.domain.sell.entity.Sell;
-import bc1.gream.domain.user.entity.User;
-import bc1.gream.domain.user.repository.UserRepository;
-import bc1.gream.global.config.QueryDslConfig;
-import bc1.gream.global.jpa.AuditingConfig;
+import bc1.gream.test.BaseDataRepositoryTest;
 import bc1.gream.test.SellTest;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Map;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import({QueryDslConfig.class, AuditingConfig.class})
-class SellRepositoryCustomImplTest implements SellTest {
+class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements SellTest {
 
-    User user;
-    Product product;
-    Sell sell;
-
+    @Autowired
+    private JPAQueryFactory queryFactory;
     @Autowired
     private SellRepositoryCustomImpl sellRepositoryCustom;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private GifticonRepository gifticonRepository;
     @Autowired
     private SellRepository sellRepository;
 
     @BeforeEach
     void setUp() {
-        user = userRepository.save(TEST_USER);
-        product = productRepository.save(TEST_PRODUCT);
-        Gifticon gifticon = gifticonRepository.save(Gifticon.builder()
-            .gifticonUrl(TEST_GIFTICON_URL)
-            .order(null)
-            .build()
-        );
-        sell = sellRepository.save(
-            Sell.builder()
-                .price(TEST_SELL_PRICE)
-                .deadlineAt(TEST_DEADLINE_AT)
-                .product(product)
-                .user(user)
-                .gifticon(gifticon)
+        setUpBaseDataRepositoryTest();
+    }
+
+    @AfterEach
+    void tearDown() {
+        tearDownBaseDataRepositoryTest();
+    }
+
+    @Test
+    public void 상품_판매입찰_가격수량_조회() {
+        // GIVEN
+        Gifticon gifticon1 = gifticonRepository.save(
+            Gifticon.builder()
+                .gifticonUrl(TEST_GIFTICON_URL)
+                .order(null)
                 .build()
         );
+        Sell samePriceBid = sellRepository.save(
+            Sell.builder()
+                .price(TEST_SELL_PRICE)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(gifticon1)
+                .build()
+        );
+        Gifticon gifticon2 = gifticonRepository.save(
+            Gifticon.builder()
+                .gifticonUrl(TEST_GIFTICON_URL)
+                .order(null)
+                .build()
+        );
+        Sell expensiveSellBid = sellRepository.save(
+            Sell.builder()
+                .price(TEST_SELL_PRICE + 100L)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(gifticon2)
+                .build()
+        );
+
+        // WHEN
+        Map<Long, Long> map = queryFactory
+            .select(QSell.sell.price, QSell.sell.count())
+            .from(QSell.sell)
+            .where(QSell.sell.product.eq(product))
+            .groupBy(QSell.sell.price)
+            .fetch()
+            .stream()
+            .collect(Collectors.toMap(
+                tuple -> tuple.get(QSell.sell.price),
+                tuple -> tuple.get(QSell.sell.count())
+            ));
+
+        // THEN
+        assertEquals(2L, map.get(samePriceBid.getPrice()));
+        assertEquals(1L, map.get(expensiveSellBid.getPrice()));
+    }
+
+    @Test
+    public void 상품_판매입찰_가격수량_조회_페이징_가격오름차순() {
+        // GIVEN
+        Gifticon gifticon1 = gifticonRepository.save(
+            Gifticon.builder()
+                .gifticonUrl(TEST_GIFTICON_URL)
+                .order(null)
+                .build()
+        );
+        Sell samePriceBid = sellRepository.save(
+            Sell.builder()
+                .price(TEST_SELL_PRICE)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(gifticon1)
+                .build()
+        );
+        Gifticon gifticon2 = gifticonRepository.save(
+            Gifticon.builder()
+                .gifticonUrl(TEST_GIFTICON_URL)
+                .order(null)
+                .build()
+        );
+        Sell expensiveSellBid = sellRepository.save(
+            Sell.builder()
+                .price(TEST_SELL_PRICE + 100L)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(gifticon2)
+                .build()
+        );
+        Pageable pageable = PageRequest.of(1, 10);
+
+        // WHEN
+        Page<SellPriceToQuantityResponseDto> allPriceToQuantityOf = sellRepositoryCustom.findAllPriceToQuantityOf(savedProduct, pageable);
+
+        // THEN
+        assertEquals(samePriceBid.getPrice(), allPriceToQuantityOf.getContent().get(0).sellPrice());
+        assertEquals(2L, allPriceToQuantityOf.getContent().get(0).quantity());
+        assertEquals(expensiveSellBid.getPrice(),
+            allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).sellPrice());
+        assertEquals(1L, allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).quantity());
     }
 
     @Test
@@ -75,11 +147,11 @@ class SellRepositoryCustomImplTest implements SellTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
 
         // WHEN
-        Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(product, pageable);
+        Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(savedProduct, pageable);
 
         // THEN
         boolean hasSellBid = allPricesOf.stream()
-            .anyMatch(s -> s.equals(sell));
+            .anyMatch(s -> s.equals(savedSell));
         assertTrue(hasSellBid);
     }
 
@@ -88,34 +160,34 @@ class SellRepositoryCustomImplTest implements SellTest {
     public void 상품_판매입찰_조회_페이징_기본순서_최근날짜순() {
         // GIVEN
         Pageable pageable = PageRequest.of(0, 10);
-        Gifticon pastGifticon = gifticonRepository.save(
+        Gifticon cheaperGifticon = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
                 .order(null)
                 .build()
         );
-        Sell pastSell = sellRepository.save(
+        Sell cheaperSellBid = sellRepository.save(
             Sell.builder()
-                .price(TEST_SELL_PRICE)
-                .deadlineAt(TEST_DEADLINE_AT)
-                .product(product)
-                .user(user)
-                .gifticon(pastGifticon)
+                .price(TEST_SELL_PRICE - 1000L)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(cheaperGifticon)
                 .build()
         );
-        Gifticon recentGifticon = gifticonRepository.save(
+        Gifticon moreExpensiveGifticon = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
                 .order(null)
                 .build()
         );
-        Sell recentSell = sellRepository.save(
+        Sell moreExpensiveSellBid = sellRepository.save(
             Sell.builder()
-                .price(TEST_SELL_PRICE)
-                .deadlineAt(TEST_DEADLINE_AT)
-                .product(product)
-                .user(user)
-                .gifticon(recentGifticon)
+                .price(TEST_SELL_PRICE + 1000L)
+                .deadlineAt(SellTest.TEST_DEADLINE_AT)
+                .product(savedProduct)
+                .user(savedSeller)
+                .gifticon(moreExpensiveGifticon)
                 .build()
         );
 
@@ -123,7 +195,7 @@ class SellRepositoryCustomImplTest implements SellTest {
         Page<Sell> allPricesOf = sellRepositoryCustom.findAllPricesOf(TEST_PRODUCT, pageable);
 
         // THEN
-        assertEquals(recentSell, allPricesOf.getContent().get(0));
-        assertEquals(pastSell, allPricesOf.getContent().get(1));
+        assertEquals(cheaperSellBid, allPricesOf.getContent().get(0));
+        assertEquals(moreExpensiveSellBid, allPricesOf.getContent().get(allPricesOf.getContent().size() - 1));
     }
 }
