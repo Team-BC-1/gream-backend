@@ -20,7 +20,7 @@ class SellQueryOrderFactoryTest {
         OrderSpecifier[] orders = SellQueryOrderFactory.getOrdersOf(pageable.getSort());
 
         // THEN
-        assertEquals(Order.DESC, orders[0].getOrder());
-        assertEquals(QSell.sell.createdAt, orders[0].getTarget());
+        assertEquals(Order.ASC, orders[0].getOrder());
+        assertEquals(QSell.sell.price, orders[0].getTarget());
     }
 }

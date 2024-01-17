@@ -4,50 +4,68 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.repository.ProductRepository;
-import bc1.gream.domain.user.repository.UserRepository;
+import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.global.common.ResultCase;
-import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.exception.GlobalException;
-import bc1.gream.global.jpa.AuditingConfig;
+import bc1.gream.test.BaseDataRepositoryTest;
 import bc1.gream.test.BuyTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import({QueryDslConfig.class, AuditingConfig.class})
-class BuyRepositoryCustomImplTest implements BuyTest {
+class BuyRepositoryCustomImplTest extends BaseDataRepositoryTest implements BuyTest {
 
     @Autowired
     private BuyRepositoryCustomImpl buyRepositoryCustom;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
     private BuyRepository buyRepository;
-    private Buy savedBuy;
-    private Product savedProduct;
 
     @BeforeEach
     void setUp() {
-        userRepository.save(TEST_USER);
-        savedProduct = productRepository.save(TEST_PRODUCT);
-        savedBuy = buyRepository.save(TEST_BUY);
+        setUpBaseDataRepositoryTest();
+    }
+
+    @AfterEach
+    void tearDown() {
+        tearDownBaseDataRepositoryTest();
+    }
+
+    @Test
+    public void 상품_구매입찰가격수량_조회페이징_기본정렬_가격내림차순() {
+        // GIVEN
+        Buy samePriceBuyBid = buyRepository.save(
+            Buy.builder()
+                .price(TEST_BUY_PRICE)
+                .deadlineAt(BuyTest.TEST_DEADLINE_AT)
+                .user(savedBuyer)
+                .product(savedProduct)
+                .build()
+        );
+        Buy expensiveBuyBid = buyRepository.save(
+            Buy.builder()
+                .price(TEST_BUY_PRICE + 100000L)
+                .deadlineAt(BuyTest.TEST_DEADLINE_AT)
+                .user(savedBuyer)
+                .product(savedProduct)
+                .build()
+        );
+        Pageable pageable = PageRequest.of(0, 10);
+
+        // WHEN
+        Page<BuyPriceToQuantityResponseDto> allPriceToQuantityOf = buyRepositoryCustom.findAllPriceToQuantityOf(savedProduct, pageable);
+
+        // THEN
+        assertEquals(expensiveBuyBid.getPrice(), allPriceToQuantityOf.getContent().get(0).buyPrice());
+        assertEquals(1L, allPriceToQuantityOf.getContent().get(0).quantity());
+        assertEquals(samePriceBuyBid.getPrice(),
+            allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).buyPrice());
+        assertEquals(2L, allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).quantity());
     }
 
     @Test
@@ -74,8 +92,8 @@ class BuyRepositoryCustomImplTest implements BuyTest {
             buyRepository.save(
                 Buy.builder()
                     .price(TEST_BUY_PRICE)
-                    .deadlineAt(TEST_DEADLINE_AT)
-                    .user(TEST_USER)
+                    .deadlineAt(BuyTest.TEST_DEADLINE_AT)
+                    .user(savedBuyer)
                     .product(savedProduct)
                     .build()
             );

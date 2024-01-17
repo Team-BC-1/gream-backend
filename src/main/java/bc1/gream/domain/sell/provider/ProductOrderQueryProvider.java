@@ -1,4 +1,4 @@
-package bc1.gream.domain.common.facade;
+package bc1.gream.domain.sell.provider;
 
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.service.query.OrderQueryService;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ProductOrderQueryFacade {
+public class ProductOrderQueryProvider {
 
     private final ProductService productService;
     private final OrderQueryService orderQueryService;

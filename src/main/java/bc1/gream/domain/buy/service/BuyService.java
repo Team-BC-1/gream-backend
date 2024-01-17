@@ -6,6 +6,7 @@ import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
+import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -50,8 +51,8 @@ public class BuyService {
      * @return 구매입찰가 내역 페이징 데이터
      */
     @Transactional(readOnly = true)
-    public Page<Buy> findAllBuyBidsOf(Product product, Pageable pageable) {
-        return buyRepository.findAllPricesOf(product, pageable);
+    public Page<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Product product, Pageable pageable) {
+        return buyRepository.findAllPriceToQuantityOf(product, pageable);
     }
 
     /**

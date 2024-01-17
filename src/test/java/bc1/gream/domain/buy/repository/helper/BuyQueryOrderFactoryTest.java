@@ -21,6 +21,6 @@ class BuyQueryOrderFactoryTest {
 
         // THEN
         assertEquals(Order.DESC, orders[0].getOrder());
-        assertEquals(QBuy.buy.createdAt, orders[0].getTarget());
+        assertEquals(QBuy.buy.price, orders[0].getTarget());
     }
 }
