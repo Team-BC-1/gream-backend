@@ -10,8 +10,8 @@ import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.product.dto.response.BuyTradeResponseDto;
 import bc1.gream.domain.product.dto.response.OrderTradeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductDetailsResponseDto;
-import bc1.gream.domain.product.dto.response.ProductPreviewByNameResponseDto;
 import bc1.gream.domain.product.dto.response.ProductPreviewResponseDto;
+import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.service.query.ProductService;
@@ -27,6 +27,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -45,25 +46,14 @@ public class ProductQueryController {
     /**
      * 상품 전체 조회
      */
+
     @GetMapping
-    public RestResponse<List<ProductPreviewResponseDto>> findAll() {
-        List<Product> products = productService.findAll();
+    public RestResponse<List<ProductPreviewResponseDto>> findAll(
+        @RequestParam ProductCondition condition
+    ) {
+        List<Product> products = productService.findAllBy(condition);
         List<ProductPreviewResponseDto> responseDtos = products.stream()
             .map(ProductMapper.INSTANCE::toPreviewResponseDto)
-            .toList();
-        return RestResponse.success(responseDtos);
-    }
-
-    /**
-     * 상품명에 따른 목록 조회
-     */
-    @GetMapping("/{name}")
-    public RestResponse<List<ProductPreviewByNameResponseDto>> findAllByName(
-        @PathVariable("name") String name
-    ) {
-        List<Product> products = productService.findAllByNameContaining(name);
-        List<ProductPreviewByNameResponseDto> responseDtos = products.stream()
-            .map(ProductMapper.INSTANCE::toProductPreviewByNameResponseDto)
             .toList();
         return RestResponse.success(responseDtos);
     }

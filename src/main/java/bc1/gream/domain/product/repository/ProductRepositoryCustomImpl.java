@@ -8,6 +8,7 @@ import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.helper.ProductQueryConditionFactory;
 import bc1.gream.domain.product.repository.helper.ProductQueryOrderFactory;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,16 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             .limit(pageable.getPageSize())
             .fetch();
 
-        return PageableExecutionUtils.getPage(products, pageable, () -> products.size());
+        JPAQuery<Long> countQuery = queryFactory
+            .select(product.count())
+            .from(product)
+            .where(
+                ProductQueryConditionFactory.brandEquals(condition.brand()),
+                ProductQueryConditionFactory.nameEquals(condition.name()),
+                ProductQueryConditionFactory.hasPriceRangeOf(condition.startPrice(), condition.endPrice())
+            )
+            .orderBy(ordersOf);
+
+        return PageableExecutionUtils.getPage(products, pageable, countQuery::fetchOne);
     }
 }
