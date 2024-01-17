@@ -1,7 +1,7 @@
-package bc1.gream.domain.common.facade;
+package bc1.gream.domain.product.provider;
 
-import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductService;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BuyOrderQueryFacade {
+public class BuyOrderQueryProvider {
 
     private final ProductService productQueryService;
     private final BuyService buyService;
@@ -26,7 +26,7 @@ public class BuyOrderQueryFacade {
      * @return 해당 상품에 대한 구매입찰 내역
      * @author 임지훈
      */
-    public List<Buy> findAllBuyBidsOf(Long productId, Pageable pageable) {
+    public List<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Long productId, Pageable pageable) {
         Product product = productQueryService.findBy(productId);
         return buyService.findAllBuyBidsOf(product, pageable).getContent();
     }

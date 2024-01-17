@@ -44,4 +44,8 @@ public class ProductService {
         return productRepository.findById(id)
             .orElseThrow(() -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND));
     }
+
+    public List<Product> findAllByNameContaining(String name) {
+        return productRepository.findAllByNameContaining(name);
+    }
 }

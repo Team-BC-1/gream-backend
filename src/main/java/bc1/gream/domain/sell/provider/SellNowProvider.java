@@ -2,15 +2,15 @@ package bc1.gream.domain.sell.provider;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.service.CouponService;
 import bc1.gream.domain.gifticon.service.GifticonCommandService;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
 import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
 import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
-import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.user.entity.User;
-import bc1.gream.domain.coupon.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +32,9 @@ public class SellNowProvider {
         Order order = orderCommandService.saveOrderOfBuy(buy, user, coupon);
         // 새로운 기프티콘 저장
         gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), order);
+        // 사용자 쿠폰 사용처리 << 추후 구현 예정
+        // 판매에 따른 사용자 포인트 충전
+        user.increasePoint(order.getFinalPrice());
 
         // 구매입찰 삭제
         buyService.delete(buy);
