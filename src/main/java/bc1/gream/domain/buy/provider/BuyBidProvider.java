@@ -9,6 +9,7 @@ import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.buy.service.BuyService;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
+import bc1.gream.domain.coupon.helper.CouponCalculator;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.product.entity.Product;
@@ -37,12 +38,12 @@ public class BuyBidProvider {
         Long price = requestDto.price();
         Integer period = Deadline.getPeriod(requestDto.period());
         LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX, period);
-
         Long couponId = requestDto.couponId();
-
+        Long finalPrice = price;
         if (couponId != null) {
             Coupon coupon = couponQueryService.checkCoupon(couponId, buyer, CouponStatus.AVAILABLE);
             couponCommandService.changeCouponStatus(coupon, CouponStatus.IN_USE);
+            finalPrice = CouponCalculator.calculateDiscount(coupon, price);
         }
 
         Buy buy = Buy.builder()
@@ -54,6 +55,7 @@ public class BuyBidProvider {
             .build();
 
         Buy savedBuy = buyRepository.save(buy);
+        buyer.decreasePoint(finalPrice);
 
         return BuyMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
     }
@@ -61,11 +63,14 @@ public class BuyBidProvider {
     @Transactional
     public BuyCancelBidResponseDto buyCancelBid(User buyer, Long buyId) {
         Buy buy = buyService.findBuyById(buyId);
+        Long finalPrice = buy.getPrice();
         if (buy.getCouponId() != null) {
             Coupon coupon = couponQueryService.checkCoupon(buy.getCouponId(), buyer, CouponStatus.IN_USE);
             couponCommandService.changeCouponStatus(coupon, CouponStatus.AVAILABLE);
+            finalPrice = CouponCalculator.calculateDiscount(coupon, finalPrice);
         }
         buyService.deleteBuyByIdAndUser(buy, buyer);
+        buyer.increasePoint(finalPrice);
 
         return new BuyCancelBidResponseDto(buyId);
     }
