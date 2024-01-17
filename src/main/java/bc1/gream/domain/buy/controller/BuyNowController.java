@@ -3,7 +3,6 @@ package bc1.gream.domain.buy.controller;
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.buy.provider.BuyNowProvider;
-import bc1.gream.domain.common.facade.ChangingCouponStatusFacade;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuyNowController {
 
     private final BuyNowProvider buyNowProvider;
-    private final ChangingCouponStatusFacade changingCouponStatusFacade;
 
     /**
      * 즉시구매

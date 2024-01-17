@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/buy")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
-public class BuyBidCondtroller {
+public class BuyBidController {
 
     private final BuyBidProvider buyBidProvider;
     private final ProductValidator productValidator;
