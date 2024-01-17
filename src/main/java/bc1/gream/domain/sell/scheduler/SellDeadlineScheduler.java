@@ -18,6 +18,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SellDeadlineScheduler {
 
+    private final static String BATCH_TIME = "59 59 23 * * ?";
+    private final static String REDIS_CLOSE_LOCK = "CLOSE_BUY_SCHEDULE_LOCK";
+    private final static String REDIS_CLOSE_LOCK_VALUE = "LOCKED";
+    private final static int REDIS_DISTRIBUTED_LOCK_TIMEOUT = 2;
+
     private final SellService sellService;
     private final StringRedisTemplate redisTemplate;
 
@@ -26,12 +31,13 @@ public class SellDeadlineScheduler {
         maxAttempts = 3,
         backoff = @Backoff(delay = 2000)
     )
-    @Scheduled(cron = "59 59 23 * * ?")
+    @Scheduled(cron = BATCH_TIME)
     public void closeBuyOfPassedDealine() {
-        Boolean hasLock = redisTemplate.opsForValue().setIfAbsent("CLOSE_BUY_SCHEDULE_LOCK", "LOCKED", 2, TimeUnit.SECONDS);
+        Boolean hasLock = redisTemplate.opsForValue()
+            .setIfAbsent(REDIS_CLOSE_LOCK, REDIS_CLOSE_LOCK_VALUE, REDIS_DISTRIBUTED_LOCK_TIMEOUT, TimeUnit.SECONDS);
         if (hasLock) {
             sellService.deleteSellsOfDeadlineBefore(LocalDateTime.now());
-            redisTemplate.delete("CLOSE_BUY_SCHEDULE_LOCK");
+            redisTemplate.delete(REDIS_CLOSE_LOCK);
         }
     }
 
