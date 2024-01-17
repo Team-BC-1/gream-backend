@@ -1,5 +1,7 @@
 package bc1.gream.domain.buy.dto.response;
 
+import bc1.gream.domain.coupon.entity.Coupon;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 
 @Builder
@@ -11,7 +13,9 @@ public record BuyCheckBidResponseDto(
     Long couponId,
     String couponName,
     Long price,
-    Long discountPrice
+    Long discountPrice,
+    @JsonIgnore
+    Coupon coupon
 ) {
 
 }
