@@ -11,6 +11,7 @@ import bc1.gream.domain.product.entity.QProduct;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -113,5 +114,13 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .orderBy(orderSpecifiers);
 
         return PageableExecutionUtils.getPage(buyPriceToQuantityResponseDtos, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public void deleteBuysOfDeadlineBefore(LocalDateTime dateTime) {
+        queryFactory
+            .delete(buy)
+            .where(buy.deadlineAt.before(dateTime))
+            .execute();
     }
 }

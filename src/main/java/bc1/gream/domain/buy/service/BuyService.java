@@ -73,7 +73,7 @@ public class BuyService {
     public void delete(Buy buy) {
         buyRepository.delete(buy);
     }
-
+    
     @Transactional
     public void deleteBuysOfDeadlineBefore(LocalDateTime dateTime) {
         buyRepository.deleteBuysOfDeadlineBefore(dateTime);
