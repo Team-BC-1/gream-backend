@@ -43,6 +43,8 @@ public class BuyNowProvider {
         sell.getGifticon().updateOrder(order);
         sellService.delete(sell);
 
+        buyer.decreasePoint(order.getFinalPrice());
+
         return OrderMapper.INSTANCE.toBuyNowResponseDto(order);
     }
 }
