@@ -3,6 +3,7 @@ package bc1.gream.domain.product.mapper;
 import bc1.gream.domain.product.dto.response.ProductDetailsResponseDto;
 import bc1.gream.domain.product.dto.response.ProductDislikeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
+import bc1.gream.domain.product.dto.response.ProductLikesResponseDto;
 import bc1.gream.domain.product.dto.response.ProductPreviewResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import org.mapstruct.Mapper;
@@ -21,4 +22,6 @@ public interface ProductMapper {
     ProductDislikeResponseDto toDislikeResponseDto(String message);
 
     ProductPreviewResponseDto toPreviewResponseDto(Product product);
+
+    ProductLikesResponseDto toProductLikesResponseDto(Product product);
 }
