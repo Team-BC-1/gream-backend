@@ -7,10 +7,9 @@ import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
-import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.helper.CouponCalculator;
+import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
@@ -95,5 +94,9 @@ public class BuyService {
         }
 
         return CouponCalculator.calculateDiscount(coupon, discountPrice);
+    }
+
+    public boolean userPointCheck(User user, Long finalPrice) {
+        return user.getPoint() >= finalPrice;
     }
 }

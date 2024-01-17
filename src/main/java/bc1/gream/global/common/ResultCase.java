@@ -26,6 +26,7 @@ public enum ResultCase {
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, 1005, "만료된 Access Token"),
     // 만료된 리프레쉬 토큰 401
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 1006, "만료된 Refresh Token"),
+    NOT_ENOUGH_POINT(HttpStatus.FORBIDDEN, 1007, "유저의 포인트가 부족합니다"),
 
     // 상품 2000번대
     // 검색 결과 없음 404
