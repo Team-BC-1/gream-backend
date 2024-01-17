@@ -16,6 +16,8 @@ import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.GlobalException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -55,6 +57,9 @@ public class BuyBidProvider {
             .build();
 
         Buy savedBuy = buyRepository.save(buy);
+        if (!buyService.userPointCheck(buyer, finalPrice)) {
+            throw new GlobalException(ResultCase.NOT_ENOUGH_POINT);
+        }
         buyer.decreasePoint(finalPrice);
 
         return BuyMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
