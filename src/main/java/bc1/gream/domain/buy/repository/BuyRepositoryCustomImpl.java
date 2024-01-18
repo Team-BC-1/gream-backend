@@ -117,7 +117,6 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .from(buy)
             .leftJoin(buy.product, QProduct.product)
             .where(buy.product.eq(product))
-            .groupBy(buy.price)
             .orderBy(orderSpecifiers);
 
         return PageableExecutionUtils.getPage(buyPriceToQuantityResponseDtos, pageable, countQuery::fetchOne);
