@@ -53,13 +53,12 @@ public class SellNowProvider {
      * @return 구매입찰 시 등록된 쿠폰, 없다면 null 반환
      */
     private Coupon getCouponFrom(Buy buy) {
-        Coupon coupon = null;
-        if (Objects.nonNull(buy.getCouponId())) {
-            // 쿠폰 조회
-            coupon = couponService.findCouponById(buy.getCouponId(), buy.getUser());
-            // 사용자 쿠폰 사용처리 << 추후 구현 예정
-            coupon.changeStatus(CouponStatus.ALREADY_USED);
+        if (Objects.isNull(buy.getCouponId())) {
+            return null;
         }
+        // 쿠폰 조회, 사용처리
+        Coupon coupon = couponService.findCouponById(buy.getCouponId(), buy.getUser());
+        coupon.changeStatus(CouponStatus.ALREADY_USED);
         return coupon;
     }
 }
