@@ -1,6 +1,6 @@
 package bc1.gream.domain.gifticon.repository;
 
-import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.order.entity.QGifticon;
 import bc1.gream.domain.order.entity.QOrder;
 import bc1.gream.domain.user.entity.User;
