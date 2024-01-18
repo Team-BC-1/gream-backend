@@ -2,6 +2,7 @@ package bc1.gream.domain.buy.service;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
+import static bc1.gream.global.common.ResultCase.NOT_ENOUGH_POINT;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
@@ -96,7 +97,9 @@ public class BuyService {
         return CouponCalculator.calculateDiscount(coupon, discountPrice);
     }
 
-    public boolean userPointCheck(User user, Long finalPrice) {
-        return user.getPoint() >= finalPrice;
+    public void userPointCheck(User user, Long finalPrice) {
+        if (user.getPoint() < finalPrice) {
+            throw new GlobalException(NOT_ENOUGH_POINT);
+        }
     }
 }

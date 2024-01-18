@@ -39,8 +39,8 @@ class OrderMapperTest implements OrderTest {
         assertEquals(TEST_ORDER_FINAL_PRICE, responseDto.finalPrice());
         assertEquals(TEST_ORDER.getCreatedAt(), responseDto.tradedDate());
         assertEquals(TEST_PRODUCT_ID, responseDto.productId());
-        assertEquals(TEST_PRODUCT_BRAND, responseDto.brand());
-        assertEquals(TEST_PRODUCT_NAME, responseDto.name());
+        assertEquals(TEST_PRODUCT_BRAND, responseDto.productBrand());
+        assertEquals(TEST_PRODUCT_NAME, responseDto.productName());
         assertEquals(TEST_PRODUCT_IMAGE_URL, responseDto.iamgeUrl());
     }
 }

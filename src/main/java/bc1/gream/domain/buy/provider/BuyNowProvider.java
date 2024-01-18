@@ -13,8 +13,6 @@ import bc1.gream.domain.order.service.command.OrderCommandService;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.user.entity.User;
-import bc1.gream.global.common.ResultCase;
-import bc1.gream.global.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,28 +29,35 @@ public class BuyNowProvider {
 
     @Transactional
     public BuyNowResponseDto buyNowProduct(User buyer, BuyNowRequestDto requestDto, Long productId) {
-        Coupon coupon;
-        Order order;
 
         Sell sell = sellService.getRecentSellBidof(productId, requestDto.price());
 
-        if (requestDto.couponId() != null) {
-            coupon = couponQueryService.checkCoupon(requestDto.couponId(), buyer, CouponStatus.AVAILABLE);
-            couponCommandService.changeCouponStatus(coupon, CouponStatus.ALREADY_USED);
-            order = orderCommandService.saveOrderOfSell(sell, buyer, coupon);
-        } else {
-            order = orderCommandService.saveOrderOfSellNotCoupon(sell, buyer);
-        }
-
+        Coupon coupon = getCoupon(requestDto.couponId(), buyer);
+        Order order = saveOrder(sell, buyer, coupon);
         sell.getGifticon().updateOrder(order);
-        sellService.delete(sell);
 
-        if (!buyService.userPointCheck(buyer, order.getFinalPrice())) {
-            throw new GlobalException(ResultCase.NOT_ENOUGH_POINT);
-        }
+        sellService.delete(sell);
+        buyService.userPointCheck(buyer, order.getFinalPrice());
 
         buyer.decreasePoint(order.getFinalPrice());
+        order.getSeller().increasePoint(order.getExpectedPrice());
 
         return OrderMapper.INSTANCE.toBuyNowResponseDto(order);
+    }
+
+    private Coupon getCoupon(Long couponId, User buyer) {
+        if (couponId != null) {
+            Coupon coupon = couponQueryService.checkCoupon(couponId, buyer, CouponStatus.AVAILABLE);
+            couponCommandService.changeCouponStatus(coupon, CouponStatus.ALREADY_USED);
+            return coupon;
+        }
+        return null;
+    }
+
+    private Order saveOrder(Sell sell, User buyer, Coupon coupon) {
+        if (coupon != null) {
+            return orderCommandService.saveOrderOfSell(sell, buyer, coupon);
+        }
+        return orderCommandService.saveOrderOfSellNotCoupon(sell, buyer);
     }
 }
