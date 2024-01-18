@@ -17,7 +17,7 @@ public final class ProductQueryConditionFactory {
         if (name.isEmpty()) {
             return null;
         }
-        return product.name.eq(name);
+        return product.name.toLowerCase().containsIgnoreCase(name.toLowerCase());
     }
 
     public static BooleanExpression hasPriceRangeOf(Long startPrice, Long endPrice) {

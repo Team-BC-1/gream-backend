@@ -32,7 +32,7 @@ class ProductQueryConditionFactoryTest implements ProductTest {
         BooleanExpression expression = ProductQueryConditionFactory.nameEquals(TEST_PRODUCT_NAME);
 
         // THEN
-        assertEquals(product.name.eq(TEST_PRODUCT_NAME), expression);
+        assertEquals(product.name.toLowerCase().containsIgnoreCase(TEST_PRODUCT_NAME), expression);
     }
     // WHEN
 
