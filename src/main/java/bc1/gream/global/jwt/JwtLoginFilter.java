@@ -5,6 +5,7 @@ import static bc1.gream.global.common.ResultCase.USER_NOT_FOUND;
 import bc1.gream.domain.user.dto.request.UserLoginRequestDto;
 import bc1.gream.domain.user.dto.response.UserLoginResponseDto;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.common.ErrorResponseDto;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.common.ResultCase;
@@ -35,6 +36,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
+    private final UserRepository userRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostConstruct
@@ -91,12 +93,15 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         // 레디스에 loginId 을 키로, Bearer 없는 refresh token 를 벨류로 리프레쉬 토큰 만료 시간만큼 넣어줌.
         redisUtil.set(user.getLoginId(), jwtUtil.getTokenWithoutBearer(refreshToken), JwtUtil.REFRESH_TOKEN_TIME);
 
+        List<Long> likeProductIds = userRepository.findAllLikeProductIdByUser(user);
+
         return new UserLoginResponseDto(
             user.getId(),
             user.getLoginId(),
             user.getNickname(),
             user.getRole().getValue(),
-            user.getProvider().name());
+            user.getProvider().name(),
+            likeProductIds);
     }
 
     private String getRoleInAuthentication(Authentication authResult) {
