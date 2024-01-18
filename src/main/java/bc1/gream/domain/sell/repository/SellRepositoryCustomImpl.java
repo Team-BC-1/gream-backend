@@ -113,7 +113,6 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .from(sell)
             .leftJoin(sell.product, QProduct.product)
             .where(sell.product.eq(product))
-            .groupBy(sell.price)
             .orderBy(orderSpecifiers);
 
         return PageableExecutionUtils.getPage(priceToQuantities, pageable, countQuery::fetchOne);
