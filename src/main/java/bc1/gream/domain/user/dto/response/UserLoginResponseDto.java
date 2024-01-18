@@ -10,7 +10,7 @@ public record UserLoginResponseDto(
     String nickname,
     String role,
     String provider,
-    List<Long> likeProducts
+    List<Long> likeProductIds
 ) {
 
 }
