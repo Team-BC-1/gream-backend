@@ -29,8 +29,13 @@ public class SellBidController {
     private final ProductValidator productValidator;
 
     /**
-     * 판매 입찰 생성
-     **/
+     * 판매입찰 체결 요청
+     *
+     * @param userDetails 판매자
+     * @param requestDto  가격, 입찰기간, 기프티콘 이미지
+     * @param productId   상품 아이디
+     * @return 판매입찰가격, 판매입찰 아이디
+     */
     @PostMapping("/{productId}")
     public RestResponse<SellBidResponseDto> createSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -43,8 +48,12 @@ public class SellBidController {
     }
 
     /**
-     * 판매 입찰 취소
-     **/
+     * 판매입찰 취소 요청
+     *
+     * @param userDetails 판매자
+     * @param sellId      입찰 아이디
+     * @return 취소된 입찰 아이디
+     */
     @DeleteMapping("/bid/{sellId}")
     public RestResponse<SellCancelBidResponseDto> cancelSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,

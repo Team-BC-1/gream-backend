@@ -23,6 +23,14 @@ public class SellNowController {
 
     private final SellNowProvider sellNowProvider;
 
+    /**
+     * 즉시판매 체결 요청
+     *
+     * @param userDetails 판매자
+     * @param productId   상품 아이디
+     * @param requestDto  가격과 기프티콘 이미지
+     * @return
+     */
     @PostMapping("/{productId}/now")
     public RestResponse<SellNowResponseDto> sellNowProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
