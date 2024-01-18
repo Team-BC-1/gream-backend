@@ -1,5 +1,6 @@
 package bc1.gream.domain.user.dto.response;
 
+import java.util.List;
 import lombok.Builder;
 
 @Builder
@@ -8,7 +9,8 @@ public record UserLoginResponseDto(
     String loginId,
     String nickname,
     String role,
-    String provider
+    String provider,
+    List<Long> likeProducts
 ) {
 
 }
