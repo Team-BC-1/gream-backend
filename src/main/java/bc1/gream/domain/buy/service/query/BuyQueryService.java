@@ -1,7 +1,6 @@
-package bc1.gream.domain.buy.service;
+package bc1.gream.domain.buy.service.query;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 import static bc1.gream.global.common.ResultCase.NOT_ENOUGH_POINT;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
@@ -14,7 +13,6 @@ import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,26 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class BuyService {
+public class BuyQueryService {
 
     private final BuyRepository buyRepository;
-
-    public void deleteBuyByIdAndUser(Buy buy, User buyer) {
-        if (!isBuyerLoggedInUser(buy, buyer)) {
-            throw new GlobalException(NOT_AUTHORIZED);
-        }
-
-        buyRepository.delete(buy);
-    }
 
     public Buy findBuyById(Long buyId) {
         return buyRepository.findById(buyId).orElseThrow(
             () -> new GlobalException(BUY_BID_NOT_FOUND)
         );
-    }
-
-    public boolean isBuyerLoggedInUser(Buy buy, User user) {
-        return buy.getUser().getLoginId().equals(user.getLoginId());
     }
 
     /**
@@ -69,16 +55,6 @@ public class BuyService {
     public Buy getRecentBuyBidOf(Long productId, Long price) {
         return buyRepository.findByProductIdAndPrice(productId, price)
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
-    }
-
-    @Transactional
-    public void delete(Buy buy) {
-        buyRepository.delete(buy);
-    }
-
-    @Transactional
-    public void deleteBuysOfDeadlineBefore(LocalDateTime dateTime) {
-        buyRepository.deleteBuysOfDeadlineBefore(dateTime);
     }
 
     public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
