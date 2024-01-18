@@ -1,7 +1,7 @@
 package bc1.gream.domain.sell.provider;
 
 import bc1.gream.domain.gifticon.entity.Gifticon;
-import bc1.gream.domain.gifticon.service.GifticonCommandService;
+import bc1.gream.domain.gifticon.service.command.GifticonCommandService;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
