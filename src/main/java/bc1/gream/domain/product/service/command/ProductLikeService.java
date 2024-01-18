@@ -6,6 +6,7 @@ import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,11 +20,13 @@ public class ProductLikeService {
     private final ProductRepository productRepository;
     private final LikeProductRepository likeProductRepository;
 
+    @Transactional
     public void likeProduct(User user, Long productId) {
         Product product = getProductBy(productId);
         user.addLikeProduct(product);
     }
 
+    @Transactional
     public void dislikeProduct(User user, Long productId) {
         Product product = getProductBy(productId);
         user.removeLikeProduct(product);
