@@ -32,20 +32,11 @@ public class SellNowProvider {
     public SellNowResponseDto sellNowProduct(User user, SellNowRequestDto requestDto, Long productId) {
         // 해당상품과 가격에 대한 구매입찰
 
-        Order order;
-
         Buy buy = buyService.getRecentBuyBidOf(productId, requestDto.price());
         // 쿠폰 조회
         Coupon coupon = getCouponFrom(buy);
         // 새로운 주문
-        if (coupon != null) {
-            // 쿠폰이 존재할 때 쿠폰 상태 변경 및 쿠폰이 있는 order 저장 메소드로 이동
-            couponCommandService.changeCouponStatus(coupon, CouponStatus.ALREADY_USED);
-            order = orderCommandService.saveOrderOfBuy(buy, user, coupon);
-        } else {
-            // 쿠폰이 존재하지 않을 때 쿠폰이 없는 order 저장 메소드로 이동
-            order = orderCommandService.saveOrderOfBuyNotCoupon(buy, user);
-        }
+        Order order = saveOrder(buy, user, coupon);
 
         // 새로운 기프티콘 저장
         gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), order);
@@ -73,5 +64,12 @@ public class SellNowProvider {
         Coupon coupon = couponService.findCouponById(buy.getCouponId(), buy.getUser());
         coupon.changeStatus(CouponStatus.ALREADY_USED);
         return coupon;
+    }
+
+    private Order saveOrder(Buy buy, User seller, Coupon coupon) {
+        if (coupon != null) {
+            return orderCommandService.saveOrderOfBuy(buy, seller, coupon);
+        }
+        return orderCommandService.saveOrderOfBuyNotCoupon(buy, seller);
     }
 }
