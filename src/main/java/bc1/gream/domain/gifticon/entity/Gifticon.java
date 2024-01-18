@@ -1,6 +1,7 @@
-package bc1.gream.domain.order.entity;
+package bc1.gream.domain.gifticon.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
+import bc1.gream.domain.order.entity.Order;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

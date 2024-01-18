@@ -1,7 +1,7 @@
 package bc1.gream.domain.gifticon.service;
 
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

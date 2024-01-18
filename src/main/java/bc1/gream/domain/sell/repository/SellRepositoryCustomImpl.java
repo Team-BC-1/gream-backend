@@ -1,6 +1,6 @@
 package bc1.gream.domain.sell.repository;
 
-import static bc1.gream.domain.order.entity.QGifticon.gifticon;
+import static bc1.gream.domain.gifticon.entity.QGifticon.gifticon;
 import static bc1.gream.domain.product.entity.QProduct.product;
 import static bc1.gream.domain.sell.entity.QSell.sell;
 import static bc1.gream.domain.user.entity.QUser.user;

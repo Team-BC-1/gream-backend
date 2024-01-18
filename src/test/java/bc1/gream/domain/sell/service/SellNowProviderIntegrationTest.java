@@ -40,7 +40,7 @@ class SellNowProviderIntegrationTest extends BaseIntegrationTest implements BuyT
                 .price(TEST_BUY_PRICE)
                 .deadlineAt(BuyTest.TEST_DEADLINE_AT)
                 .user(savedBuyer)
-                .product(savedProduct)
+                .product(savedIcedAmericano)
                 .couponId(savedCoupon.getId())
                 .build();
             buyRepository.save(buy);
@@ -53,7 +53,7 @@ class SellNowProviderIntegrationTest extends BaseIntegrationTest implements BuyT
         SellNowRequestDto requestDto = new SellNowRequestDto(TEST_BUY_PRICE, TEST_GIFTICON_URL);
 
         // WHEN
-        SellNowResponseDto responseDto = sellNowProvider.sellNowProduct(savedSeller, requestDto, savedProduct.getId());
+        SellNowResponseDto responseDto = sellNowProvider.sellNowProduct(savedSeller, requestDto, savedIcedAmericano.getId());
 
         // THEN
         System.out.println("responseDto = " + responseDto);
@@ -71,7 +71,7 @@ class SellNowProviderIntegrationTest extends BaseIntegrationTest implements BuyT
         List<SellNowResponseDto> sellNowResponseDtos = new ArrayList<>();
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
-                SellNowResponseDto responseDto = sellNowProvider.sellNowProduct(savedSeller, requestDto, savedProduct.getId());
+                SellNowResponseDto responseDto = sellNowProvider.sellNowProduct(savedSeller, requestDto, savedIcedAmericano.getId());
                 sellNowResponseDtos.add(responseDto);
 //                try{
 //                } catch (InterruptedException ex) {

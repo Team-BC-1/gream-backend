@@ -1,7 +1,7 @@
 package bc1.gream.domain.gifticon.mapper;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
-import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

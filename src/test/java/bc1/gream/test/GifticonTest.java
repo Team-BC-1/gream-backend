@@ -1,6 +1,6 @@
 package bc1.gream.test;
 
-import bc1.gream.domain.order.entity.Gifticon;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 
 public interface GifticonTest extends OrderTest {
 

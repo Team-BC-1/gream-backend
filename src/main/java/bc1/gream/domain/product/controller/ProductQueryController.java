@@ -46,8 +46,10 @@ public class ProductQueryController {
      */
     @GetMapping
     public RestResponse<List<ProductPreviewResponseDto>> findAll(
-        @RequestParam(required = false) ProductCondition productCondition
+        @RequestParam(required = false, defaultValue = "") String brand,
+        @RequestParam(required = false, defaultValue = "") String name
     ) {
+        ProductCondition productCondition = ProductCondition.builder().brand(brand).name(name).build();
         List<Product> products = productService.findAllBy(productCondition);
         List<ProductPreviewResponseDto> responseDtos = products.stream()
             .map(ProductMapper.INSTANCE::toPreviewResponseDto)

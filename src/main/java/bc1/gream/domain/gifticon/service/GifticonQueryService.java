@@ -2,9 +2,9 @@ package bc1.gream.domain.gifticon.service;
 
 
 import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.gifticon.mapper.GifticonMapper;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
-import bc1.gream.domain.order.entity.Gifticon;
 import bc1.gream.domain.user.entity.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
