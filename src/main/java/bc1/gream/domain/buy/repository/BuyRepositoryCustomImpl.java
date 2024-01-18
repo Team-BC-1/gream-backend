@@ -2,6 +2,7 @@ package bc1.gream.domain.buy.repository;
 
 
 import static bc1.gream.domain.buy.entity.QBuy.buy;
+import static bc1.gream.domain.product.entity.QProduct.product;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
@@ -73,7 +74,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     public Optional<Buy> findByProductIdAndPrice(Long productId, Long price) {
         Buy buy = queryFactory
             .selectFrom(QBuy.buy)
-            .leftJoin(QBuy.buy.product, QProduct.product)
+            .leftJoin(QBuy.buy.product, product)
             .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
             .orderBy(QBuy.buy.createdAt.asc())
             .fetchFirst();
@@ -96,6 +97,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
         List<BuyPriceToQuantityResponseDto> buyPriceToQuantityResponseDtos = queryFactory
             .select(buy.price, buy.count())
             .from(buy)
+            .leftJoin(buy.product, QProduct.product)
             .where(buy.product.eq(product))
             .groupBy(buy.price)
             .orderBy(orderSpecifiers)
@@ -113,6 +115,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
         JPAQuery<Long> countQuery = queryFactory
             .select(buy.count())
             .from(buy)
+            .leftJoin(buy.product, QProduct.product)
             .where(buy.product.eq(product))
             .groupBy(buy.price)
             .orderBy(orderSpecifiers);
@@ -140,7 +143,9 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
                 QCoupon.coupon.name,
                 QCoupon.coupon
             ).from(buy)
-            .leftJoin(QCoupon.coupon).on(QCoupon.coupon.id.eq(buy.couponId))
+            .leftJoin(buy.product, product)
+            .leftJoin(QCoupon.coupon)
+            .on(QCoupon.coupon.id.eq(buy.couponId))
             .where(buy.user.eq(user))
             .fetch()
             .stream()
