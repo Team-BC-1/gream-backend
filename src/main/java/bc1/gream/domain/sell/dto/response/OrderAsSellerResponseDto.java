@@ -7,8 +7,8 @@ public record OrderAsSellerResponseDto(
     LocalDateTime tradedDate,
     Long finalPrice,
     Long productId,
-    String brand,
-    String name,
+    String productBrand,
+    String productName,
     String iamgeUrl
 ) {
 

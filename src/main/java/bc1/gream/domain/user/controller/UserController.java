@@ -9,6 +9,7 @@ import bc1.gream.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class UserController {
         return RestResponse.success(response);
     }
 
-    @PostMapping("/points")
+    @GetMapping("/points")
     public RestResponse<UserPointResponseDto> pointsCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserPointResponseDto response = userService.pointsCheck(userDetails);
         return RestResponse.success(response);
