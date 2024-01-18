@@ -67,6 +67,19 @@ class ProductQueryControllerTest implements ProductTest {
     }
 
     @Test
+    public void 상품_전체조회_상세조건() throws Exception {
+        // GIVEN
+        List<Product> products = List.of();
+        lenient().when(productService.findAll()).thenReturn(products);
+
+        // WHEN
+        // THEN
+        this.mockMvc.perform(get("/api/products?brand=스타벅스&name=아이스아메리카노&startPrice=4000&endPrice=10000"))
+            .andDo(print())
+            .andExpect(status().isOk());
+    }
+
+    @Test
     public void 체결_거래_내역_조회() throws Exception {
         // WHEN
         // THEN

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/buy")
+@RequestMapping("/api/sell/history")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
 public class UserSellHistoryController {
