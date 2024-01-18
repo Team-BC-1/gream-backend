@@ -28,8 +28,8 @@ public interface OrderMapper {
     @Mapping(source = "id", target = "orderId")
     @Mapping(source = "createdAt", target = "tradedDate")
     @Mapping(expression = "java(order.getProduct().getId())", target = "productId")
-    @Mapping(expression = "java(order.getProduct().getBrand())", target = "brand")
-    @Mapping(expression = "java(order.getProduct().getName())", target = "name")
+    @Mapping(expression = "java(order.getProduct().getBrand())", target = "productBrand")
+    @Mapping(expression = "java(order.getProduct().getName())", target = "productName")
     @Mapping(expression = "java(order.getProduct().getImageUrl())", target = "iamgeUrl")
     OrderAsSellerResponseDto toOrderAsSellerResponseDto(Order order);
 }
