@@ -33,4 +33,19 @@ public interface ProductTest {
         .description(TEST_PRODUCT_SECOND_DESCRIPTION)
         .price(TEST_PRODUCT_SECOND_PRICE)
         .build();
+
+    Long TEST_PRODUCT_THIRD_ID = 3L;
+    String TEST_PRODUCT_THIRD_BRAND = "스타벅스";
+    String TEST_PRODUCT_THIRD_NAME = "아이스커피";
+    String TEST_PRODUCT_THIRD_IMAGE_URL = "bbeck_ice_coffee";
+    String TEST_PRODUCT_THIRD_DESCRIPTION = "얼어죽어도 아이스 커피가 좋아요";
+    Long TEST_PRODUCT_THIRD_PRICE = 3_000L;
+
+    Product TEST_PRODUCT_THIRD = Product.builder()
+        .brand(TEST_PRODUCT_THIRD_BRAND)
+        .name(TEST_PRODUCT_THIRD_NAME)
+        .imageUrl(TEST_PRODUCT_THIRD_IMAGE_URL)
+        .description(TEST_PRODUCT_THIRD_DESCRIPTION)
+        .price(TEST_PRODUCT_THIRD_PRICE)
+        .build();
 }
