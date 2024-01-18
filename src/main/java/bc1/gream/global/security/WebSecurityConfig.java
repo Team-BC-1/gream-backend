@@ -1,5 +1,6 @@
 package bc1.gream.global.security;
 
+import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.exception.ExceptionHandlerFilter;
 import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
@@ -40,6 +41,7 @@ public class WebSecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final LogoutHandler logoutHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
+    private final UserRepository userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,7 +55,7 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtLoginFilter jwtLoginFilter() throws Exception {
-        JwtLoginFilter filter = new JwtLoginFilter(jwtUtil, redisUtil);
+        JwtLoginFilter filter = new JwtLoginFilter(jwtUtil, redisUtil, userRepository);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
