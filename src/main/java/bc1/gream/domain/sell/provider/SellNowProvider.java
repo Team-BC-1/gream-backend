@@ -50,7 +50,7 @@ public class SellNowProvider {
         // 새로운 기프티콘 저장
         gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), order);
         // 판매에 따른 사용자 포인트 충전
-        user.increasePoint(order.getFinalPrice());
+        user.increasePoint(order.getExpectedPrice());
 
         // 구매입찰 삭제
         buyService.delete(buy);
