@@ -2,8 +2,8 @@ package bc1.gream.domain.buy.controller;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
-import bc1.gream.domain.buy.service.BuyService;
-import bc1.gream.domain.gifticon.service.GifticonQueryService;
+import bc1.gream.domain.buy.service.query.BuyQueryService;
+import bc1.gream.domain.gifticon.service.query.GifticonQueryService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserBoughtHistoryController {
 
     private final GifticonQueryService gifticonQueryService;
-    private final BuyService buyService;
+    private final BuyQueryService buyQueryService;
 
     @GetMapping("/end")
     public RestResponse<List<BuyCheckOrderResponseDto>> getBoughtOrder(
@@ -35,7 +35,7 @@ public class UserBoughtHistoryController {
     public RestResponse<List<BuyCheckBidResponseDto>> getBuyBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return RestResponse.success(buyService.findAllBuyBidCoupon(userDetails.getUser()));
+        return RestResponse.success(buyQueryService.findAllBuyBidCoupon(userDetails.getUser()));
     }
 
 }

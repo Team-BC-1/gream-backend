@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.repository.CouponRepository;
-import bc1.gream.domain.coupon.service.CouponService;
+import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.CouponTest;
 import org.junit.jupiter.api.DisplayName;
@@ -19,13 +19,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CouponServiceTest implements CouponTest {
+class CouponQueryServiceTest implements CouponTest {
 
     @Mock
     private CouponRepository couponRepository;
 
     @InjectMocks
-    private CouponService couponService;
+    private CouponQueryService couponQueryService;
 
     @Test
     @DisplayName("쿠폰에 대한 회원 접근권한을 검증합니다.")
@@ -37,7 +37,7 @@ class CouponServiceTest implements CouponTest {
         given(mockCoupon.getUser()).willReturn(mockUser);
 
         // WHEN
-        boolean matchCouponUser = couponService.isMatchCouponUser(mockUser, mockCoupon);
+        boolean matchCouponUser = couponQueryService.isMatchCouponUser(mockUser, mockCoupon);
 
         // THEN
         assertTrue(matchCouponUser);

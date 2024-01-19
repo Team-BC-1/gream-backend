@@ -28,7 +28,12 @@ public class UserSellHistoryController {
     private final SellerOrderProvider sellerOrderProvider;
     private final SellService sellService;
 
-
+    /**
+     * 판매자 판매내역 히스토리 조회 요청
+     *
+     * @param userDetails 판매자
+     * @return 판매내역 목록
+     */
     @GetMapping("/end")
     public RestResponse<List<OrderAsSellerResponseDto>> getSoldOrderOf(
         @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -40,6 +45,12 @@ public class UserSellHistoryController {
         return RestResponse.success(responseDtos);
     }
 
+    /**
+     * 판매자 판매입찰 히스토리 조회 요청
+     *
+     * @param userDetails 판매자
+     * @return 판매입찰 목록
+     */
     @GetMapping("/onprogress")
     public RestResponse<List<UserSellOnProgressResponseDto>> getUserSellOnProgress(
         @AuthenticationPrincipal UserDetailsImpl userDetails

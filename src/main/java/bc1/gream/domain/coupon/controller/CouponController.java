@@ -4,7 +4,7 @@ import bc1.gream.domain.coupon.dto.response.CouponAvailableResponseDto;
 import bc1.gream.domain.coupon.dto.response.CouponUnavailableResponseDto;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.mapper.CouponMapper;
-import bc1.gream.domain.coupon.service.CouponService;
+import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import java.util.List;
@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/coupons")
 public class CouponController {
 
-    private final CouponService couponService;
+    private final CouponQueryService couponQueryService;
 
     @GetMapping("")
     public RestResponse<List<CouponAvailableResponseDto>> availableCouponList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Coupon> coupons = couponService.availableCouponList(userDetails);
+        List<Coupon> coupons = couponQueryService.availableCouponList(userDetails);
         List<CouponAvailableResponseDto> response = coupons.stream().map(CouponMapper.INSTANCE::toCouponListResponseDto).toList();
         return RestResponse.success(response);
     }
 
     @GetMapping("/used")
     public RestResponse<List<CouponUnavailableResponseDto>> unavailableCouponList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Coupon> coupons = couponService.unavailableCouponList(userDetails);
+        List<Coupon> coupons = couponQueryService.unavailableCouponList(userDetails);
         List<CouponUnavailableResponseDto> response = coupons.stream().map(CouponMapper.INSTANCE::toCouponUsedListResponseDto).toList();
         return RestResponse.success(response);
     }

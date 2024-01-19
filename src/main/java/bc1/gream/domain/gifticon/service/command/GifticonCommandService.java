@@ -1,4 +1,4 @@
-package bc1.gream.domain.gifticon.service;
+package bc1.gream.domain.gifticon.service.command;
 
 import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;

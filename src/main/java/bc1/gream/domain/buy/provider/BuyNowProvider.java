@@ -2,7 +2,7 @@ package bc1.gream.domain.buy.provider;
 
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
-import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
@@ -22,26 +22,35 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuyNowProvider {
 
     private final SellService sellService;
-    private final BuyService buyService;
+    private final BuyQueryService buyQueryService;
     private final OrderCommandService orderCommandService;
     private final CouponQueryService couponQueryService;
     private final CouponCommandService couponCommandService;
 
     @Transactional
     public BuyNowResponseDto buyNowProduct(User buyer, BuyNowRequestDto requestDto, Long productId) {
-
+        // 해당상품과 가격에 대한 판매입찰
         Sell sell = sellService.getRecentSellBidof(productId, requestDto.price());
-
+        // 쿠폰 조회
         Coupon coupon = getCoupon(requestDto.couponId(), buyer);
+
+        // 새로운 주문
         Order order = saveOrder(sell, buyer, coupon);
+        // 판매입찰 기프티콘에 주문 저장
         sell.getGifticon().updateOrder(order);
-
+        // 해당 판매입찰 삭제
         sellService.delete(sell);
-        buyService.userPointCheck(buyer, order.getFinalPrice());
 
+        // 구매가능검증 :: 사용자 포인트가 finalPrice 보다 작다면 예외처리
+        // << 이건 컨트롤러 단에서 검증 해줘야하 하지 않을까???
+        buyQueryService.userPointCheck(buyer, order.getFinalPrice());
+
+        // 즉시구매자 포인트 감소
         buyer.decreasePoint(order.getFinalPrice());
+        // 판매입찰자 포인트 증가
         order.getSeller().increasePoint(order.getExpectedPrice());
 
+        // 매핑
         return OrderMapper.INSTANCE.toBuyNowResponseDto(order);
     }
 

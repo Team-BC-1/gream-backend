@@ -1,12 +1,12 @@
 package bc1.gream.domain.sell.provider;
 
 import bc1.gream.domain.buy.entity.Buy;
-import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.buy.service.command.BuyCommandService;
+import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
-import bc1.gream.domain.coupon.service.CouponService;
-import bc1.gream.domain.coupon.service.command.CouponCommandService;
-import bc1.gream.domain.gifticon.service.GifticonCommandService;
+import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
+import bc1.gream.domain.gifticon.service.command.GifticonCommandService;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
@@ -22,17 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SellNowProvider {
 
-    private final BuyService buyService;
-    private final CouponService couponService;
+    private final BuyQueryService buyQueryService;
+    private final BuyCommandService commandService;
+    private final CouponQueryService couponQueryService;
     private final OrderCommandService orderCommandService;
     private final GifticonCommandService gifticonCommandService;
-    private final CouponCommandService couponCommandService;
 
     @Transactional
     public SellNowResponseDto sellNowProduct(User user, SellNowRequestDto requestDto, Long productId) {
         // 해당상품과 가격에 대한 구매입찰
-
-        Buy buy = buyService.getRecentBuyBidOf(productId, requestDto.price());
+        Buy buy = buyQueryService.getRecentBuyBidOf(productId, requestDto.price());
         // 쿠폰 조회
         Coupon coupon = getCouponFrom(buy);
         // 새로운 주문
@@ -44,7 +43,7 @@ public class SellNowProvider {
         user.increasePoint(order.getExpectedPrice());
 
         // 구매입찰 삭제
-        buyService.delete(buy);
+        commandService.delete(buy);
 
         // 매퍼를 통해 변환
         return OrderMapper.INSTANCE.toSellNowResponseDto(order);
@@ -61,7 +60,7 @@ public class SellNowProvider {
             return null;
         }
         // 쿠폰 조회, 사용처리
-        Coupon coupon = couponService.findCouponById(buy.getCouponId(), buy.getUser());
+        Coupon coupon = couponQueryService.findCouponById(buy.getCouponId(), buy.getUser());
         coupon.changeStatus(CouponStatus.ALREADY_USED);
         return coupon;
     }
