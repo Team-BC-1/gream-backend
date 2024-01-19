@@ -8,7 +8,7 @@ import bc1.gream.domain.order.validator.ProductValidator;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/buy")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "Bearer Authentication")
 public class BuyBidController {
 
     private final BuyBidProvider buyBidProvider;
@@ -37,6 +36,7 @@ public class BuyBidController {
      * @return 체결 결과 :: 가격, 구매입찰아이디
      */
     @PostMapping("/{productId}")
+    @Operation(summary = "구매입찰 체결 요청", description = "상품에 대한 구매자의 구매입찰 체결요청을 처리합니다.")
     public RestResponse<BuyBidResponseDto> buyBidProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody BuyBidRequestDto requestDto,
@@ -55,6 +55,7 @@ public class BuyBidController {
      * @return 취소된 구매입찰 아이디
      */
     @DeleteMapping("/bid/{buyId}")
+    @Operation(summary = "구매입찰 취소 요청", description = "상품에 대한 구매자의 구매입찰 취소요청을 처리합니다.")
     public RestResponse<BuyCancelBidResponseDto> buyCancelBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long buyId

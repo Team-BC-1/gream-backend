@@ -10,6 +10,7 @@ import bc1.gream.domain.product.service.command.ProductLikeService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import bc1.gream.global.validator.OrderCriteriaValidator;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,7 @@ public class ProductLikeController {
      * @return 결과 메세지
      */
     @PostMapping("/{id}/like")
+    @Operation(summary = "관심상품 등록 요청", description = "사용자의 관심상품 등록요청을 처리합니다.")
     public RestResponse<ProductLikeResponseDto> likeProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
@@ -54,6 +56,7 @@ public class ProductLikeController {
      * @return 결과 메세지
      */
     @DeleteMapping("/{id}/dislike")
+    @Operation(summary = "관심상품 해제 요청", description = "사용자의 관심상품 해제요청을 처리합니다.")
     public RestResponse<ProductDislikeResponseDto> dislikeProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
@@ -71,6 +74,7 @@ public class ProductLikeController {
      * @return 좋아요 누른 상품 정보 목록
      */
     @GetMapping("/likes")
+    @Operation(summary = "관심상품 조회 요청", description = "사용자의 모든 관심상품 조회요청을 처리합니다.")
     public RestResponse<List<ProductLikesResponseDto>> productLikes(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PageableDefault(size = 5) Pageable pageable

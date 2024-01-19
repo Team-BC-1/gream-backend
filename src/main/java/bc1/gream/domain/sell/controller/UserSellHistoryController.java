@@ -10,7 +10,7 @@ import bc1.gream.domain.sell.provider.SellerOrderProvider;
 import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/sell/history")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "Bearer Authentication")
 public class UserSellHistoryController {
 
     private final SellerOrderProvider sellerOrderProvider;
@@ -35,6 +34,7 @@ public class UserSellHistoryController {
      * @return 판매내역 목록
      */
     @GetMapping("/end")
+    @Operation(summary = "판매내역 히스토리 조회 요청", description = "판매자의 판매완료 내역 조회요청을 처리합니다.")
     public RestResponse<List<OrderAsSellerResponseDto>> getSoldOrderOf(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -52,6 +52,7 @@ public class UserSellHistoryController {
      * @return 판매입찰 목록
      */
     @GetMapping("/onprogress")
+    @Operation(summary = "판매입찰 히스토리 조회 요청", description = "진행 중인 판매자의 판매입찰 내역 조회요청을 처리합니다.")
     public RestResponse<List<UserSellOnProgressResponseDto>> getUserSellOnProgress(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {

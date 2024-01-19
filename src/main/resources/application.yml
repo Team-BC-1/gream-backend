@@ -16,7 +16,7 @@ spring:
         auto_quote_keyword: true # 예약어 사용가능
         globally_quoted_identifiers: true # 예약어 사용가능
         show_sql: true # sql 로깅
-        generate_statistics: true # 쿼리수행 통계
+        # generate_statistics: true # 쿼리수행 통계
         format_sql: true # SQL문 정렬하여 출력
         highlight_sql: true # SQL문 색 부여
   # REDIS
