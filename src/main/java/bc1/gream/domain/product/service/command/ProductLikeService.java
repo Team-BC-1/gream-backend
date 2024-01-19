@@ -9,11 +9,13 @@ import bc1.gream.global.exception.GlobalException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductLikeService {
 
 
@@ -23,7 +25,11 @@ public class ProductLikeService {
     @Transactional
     public void likeProduct(User user, Long productId) {
         Product product = getProductBy(productId);
-        user.addLikeProduct(product);
+        boolean hasNotLikedThisProduct = user.getLikeProducts().stream()
+            .noneMatch(likeProduct -> likeProduct.getProduct().equals(product));
+        if (hasNotLikedThisProduct) {
+            user.addLikeProduct(product);
+        }
     }
 
     @Transactional

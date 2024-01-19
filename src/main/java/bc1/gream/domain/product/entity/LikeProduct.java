@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -35,7 +36,8 @@ public class LikeProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public LikeProduct(User user, Product product) {
+    @Builder
+    private LikeProduct(User user, Product product) {
         this.user = user;
         this.product = product;
     }
