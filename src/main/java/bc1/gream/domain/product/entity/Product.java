@@ -12,9 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,7 +35,7 @@ public class Product extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", targetEntity = LikeProduct.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<LikeProduct> likeProducts = new ArrayList<>();
+    private final Set<LikeProduct> likeProducts = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

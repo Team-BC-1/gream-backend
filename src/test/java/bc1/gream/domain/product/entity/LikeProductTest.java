@@ -49,7 +49,7 @@ class LikeProductTest implements UserTest, ProductTest {
     @Test
     public void 중간조인테이블_복합키_확인() {
         // GIVEN
-        LikeProduct likeProduct = new LikeProduct(TEST_USER, TEST_PRODUCT);
+        LikeProduct likeProduct = LikeProduct.builder().user(TEST_USER).product(TEST_PRODUCT).build();
 
         // WHEN
         LikeProduct savedLikeProduct = likeProductRepository.save(likeProduct);

@@ -17,14 +17,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Getter
 @Entity
@@ -34,15 +33,15 @@ public class User extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "buyer", targetEntity = Order.class)
-    private final Set purchasedOrders = new HashSet();
+    private final Set<Order> purchasedOrders = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "seller", targetEntity = Order.class)
-    private final Set saleOrders = new HashSet();
+    private final Set<Order> saleOrders = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", targetEntity = LikeProduct.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<LikeProduct> likeProducts = new ArrayList<>();
+    private final Set<LikeProduct> likeProducts = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,12 +77,14 @@ public class User extends BaseEntity {
         this.point = 100000L;
     }
 
+    @Transactional
     public void addLikeProduct(Product product) {
-        LikeProduct likeProduct = new LikeProduct(this, product);
+        LikeProduct likeProduct = LikeProduct.builder().user(this).product(product).build();
         product.getLikeProducts().add(likeProduct);
         this.likeProducts.add(likeProduct);
     }
 
+    @Transactional
     public void removeLikeProduct(Product product) {
         LikeProduct likeProduct = this.likeProducts.stream()
             .filter(lp -> lp.getProduct().equals(product))
