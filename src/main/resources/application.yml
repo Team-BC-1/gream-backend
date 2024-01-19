@@ -1,23 +1,37 @@
 spring:
   profiles:
     active: prod
+  # DATASOURCE
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_URL}/gream
     username: ${DB_ID}
     password: ${DB_PASSWORD}
+  # JPA
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
     properties:
       hibernate:
-        format_sql: true
-        use_sql_comments: true
+        auto_quote_keyword: true # 예약어 사용가능
+        globally_quoted_identifiers: true # 예약어 사용가능
+        show_sql: true # sql 로깅
+        generate_statistics: true # 쿼리수행 통계
+        format_sql: true # SQL문 정렬하여 출력
+        highlight_sql: true # SQL문 색 부여
+  # REDIS
   data:
     redis:
       host: ${REDIS_URL}
       port: 6379
+# JWT
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
+# SERVER
+server:
+  tomcat:
+    connection-timeout: 1800000 # 톰캣의 타임아웃 설정 (milsec)
+    access-log: # ACESS 에 대한 로깅
+      enabled: true
+      pattern: "%{yyyy-MM-dd HH:mm:ss}t\\t%s\\t%r\\t%{User-Agent}i\\t%{Referer}i\\t%a\\t%b"
