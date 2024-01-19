@@ -6,7 +6,8 @@ import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
-import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.buy.service.command.BuyCommandService;
+import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.helper.CouponCalculator;
@@ -28,7 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuyBidProvider {
 
     private final BuyRepository buyRepository;
-    private final BuyService buyService;
+    private final BuyCommandService buyCommandService;
+    private final BuyQueryService buyQueryService;
     private final CouponQueryService couponQueryService;
     private final CouponCommandService couponCommandService;
 
@@ -51,7 +53,7 @@ public class BuyBidProvider {
             .build();
 
         Buy savedBuy = buyRepository.save(buy);
-        buyService.userPointCheck(buyer, finalPrice);
+        buyQueryService.userPointCheck(buyer, finalPrice);
 
         buyer.decreasePoint(finalPrice);
 
@@ -60,14 +62,14 @@ public class BuyBidProvider {
 
     @Transactional
     public BuyCancelBidResponseDto buyCancelBid(User buyer, Long buyId) {
-        Buy buy = buyService.findBuyById(buyId);
+        Buy buy = buyQueryService.findBuyById(buyId);
         Long finalPrice = buy.getPrice();
         if (buy.getCouponId() != null) {
             Coupon coupon = couponQueryService.checkCoupon(buy.getCouponId(), buyer, CouponStatus.IN_USE);
             couponCommandService.changeCouponStatus(coupon, CouponStatus.AVAILABLE);
             finalPrice = CouponCalculator.calculateDiscount(coupon, finalPrice);
         }
-        buyService.deleteBuyByIdAndUser(buy, buyer);
+        buyCommandService.deleteBuyByIdAndUser(buy, buyer);
         buyer.increasePoint(finalPrice);
 
         return new BuyCancelBidResponseDto(buyId);

@@ -29,6 +29,13 @@ public class ProductLikeController {
 
     private final ProductLikeService productLikeService;
 
+    /**
+     * 상품 좋아요 요청
+     *
+     * @param userDetails 사용자
+     * @param productId   상품 아이디
+     * @return 결과 메세지
+     */
     @PostMapping("/{id}/like")
     public RestResponse<ProductLikeResponseDto> likeProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -39,6 +46,13 @@ public class ProductLikeController {
         return RestResponse.success(responseDto);
     }
 
+    /**
+     * 상품 싫어요 요청
+     *
+     * @param userDetails 사용자
+     * @param productId   상품 아이디
+     * @return 결과 메세지
+     */
     @DeleteMapping("/{id}/dislike")
     public RestResponse<ProductDislikeResponseDto> dislikeProduct(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -49,6 +63,13 @@ public class ProductLikeController {
         return RestResponse.success(responseDto);
     }
 
+    /**
+     * 좋아요 누른 상품 목록 조회 요청
+     *
+     * @param userDetails 사용자
+     * @param pageable    페이지 요청
+     * @return 좋아요 누른 상품 정보 목록
+     */
     @GetMapping("/likes")
     public RestResponse<List<ProductLikesResponseDto>> productLikes(
         @AuthenticationPrincipal UserDetailsImpl userDetails,

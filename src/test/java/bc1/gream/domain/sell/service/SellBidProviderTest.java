@@ -9,7 +9,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import bc1.gream.domain.gifticon.service.GifticonCommandService;
+import bc1.gream.domain.gifticon.service.command.GifticonCommandService;
 import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;

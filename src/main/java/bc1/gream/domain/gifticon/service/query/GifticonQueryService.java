@@ -1,4 +1,4 @@
-package bc1.gream.domain.gifticon.service;
+package bc1.gream.domain.gifticon.service.query;
 
 
 import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;

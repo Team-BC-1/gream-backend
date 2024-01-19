@@ -1,6 +1,6 @@
 package bc1.gream.domain.product.provider;
 
-import bc1.gream.domain.buy.service.BuyService;
+import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductService;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BuyOrderQueryProvider {
 
     private final ProductService productQueryService;
-    private final BuyService buyService;
+    private final BuyQueryService buyQueryService;
 
     /**
      * 상품아이디값을 통한 상품 조회 이후, 해당 상품의 구매입찰 내역에 대한 페이징 데이터 반환
@@ -28,7 +28,7 @@ public class BuyOrderQueryProvider {
      */
     public List<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Long productId, Pageable pageable) {
         Product product = productQueryService.findBy(productId);
-        return buyService.findAllBuyBidsOf(product, pageable).getContent();
+        return buyQueryService.findAllBuyBidsOf(product, pageable).getContent();
     }
 
     public Product findById(Long productId) {

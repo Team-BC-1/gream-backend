@@ -29,7 +29,12 @@ public class BuyBidController {
     private final ProductValidator productValidator;
 
     /**
-     * 구매 입찰 생성
+     * 구매입찰 체결 요청
+     *
+     * @param userDetails 구매자
+     * @param requestDto  가격, 입찰기간, 쿠폰아이디
+     * @param productId   상품 아이디
+     * @return 체결 결과 :: 가격, 구매입찰아이디
      */
     @PostMapping("/{productId}")
     public RestResponse<BuyBidResponseDto> buyBidProduct(
@@ -43,7 +48,11 @@ public class BuyBidController {
     }
 
     /**
-     * 구매 입찰 삭제
+     * 구매입찰 취소 요청
+     *
+     * @param userDetails 구매자
+     * @param buyId       구매입찰 아이디
+     * @return 취소된 구매입찰 아이디
      */
     @DeleteMapping("/bid/{buyId}")
     public RestResponse<BuyCancelBidResponseDto> buyCancelBid(
