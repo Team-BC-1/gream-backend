@@ -14,6 +14,7 @@ import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.product.repository.LikeProductRepository;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
@@ -46,6 +47,8 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
     protected Buy savedBuy;
     @Autowired
     protected ProductRepository productRepository;
+    @Autowired
+    protected LikeProductRepository likeProductRepository;
     @Autowired
     protected UserRepository userRepository;
     @Autowired
@@ -82,6 +85,7 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
         gifticonRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
         couponRepository.deleteAllInBatch();
+        likeProductRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
     }

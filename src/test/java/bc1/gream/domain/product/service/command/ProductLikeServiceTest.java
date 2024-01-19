@@ -18,8 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @Rollback(value = true)
 @Transactional
@@ -55,7 +57,7 @@ class ProductLikeServiceTest implements ProductTest, UserTest {
         // GIVEN
         given(productRepository.findById(TEST_PRODUCT_ID)).willReturn(Optional.of(TEST_PRODUCT));
         User user = User.builder().build();
-        LikeProduct likeProduct = new LikeProduct(user, TEST_PRODUCT);
+        LikeProduct likeProduct = LikeProduct.builder().user(user).product(TEST_PRODUCT).build();
         user.getLikeProducts().add(likeProduct);
 
         // WHEN
