@@ -8,7 +8,7 @@ import bc1.gream.domain.sell.dto.response.SellCancelBidResponseDto;
 import bc1.gream.domain.sell.provider.SellBidProvider;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/sell")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "Bearer Authentication")
 public class SellBidController {
 
     private final SellBidProvider sellBidProvider;
@@ -37,6 +36,7 @@ public class SellBidController {
      * @return 판매입찰가격, 판매입찰 아이디
      */
     @PostMapping("/{productId}")
+    @Operation(summary = "판매입찰 체결 요청", description = "판매자의 상품에 대한 판매입찰 체결요청을 처리합니다.")
     public RestResponse<SellBidResponseDto> createSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody SellBidRequestDto requestDto,
@@ -55,6 +55,7 @@ public class SellBidController {
      * @return 취소된 입찰 아이디
      */
     @DeleteMapping("/bid/{sellId}")
+    @Operation(summary = "판매입찰 취소 요청", description = "판매자의 상품에 대한 판매입찰 취소요청을 처리합니다.")
     public RestResponse<SellCancelBidResponseDto> cancelSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long sellId
