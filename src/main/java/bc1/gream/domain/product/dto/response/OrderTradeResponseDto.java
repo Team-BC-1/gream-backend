@@ -5,9 +5,9 @@ import lombok.Builder;
 
 @Builder
 public record OrderTradeResponseDto(
-    Long id,
-    Long finalPrice,
-    LocalDateTime tradeDate
+    Long orderId,
+    Long orderFinalPrice,
+    LocalDateTime orderTradeDate
 ) {
 
 }
