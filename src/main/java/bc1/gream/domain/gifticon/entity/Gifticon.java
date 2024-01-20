@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -26,7 +27,8 @@ public class Gifticon extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "gifticon_url", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "gifticon_url")
     private String gifticonUrl;
 
     @OneToOne(cascade = CascadeType.PERSIST)
