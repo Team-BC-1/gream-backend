@@ -59,6 +59,8 @@ dependencies {
     implementation 'org.springframework.retry:spring-retry'
     // AWS S3
     implementation 'io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:2.4.4'
+    // VAVR
+    implementation 'io.vavr:vavr:0.10.4'
 
     /* DB */
     // MySQL
