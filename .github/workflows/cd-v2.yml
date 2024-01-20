@@ -21,19 +21,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: make application-prod.yml
-        if: contains(github.ref, 'develop') || contains(github.ref, 'main')
-        run: |
-          touch ./src/main/resources/application-prod.yml
-          echo "${{ secrets.YML_PROD }}" > ./src/main/resources/application-prod.yml
-        shell: bash
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        env:
-          SPRING_PROFILES_ACTIVE: prod
         run: ./gradlew clean build --stacktrace
         shell: bash
 
@@ -60,7 +51,7 @@ jobs:
           touch scripts/deploy.sh
           echo "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $ECR_REGISTRY" >> scripts/deploy.sh
           echo "docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
-          echo "docker run -p 8080:8080 -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} -e REDIS_URL=${{ secrets.REDIS_URL }} -e DB_ID=${{ secrets.DB_ID }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_URL=${{ secrets.DB_URL }} -e PROFILE=prod -d --restart always --name csbroker-api $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
+          echo "docker run -p 8080:8080 -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} -e REDIS_URL=${{ secrets.REDIS_URL }} -e DB_ID=${{ secrets.DB_ID }} -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} -e REGION=${{ secrets.REGION }} -e S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} -e S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_URL=${{ secrets.DB_URL }} -e PROFILE=prod -d --restart always --name csbroker-api $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
 
       - name: upload to s3
         env:
