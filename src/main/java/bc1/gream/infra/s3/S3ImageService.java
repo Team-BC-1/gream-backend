@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j(topic = "s3 image upload")
@@ -24,6 +25,7 @@ public class S3ImageService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
+    @Transactional
     public String getUrlAfterUpload(MultipartFile image) {
 
         String originalName = image.getOriginalFilename();
