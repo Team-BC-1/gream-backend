@@ -1,7 +1,7 @@
 package bc1.gream.domain.product.dto.response;
 
 public record ProductLikesResponseDto(
-    Long id,
+    Long productId,
     String productBrand,
     String productName,
     String productImageUrl,
