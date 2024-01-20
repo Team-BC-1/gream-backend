@@ -13,12 +13,16 @@ import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.infra.s3.S3ImageService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SellBidProvider {
@@ -26,10 +30,16 @@ public class SellBidProvider {
     private final SellRepository sellRepository;
     private final GifticonCommandService gifticonCommandService;
     private final SellService sellService;
+    private final S3ImageService s3ImageService;
 
+    @Transactional
     public SellBidResponseDto createSellBid(User seller, SellBidRequestDto requestDto, Product product) {
+
+        // 기프티콘 이미지 S3 저장
+        String url = s3ImageService.getUrlAfterUpload(requestDto.file());
+
         // 기프티콘 생성, 저장
-        Gifticon gifticon = gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), null);
+        Gifticon gifticon = gifticonCommandService.saveGifticon(url, null);
         // 마감기한 지정 : LocalTime.Max :: 23시 59분 59초
         Integer period = Deadline.getPeriod(requestDto.period());
         LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX,

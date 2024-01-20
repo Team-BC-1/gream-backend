@@ -67,7 +67,11 @@ public enum ResultCase {
     COUPON_ALREADY_IN_USED(HttpStatus.NOT_FOUND, 6002, "해당 쿠폰은 이미 사용중입니다."),
     COUPON_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, 6003, "해당 쿠폰 종류는 존재하지 않는 종류입니다."),
     COUPON_TYPE_INVALID_RATE(HttpStatus.CONFLICT, 6004, "올바른 형식의 고정할인가를 입력해주세요."),
-    COUPON_TYPE_INVALID_FIXED(HttpStatus.CONFLICT, 6005, "올바른 형식의 할인율을 입력해주세요.");
+    COUPON_TYPE_INVALID_FIXED(HttpStatus.CONFLICT, 6005, "올바른 형식의 할인율을 입력해주세요."),
+
+    // S3 7000번대
+    IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다.");
+
     private final HttpStatus httpStatus;
     private final Integer code;
     private final String message;

@@ -10,7 +10,7 @@ spring:
   # JPA
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         auto_quote_keyword: true # 예약어 사용가능
@@ -35,3 +35,13 @@ server:
     access-log: # ACESS 에 대한 로깅
       enabled: true
       pattern: "%{yyyy-MM-dd HH:mm:ss}t\\t%s\\t%r\\t%{User-Agent}i\\t%{Referer}i\\t%a\\t%b"
+# s3
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+    stack.auto: false
+    region.static: ${REGION}
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_ACCESS_KEY}

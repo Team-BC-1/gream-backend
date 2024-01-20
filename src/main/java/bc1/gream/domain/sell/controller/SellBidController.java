@@ -15,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +38,7 @@ public class SellBidController {
     @Operation(summary = "판매입찰 체결 요청", description = "판매자의 상품에 대한 판매입찰 체결요청을 처리합니다.")
     public RestResponse<SellBidResponseDto> createSellBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestBody SellBidRequestDto requestDto,
+        @Valid SellBidRequestDto requestDto,
         @PathVariable Long productId
     ) {
         Product product = productValidator.validateBy(productId);

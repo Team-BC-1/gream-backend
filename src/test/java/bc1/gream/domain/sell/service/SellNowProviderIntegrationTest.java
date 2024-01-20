@@ -50,7 +50,7 @@ class SellNowProviderIntegrationTest extends BaseIntegrationTest implements BuyT
     @Test
     public void 즉시판매조회() {
         // GIVEN
-        SellNowRequestDto requestDto = new SellNowRequestDto(TEST_BUY_PRICE, TEST_GIFTICON_URL);
+        SellNowRequestDto requestDto = new SellNowRequestDto(TEST_BUY_PRICE, TEST_GIFTICON_FILE);
 
         // WHEN
         SellNowResponseDto responseDto = sellNowProvider.sellNowProduct(savedSeller, requestDto, savedIcedAmericano.getId());
@@ -65,7 +65,7 @@ class SellNowProviderIntegrationTest extends BaseIntegrationTest implements BuyT
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-        SellNowRequestDto requestDto = new SellNowRequestDto(TEST_BUY_PRICE, TEST_GIFTICON_URL);
+        SellNowRequestDto requestDto = new SellNowRequestDto(TEST_BUY_PRICE, TEST_GIFTICON_FILE);
 
         // WHEN
         List<SellNowResponseDto> sellNowResponseDtos = new ArrayList<>();
