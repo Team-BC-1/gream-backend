@@ -2,14 +2,14 @@ package bc1.gream.domain.sell.dto.response;
 
 import java.time.LocalDateTime;
 
-public record OrderAsSellerResponseDto(
+public record UserSalesHistroyResponseDto(
     Long orderId,
-    LocalDateTime tradedDate,
-    Long finalPrice,
+    LocalDateTime orderTradedDate,
+    Long orderFinalPrice,
     Long productId,
     String productBrand,
     String productName,
-    String iamgeUrl
+    String productIamgeUrl
 ) {
 
 }
