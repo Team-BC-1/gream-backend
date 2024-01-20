@@ -19,10 +19,10 @@ class ProductMapperTest implements ProductTest {
         ProductDetailsResponseDto productDetailsResponseDto = productMapperImpl.toDetailsResponseDto(TEST_PRODUCT);
 
         // THEN
-        assertEquals(TEST_PRODUCT_IMAGE_URL, productDetailsResponseDto.imageUrl());
-        assertEquals(TEST_PRODUCT_PRICE, productDetailsResponseDto.price());
-        assertEquals(TEST_PRODUCT_NAME, productDetailsResponseDto.name());
-        assertEquals(TEST_PRODUCT_DESCRIPTION, productDetailsResponseDto.description());
+        assertEquals(TEST_PRODUCT_IMAGE_URL, productDetailsResponseDto.productImageUrl());
+        assertEquals(TEST_PRODUCT_PRICE, productDetailsResponseDto.productPrice());
+        assertEquals(TEST_PRODUCT_NAME, productDetailsResponseDto.productName());
+        assertEquals(TEST_PRODUCT_DESCRIPTION, productDetailsResponseDto.productDescription());
     }
 
     @Test

@@ -61,7 +61,7 @@ class SellBidProviderTest implements GifticonTest {
         SellBidResponseDto responseDto = sellBidProvider.createSellBid(TEST_USER, requestDto, TEST_PRODUCT);
 
         // then
-        assertThat(responseDto.price()).isEqualTo(TEST_SELL_PRICE);
+        assertThat(responseDto.sellPrice()).isEqualTo(TEST_SELL_PRICE);
     }
 
     @Test

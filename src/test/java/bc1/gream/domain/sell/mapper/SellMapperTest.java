@@ -2,7 +2,7 @@ package bc1.gream.domain.sell.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import bc1.gream.domain.sell.dto.response.UserSellOnProgressResponseDto;
+import bc1.gream.domain.sell.dto.response.UserSellBidOnProgressResponseDto;
 import bc1.gream.test.SellTest;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -24,17 +24,17 @@ class SellMapperTest implements SellTest {
         ReflectionTestUtils.setField(TEST_GIFTICON, "id", 1L);
 
         // WHEN
-        UserSellOnProgressResponseDto userSellOnProgressResponseDto = sellMapper.toUserSellOnProgressResponseDto(TEST_SELL);
+        UserSellBidOnProgressResponseDto userSellBidOnProgressResponseDto = sellMapper.toUserSellOnProgressResponseDto(TEST_SELL);
 
         // THEN
-        assertEquals(TEST_SELL.getId(), userSellOnProgressResponseDto.sellId());
-        assertEquals(TEST_SELL.getPrice(), userSellOnProgressResponseDto.sellPrice());
-        assertEquals(TEST_SELL.getCreatedAt(), userSellOnProgressResponseDto.bidStartedAt());
-        assertEquals(TEST_SELL.getDeadlineAt(), userSellOnProgressResponseDto.bidDeadlineAt());
-        assertEquals(TEST_PRODUCT.getId(), userSellOnProgressResponseDto.productId());
-        assertEquals(TEST_PRODUCT.getBrand(), userSellOnProgressResponseDto.productBrand());
-        assertEquals(TEST_PRODUCT.getName(), userSellOnProgressResponseDto.productName());
-        assertEquals(TEST_GIFTICON.getId(), userSellOnProgressResponseDto.gifticonId());
-        assertEquals(TEST_GIFTICON.getGifticonUrl(), userSellOnProgressResponseDto.gifticonImageUrl());
+        assertEquals(TEST_SELL.getId(), userSellBidOnProgressResponseDto.sellId());
+        assertEquals(TEST_SELL.getPrice(), userSellBidOnProgressResponseDto.sellPrice());
+        assertEquals(TEST_SELL.getCreatedAt(), userSellBidOnProgressResponseDto.sellBidStartedAt());
+        assertEquals(TEST_SELL.getDeadlineAt(), userSellBidOnProgressResponseDto.sellBidDeadlineAt());
+        assertEquals(TEST_PRODUCT.getId(), userSellBidOnProgressResponseDto.productId());
+        assertEquals(TEST_PRODUCT.getBrand(), userSellBidOnProgressResponseDto.productBrand());
+        assertEquals(TEST_PRODUCT.getName(), userSellBidOnProgressResponseDto.productName());
+        assertEquals(TEST_GIFTICON.getId(), userSellBidOnProgressResponseDto.gifticonId());
+        assertEquals(TEST_GIFTICON.getGifticonUrl(), userSellBidOnProgressResponseDto.gifticonImageUrl());
     }
 }

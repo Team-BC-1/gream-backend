@@ -42,7 +42,7 @@ class ProductQueryControllerIntegrationTest extends BaseIntegrationTest {
         // THEN
         List<ProductPreviewResponseDto> result = response.getData();
         boolean hasIced = result.stream()
-            .anyMatch(r -> r.name().contains("아이스"));
+            .anyMatch(r -> r.productName().contains("아이스"));
         assertTrue(hasIced);
     }
 }
