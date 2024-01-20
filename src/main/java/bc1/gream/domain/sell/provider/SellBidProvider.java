@@ -13,6 +13,8 @@ import bc1.gream.domain.sell.service.SellService;
 import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.S3ExceptionHandlingUtil;
 import bc1.gream.infra.s3.S3ImageService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,14 +39,28 @@ public class SellBidProvider {
 
         // 기프티콘 이미지 S3 저장
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
-
         // 기프티콘 생성, 저장
-        Gifticon gifticon = gifticonCommandService.saveGifticon(url, null);
+        Gifticon gifticon = S3ExceptionHandlingUtil.tryWithS3Cleanup(
+            () -> gifticonCommandService.saveGifticon(url, null),
+            s3ImageService,
+            url,
+            ResultCase.GIFTICON_SAVE_FAIL);
+        // 판매입찰 생성 및 저장
+        Sell savedSell = S3ExceptionHandlingUtil.tryWithS3Cleanup(
+            () -> saveSell(seller, requestDto, product, gifticon),
+            s3ImageService,
+            url,
+            ResultCase.SELL_BID_SAVE_FAIL);
+        // 매퍼로 변환
+        return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);
+    }
+
+    @Transactional
+    Sell saveSell(User seller, SellBidRequestDto requestDto, Product product, Gifticon gifticon) {
         // 마감기한 지정 : LocalTime.Max :: 23시 59분 59초
         Integer period = Deadline.getPeriod(requestDto.period());
         LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX,
             period);
-
         // 판매입찰 생성 및 저장
         Sell sell = Sell.builder()
             .price(requestDto.price())
@@ -53,12 +69,8 @@ public class SellBidProvider {
             .product(product)
             .gifticon(gifticon)
             .build();
-        Sell savedSell = sellRepository.save(sell);
-
-        // 매퍼로 변환
-        return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);
+        return sellRepository.save(sell);
     }
-
 
     public SellCancelBidResponseDto sellCancelBid(User seller, Long sellId) {
         Sell deletedSell = sellService.deleteSellByIdAndUser(sellId, seller);

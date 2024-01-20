@@ -13,6 +13,8 @@ import bc1.gream.domain.order.service.command.OrderCommandService;
 import bc1.gream.domain.sell.dto.request.SellNowRequestDto;
 import bc1.gream.domain.sell.dto.response.SellNowResponseDto;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.S3ExceptionHandlingUtil;
 import bc1.gream.infra.s3.S3ImageService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -42,14 +44,21 @@ public class SellNowProvider {
 
         // 기프티콘 이미지 S3 저장
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
-
         // 새로운 기프티콘 저장
         gifticonCommandService.saveGifticon(url, order);
-        // 판매에 따른 사용자 포인트 충전
-        user.increasePoint(order.getExpectedPrice());
 
+        // 판매에 따른 사용자 포인트 충전
+        S3ExceptionHandlingUtil.tryWithS3Cleanup(
+            () -> user.increasePoint(order.getExpectedPrice()),
+            s3ImageService,
+            url,
+            ResultCase.USER_ADD_POINT_FAIL);
         // 구매입찰 삭제
-        commandService.delete(buy);
+        S3ExceptionHandlingUtil.tryWithS3Cleanup(
+            () -> user.increasePoint(order.getExpectedPrice()),
+            s3ImageService,
+            url,
+            ResultCase.SELL_BID_DELETE_FAIL);
 
         // 매퍼를 통해 변환
         return OrderMapper.INSTANCE.toSellNowResponseDto(order);
