@@ -31,6 +31,7 @@ public interface OrderMapper {
 
     @Mapping(source = "id", target = "orderId")
     @Mapping(source = "createdAt", target = "orderTradedDate")
+    @Mapping(source = "finalPrice", target = "orderFinalPrice")
     @Mapping(expression = "java(order.getProduct().getId())", target = "productId")
     @Mapping(expression = "java(order.getProduct().getBrand())", target = "productBrand")
     @Mapping(expression = "java(order.getProduct().getName())", target = "productName")
