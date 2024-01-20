@@ -6,11 +6,11 @@ spring:
   # JPA
   jpa:
     database: h2
-    generate-ddl: off
+    generate-ddl: on
     defer-datasource-initialization: true
     properties:
       hibernate:
-        ddl-auto: none
+        ddl-auto: create
         auto_quote_keyword: true # 예약어 사용가능
         globally_quoted_identifiers: true # 예약어 사용가능
         show_sql: true # sql 로깅
