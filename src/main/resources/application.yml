@@ -10,7 +10,7 @@ spring:
   # JPA
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         auto_quote_keyword: true # 예약어 사용가능
