@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -31,6 +32,7 @@ public class SellBidProvider {
     private final SellService sellService;
     private final S3ImageService s3ImageService;
 
+    @Transactional
     public SellBidResponseDto createSellBid(User seller, SellBidRequestDto requestDto, Product product) {
 
         // 기프티콘 이미지 S3 저장
