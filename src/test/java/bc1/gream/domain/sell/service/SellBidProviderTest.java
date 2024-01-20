@@ -16,6 +16,7 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.provider.SellBidProvider;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
+import bc1.gream.infra.s3.S3ImageService;
 import bc1.gream.test.GifticonTest;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,8 @@ class SellBidProviderTest implements GifticonTest {
     GifticonCommandService gifticonCommandService;
     @Mock
     SellService sellService;
+    @Mock
+    S3ImageService s3ImageService;
 
     @InjectMocks
     SellBidProvider sellBidProvider;
@@ -47,10 +50,11 @@ class SellBidProviderTest implements GifticonTest {
 
         SellBidRequestDto requestDto = SellBidRequestDto.builder()
             .price(TEST_SELL_PRICE)
-            .gifticonUrl(fileResource.getURL().getPath())
+            .file(TEST_GIFTICON_FILE)
             .build();
 
-        given(gifticonCommandService.saveGifticon(requestDto.gifticonUrl(), null)).willReturn(TEST_GIFTICON);
+        given(s3ImageService.getUrlAfterUpload(requestDto.file())).willReturn(TEST_S3_IMAGE_URL);
+        given(gifticonCommandService.saveGifticon(TEST_S3_IMAGE_URL, null)).willReturn(TEST_GIFTICON);
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
 
         // when
