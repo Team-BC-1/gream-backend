@@ -26,7 +26,7 @@ public class Gifticon extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "gifticon_url")
+    @Column(name = "gifticon_url", columnDefinition = "TEXT")
     private String gifticonUrl;
 
     @OneToOne(cascade = CascadeType.PERSIST)
