@@ -27,12 +27,15 @@ public enum ResultCase {
     // 만료된 리프레쉬 토큰 401
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 1006, "만료된 Refresh Token"),
     NOT_ENOUGH_POINT(HttpStatus.FORBIDDEN, 1007, "유저의 포인트가 부족합니다"),
+    USER_ADD_POINT_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 1008, "서버 내부 장애로 인해 유저의 포인트 충전 요청을 수행하지 못 하였습니다."),
 
     // 상품 2000번대
     // 검색 결과 없음 404
     SEARCH_RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, 2000, "검색 결과가 없습니다."),
     // 존재하지 않는 상품 404
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 2001, "해당 상품은 존재하지 않습니다."),
+    GIFTICON_NOT_FOUND(HttpStatus.NOT_FOUND, 2002, "해당 id의 기프티콘은 존재하지 않습니다."),
+    GIFTICON_SAVE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 2003, "서버 내부 장애로 인해 기프티콘 저장요청을 수행하지 못 하였습니다."),
 
     // 구매 3000번대
     // 구매 요청 대상 상품이 이미 판매되었음 409
@@ -45,9 +48,10 @@ public enum ResultCase {
     // 판매 4000번대
     // 판매 요청 대상 상품이 이미 구매되었음 409
     SELL_PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 4000, "판매 요청 대상 상품이 이미 구매되었습니다."),
+    SELL_BID_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 4001, "서버 내부 장애로 인해 판매입찰 데이터 삭제요청을 수행하지 못 하였습니다."),
     // 판매 요청에 대상 상품이 존재하지 않음 404
     SELL_BID_PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 4001, "해당 판매 입찰 건은 존재하지 않습니다."),
-    GIFTICON_NOT_FOUND(HttpStatus.NOT_FOUND, 4002, "해당 id의 기프티콘은 존재하지 않습니다."),
+    SELL_BID_SAVE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 4002, "서버 내부 장애로 인해 판매입찰 생성요청을 수행하지 못 하였습니다."),
     // 입찰 마감 기한 초과 409
 
     // 글로벌 5000번대
