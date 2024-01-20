@@ -40,7 +40,7 @@ public class S3ImageService {
                 .withCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3.putObject(request);
         } catch (IOException e) {
-            throw new GlobalException(ResultCase.SYSTEM_ERROR);
+            throw new GlobalException(ResultCase.IMAGE_UPLOAD_FAIL);
         }
 
         String url = amazonS3.getUrl(bucketName, randomImageName).toString();
