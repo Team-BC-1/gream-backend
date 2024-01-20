@@ -3,7 +3,7 @@ package bc1.gream.domain.buy.service.query;
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_ENOUGH_POINT;
 
-import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
+import bc1.gream.domain.buy.dto.response.UserBuyBidOnProgressResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
@@ -57,10 +57,9 @@ public class BuyQueryService {
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
 
-    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
-        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user);
-
-        return buyCheckBidResponseDtos.stream()
+    public List<UserBuyBidOnProgressResponseDto> findAllBuyBidCoupon(User user) {
+        List<UserBuyBidOnProgressResponseDto> userBuyBidOnProgressResponseDtos = buyRepository.findAllBuyBidCoupon(user);
+        return userBuyBidOnProgressResponseDtos.stream()
             .map(bid -> BuyMapper.INSTANCE.toBuyCheckBidResponseDto(bid, getFinalPrice(bid.coupon(), bid.discountPrice())))
             .toList();
     }
