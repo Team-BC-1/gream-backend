@@ -24,6 +24,8 @@ spring:
     redis:
       host: ${REDIS_URL}
       port: 6379
+      repositories:
+        enabled: false
 # JWT
 jwt:
   secret:
