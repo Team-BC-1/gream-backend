@@ -2,6 +2,8 @@ package bc1.gream.domain.payment.toss.controller;
 
 import bc1.gream.domain.payment.toss.dto.request.TossPaymentInitialRequestDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentInitialResponseDto;
+import bc1.gream.domain.payment.toss.entity.TossPayment;
+import bc1.gream.domain.payment.toss.mapper.TossPaymentMapper;
 import bc1.gream.domain.payment.toss.service.TossPaymentService;
 import bc1.gream.domain.payment.toss.validator.TossPaymentRequestValidator;
 import bc1.gream.global.common.RestResponse;
@@ -29,7 +31,8 @@ public class TossPaymentController {
         @Valid @RequestBody TossPaymentInitialRequestDto requestDto
     ) {
         TossPaymentRequestValidator.validate(requestDto);
-        TossPaymentInitialResponseDto responseDto = tossPaymentService.requestTossPayment(userDetails.getUser(), requestDto);
+        TossPayment payment = TossPaymentMapper.INSTANCE.fromTossPaymentInitialRequestDto(userDetails.getUser(), requestDto);
+        TossPaymentInitialResponseDto responseDto = tossPaymentService.requestTossPayment(payment);
         return RestResponse.success(responseDto);
     }
 }
