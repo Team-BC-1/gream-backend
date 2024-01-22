@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,4 +48,13 @@ public class TossPayment extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private OrderName orderName;
+
+    @Builder
+    private TossPayment(User user, PayType payType, Long amount, Long orderId, OrderName orderName) {
+        this.user = user;
+        this.payType = payType;
+        this.amount = amount;
+        this.orderId = orderId;
+        this.orderName = orderName;
+    }
 }
