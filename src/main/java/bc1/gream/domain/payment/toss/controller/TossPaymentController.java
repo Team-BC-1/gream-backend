@@ -1,6 +1,7 @@
 package bc1.gream.domain.payment.toss.controller;
 
 import bc1.gream.domain.payment.toss.dto.request.TossPaymentInitialRequestDto;
+import bc1.gream.domain.payment.toss.dto.response.TossPaymentFailResponseDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentInitialResponseDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
 import bc1.gream.domain.payment.toss.entity.TossPayment;
@@ -48,6 +49,17 @@ public class TossPaymentController {
         @Schema(description = "결제금액") @RequestParam Long amount
     ) {
         TossPaymentSuccessResponseDto responseDto = tossPaymentService.requestFinalTossPayment(paymentKey, orderId, amount);
+        return RestResponse.success(responseDto);
+    }
+
+    @GetMapping("/fail")
+    @Operation(summary = "토스페이 결제 실패 리다이렉트", description = "결제 실패 시 에러코드 및 에러메세지를 반환합니다.")
+    public RestResponse<TossPaymentFailResponseDto> requestFail(
+        @Schema(description = "에러 코드") @RequestParam String errorCode,
+        @Schema(description = "에러 메세지") @RequestParam String errorMsg,
+        @Schema(description = "서버 주문고유번호") @RequestParam Long orderId
+    ) {
+        TossPaymentFailResponseDto responseDto = tossPaymentService.requestFail(errorCode, errorMsg, orderId);
         return RestResponse.success(responseDto);
     }
 }
