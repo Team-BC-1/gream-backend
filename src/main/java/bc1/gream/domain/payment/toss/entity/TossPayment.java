@@ -54,6 +54,14 @@ public class TossPayment extends BaseEntity {
     @Setter
     private String paymentKey;
 
+    @Column
+    @Setter
+    private Boolean isPaySuccess;
+
+    @Column
+    @Setter
+    private String payFailReason;
+
     @Builder
     private TossPayment(User user, PayType payType, Long amount, Long orderId, OrderName orderName) {
         this.user = user;
