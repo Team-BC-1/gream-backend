@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/api/payments/toss")
 @RequiredArgsConstructor
 public class TossPaymentController {
 
     private final TossPaymentService tossPaymentService;
 
-    @PostMapping("/toss/request")
+    @PostMapping("/request")
     @Operation(summary = "토스페이 결제 검증/확인 요청", description = "결제정보에 대한 검증/확인 이후 필요한 값들을 반환합니다.")
     public RestResponse<TossPaymentInitialResponseDto> requestTossPayment(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
