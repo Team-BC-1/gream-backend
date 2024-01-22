@@ -70,7 +70,11 @@ public enum ResultCase {
     COUPON_TYPE_INVALID_FIXED(HttpStatus.CONFLICT, 6005, "올바른 형식의 할인율을 입력해주세요."),
 
     // S3 7000번대
-    IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다.");
+    IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다."),
+
+    // 토스페이 8000번대
+    UNSUPPORTED_PAYTYPE(HttpStatus.BAD_REQUEST, 8000, "아직 지원되지 않는 충전방식입니다."),
+    INVALID_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8001, "0원 이상의 금액만 충전가능합니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
