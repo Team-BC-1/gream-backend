@@ -1,6 +1,7 @@
 package bc1.gream.domain.payment.toss.mapper;
 
 import bc1.gream.domain.payment.toss.dto.request.TossPaymentInitialRequestDto;
+import bc1.gream.domain.payment.toss.dto.response.TossPaymentFailResponseDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentInitialResponseDto;
 import bc1.gream.domain.payment.toss.entity.TossPayment;
 import bc1.gream.domain.user.entity.User;
@@ -33,4 +34,6 @@ public interface TossPaymentMapper {
         @Context String successUrl,
         @Context String failUrl
     );
+
+    TossPaymentFailResponseDto toTossPaymentFailResponseDto(String errorCode, String errorCode1, Long orderId);
 }
