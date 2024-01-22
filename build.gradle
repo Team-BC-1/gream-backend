@@ -59,6 +59,8 @@ dependencies {
     implementation 'org.springframework.retry:spring-retry'
     // AWS S3
     implementation 'io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:2.4.4'
+    // JSON Object
+    implementation 'net.minidev:json-smart:2.5.0'
 
     /* DB */
     // MySQL
