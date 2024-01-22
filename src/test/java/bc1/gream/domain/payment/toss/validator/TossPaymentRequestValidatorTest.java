@@ -26,7 +26,8 @@ class TossPaymentRequestValidatorTest {
     @Test
     public void 토스페이결제초기요청_검증_언해피케이스_미지원결제방법() {
         // GIVEN
-        TossPaymentInitialRequestDto requestDto = new TossPaymentInitialRequestDto(PayType.GIFT_CARD, 3000L, OrderName.CHARGE_POINT);
+        TossPaymentInitialRequestDto requestDto = new TossPaymentInitialRequestDto(PayType.CULTURE_GIFT_CERTIFICATE, 3000L,
+            OrderName.CHARGE_POINT);
 
         // WHEN
         GlobalException globalException = assertThrows(GlobalException.class,

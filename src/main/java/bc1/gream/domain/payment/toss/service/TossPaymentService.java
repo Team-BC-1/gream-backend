@@ -45,7 +45,7 @@ public class TossPaymentService {
     @Transactional
     public TossPaymentInitialResponseDto requestTossPayment(TossPayment tossPayment) {
         TossPayment savedTossPayment = tossPaymentRepository.save(tossPayment);
-        return TossPaymentMapper.INSTANCE.fromTossPaymentInitialResponseDto(savedTossPayment, successUrl, failUrl);
+        return TossPaymentMapper.INSTANCE.toTossPaymentInitialResponseDto(savedTossPayment, successUrl, failUrl);
     }
 
     /**
