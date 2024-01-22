@@ -35,5 +35,5 @@ public interface TossPaymentMapper {
         @Context String failUrl
     );
 
-    TossPaymentFailResponseDto toTossPaymentFailResponseDto(String errorCode, String errorCode1, Long orderId);
+    TossPaymentFailResponseDto toTossPaymentFailResponseDto(String errorCode, String errorMsg, Long orderId);
 }

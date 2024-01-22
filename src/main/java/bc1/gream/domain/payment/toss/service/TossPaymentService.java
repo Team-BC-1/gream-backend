@@ -75,7 +75,7 @@ public class TossPaymentService {
         TossPayment tossPayment = this.findBy(orderId);
         tossPayment.setIsPaySuccess(false);
         tossPayment.setPayFailReason(errorMsg);
-        return TossPaymentMapper.INSTANCE.toTossPaymentFailResponseDto(errorCode, errorCode, orderId);
+        return TossPaymentMapper.INSTANCE.toTossPaymentFailResponseDto(errorCode, errorMsg, orderId);
     }
 
     /**
