@@ -49,6 +49,9 @@ public class TossPayment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderName orderName;
 
+    @Column
+    private String paymentKey;
+
     @Builder
     private TossPayment(User user, PayType payType, Long amount, Long orderId, OrderName orderName) {
         this.user = user;
