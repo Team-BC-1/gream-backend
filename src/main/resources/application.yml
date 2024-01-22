@@ -45,3 +45,10 @@ cloud:
     credentials:
       access-key: ${S3_ACCESS_KEY}
       secret-key: ${S3_SECRET_ACCESS_KEY}
+# TOSS PAY => CONFIGURATION 으로 저장할 것 **절대 GITHUB 에 올리지 말 것**
+payment:
+  toss:
+    test_client_api_key: ${TOSS_CLIENT_API_KEY}
+    test_secret_api_key: ${TOSS_SECRET_API_KEY}
+    success_url: ${TOSS_SUCCESS_URL}
+    fail_url: ${TOSS_FAIL_URL}
