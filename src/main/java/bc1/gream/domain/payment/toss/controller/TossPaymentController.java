@@ -2,6 +2,7 @@ package bc1.gream.domain.payment.toss.controller;
 
 import bc1.gream.domain.payment.toss.dto.request.TossPaymentInitialRequestDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentInitialResponseDto;
+import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
 import bc1.gream.domain.payment.toss.entity.TossPayment;
 import bc1.gream.domain.payment.toss.mapper.TossPaymentMapper;
 import bc1.gream.domain.payment.toss.service.TossPaymentService;
@@ -9,12 +10,15 @@ import bc1.gream.domain.payment.toss.validator.TossPaymentRequestValidator;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,6 +37,17 @@ public class TossPaymentController {
         TossPaymentRequestValidator.validate(requestDto);
         TossPayment payment = TossPaymentMapper.INSTANCE.fromTossPaymentInitialRequestDto(userDetails.getUser(), requestDto);
         TossPaymentInitialResponseDto responseDto = tossPaymentService.requestTossPayment(payment);
+        return RestResponse.success(responseDto);
+    }
+
+    @GetMapping("/success")
+    @Operation(summary = "토스페이 결제 성공 리다이렉트", description = "결제 성공 시 최종 결제 승인 요청을 보냅니다.")
+    public RestResponse<TossPaymentSuccessResponseDto> requestFinalTossPayment(
+        @Schema(description = "토스 결제고유번호") @RequestParam String paymentKey,
+        @Schema(description = "서버 주분고유번호") @RequestParam Long orderId,
+        @Schema(description = "결제금액") @RequestParam Long amount
+    ) {
+        TossPaymentSuccessResponseDto responseDto = tossPaymentService.requestFinalTossPayment(paymentKey, orderId, amount);
         return RestResponse.success(responseDto);
     }
 }
