@@ -29,7 +29,7 @@ public class TossPaymentService {
 
     @Value("${payment.toss.test_client_api_key}")
     private String testClientApiKey;
-    @Value("${payment.toss.test_secrete_api_key}")
+    @Value("${payment.toss.test_secret_api_key}")
     private String testSecretApiKey;
     @Value("${payment.toss.success_url}")
     private String successUrl;
