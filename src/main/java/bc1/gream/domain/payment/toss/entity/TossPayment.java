@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Getter
 @Entity
-@Table(name = "toss_payment")
+@Table(name = "tb_toss_payment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TossPayment extends BaseEntity {
 
