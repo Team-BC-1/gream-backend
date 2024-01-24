@@ -2,7 +2,9 @@ package bc1.gream.domain.payment.toss.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public enum PayType {
     CARD("카드"),
     TOSSPAY("토스페이"),
@@ -13,8 +15,7 @@ public enum PayType {
     BOOK_GIFT_CERTIFICATE("도서문화상품권"),
     GAME_GIFT_CERTIFICATE("게임문화상품권");
 
-    PayType(String payTypeKor) {
-    }
+    private final String payTypeKor;
 
     /**
      * 요청 입력에 대한 역직렬화 지원함수
@@ -26,7 +27,7 @@ public enum PayType {
     public static PayType deserializeRequest(String payTypeRequest) {
         return Stream.of(PayType.values())
             .filter(payType -> payType.toString().equals(payTypeRequest.toUpperCase()))
-            .findFirst()
+            .findAny()
             .orElse(null);
     }
 }
