@@ -1,8 +1,8 @@
 package bc1.gream.domain.admin.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonInclude
+@JsonIgnoreProperties
 public record AdminProductResponseDto() {
 
 }
