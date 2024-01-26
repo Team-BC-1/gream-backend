@@ -7,6 +7,7 @@ import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
 import bc1.gream.domain.order.service.command.OrderCommandService;
@@ -35,9 +36,7 @@ public class BuyNowProvider {
         Coupon coupon = getCoupon(requestDto.couponId(), buyer);
 
         // 새로운 주문
-        Order order = saveOrder(sell, buyer, coupon);
-        // 판매입찰 기프티콘에 주문 저장
-        sell.getGifticon().updateOrder(order);
+        Order order = saveOrder(sell, buyer, coupon, sell.getGifticon());
         // 해당 판매입찰 삭제
         sellService.delete(sell);
 
@@ -63,10 +62,10 @@ public class BuyNowProvider {
         return null;
     }
 
-    private Order saveOrder(Sell sell, User buyer, Coupon coupon) {
+    private Order saveOrder(Sell sell, User buyer, Coupon coupon, Gifticon gifticon) {
         if (coupon != null) {
-            return orderCommandService.saveOrderOfSell(sell, buyer, coupon);
+            return orderCommandService.saveOrderOfSell(sell, buyer, coupon, gifticon);
         }
-        return orderCommandService.saveOrderOfSellNotCoupon(sell, buyer);
+        return orderCommandService.saveOrderOfSellNotCoupon(sell, buyer, gifticon);
     }
 }
