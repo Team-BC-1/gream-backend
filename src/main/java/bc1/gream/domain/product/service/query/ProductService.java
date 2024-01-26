@@ -1,11 +1,13 @@
 package bc1.gream.domain.product.service.query;
 
+import bc1.gream.domain.admin.dto.AdminProductRequestDto;
 import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,4 +50,22 @@ public class ProductService {
     public List<Product> findAllByNameContaining(String name) {
         return productRepository.findAllByNameContaining(name);
     }
+
+
+    public void addProducts(AdminProductRequestDto adminProductRequestDto) {
+        Optional<Product> name = productRepository.findFirstByName(adminProductRequestDto.name());
+        if (name.isEmpty()) {
+            Product product = Product.builder().
+                name(adminProductRequestDto.name()).
+                brand(adminProductRequestDto.brand()).
+                description(adminProductRequestDto.description()).
+                imageUrl(adminProductRequestDto.imageUrl()).
+                price(adminProductRequestDto.price()).
+                build();
+            productRepository.save(product);
+        } else {
+            throw new GlobalException(ResultCase.DUPLICATED_PRODUCT_NAME);
+        }
+    }
+
 }
