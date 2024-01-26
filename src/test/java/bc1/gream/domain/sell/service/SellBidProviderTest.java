@@ -54,7 +54,7 @@ class SellBidProviderTest implements GifticonTest {
             .build();
 
         given(s3ImageService.getUrlAfterUpload(requestDto.file())).willReturn(TEST_S3_IMAGE_URL);
-        given(gifticonCommandService.saveGifticon(TEST_S3_IMAGE_URL, null)).willReturn(TEST_GIFTICON);
+        given(gifticonCommandService.saveGifticon(TEST_S3_IMAGE_URL)).willReturn(TEST_GIFTICON);
         given(sellRepository.save(any(Sell.class))).willReturn(TEST_SELL);
 
         // when

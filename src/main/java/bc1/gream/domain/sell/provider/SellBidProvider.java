@@ -39,7 +39,7 @@ public class SellBidProvider {
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
 
         // 기프티콘 생성, 저장
-        Gifticon gifticon = gifticonCommandService.saveGifticon(url, null);
+        Gifticon gifticon = gifticonCommandService.saveGifticon(url);
         // 마감기한 지정 : LocalTime.Max :: 23시 59분 59초
         Integer period = Deadline.getPeriod(requestDto.period());
         LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX,
