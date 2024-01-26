@@ -6,6 +6,7 @@ import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.gifticon.service.command.GifticonCommandService;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
@@ -37,14 +38,14 @@ public class SellNowProvider {
         Buy buy = buyQueryService.getRecentBuyBidOf(productId, requestDto.price());
         // 쿠폰 조회
         Coupon coupon = getCouponFrom(buy);
-        // 새로운 주문
-        Order order = saveOrder(buy, user, coupon);
 
         // 기프티콘 이미지 S3 저장
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
-
         // 새로운 기프티콘 저장
-        gifticonCommandService.saveGifticon(url, order);
+        Gifticon gifticon = gifticonCommandService.saveGifticon(url);
+
+        // 새로운 주문
+        Order order = saveOrder(buy, user, coupon, gifticon);
         // 판매에 따른 사용자 포인트 충전
         user.increasePoint(order.getExpectedPrice());
 
@@ -71,10 +72,10 @@ public class SellNowProvider {
         return coupon;
     }
 
-    private Order saveOrder(Buy buy, User seller, Coupon coupon) {
+    private Order saveOrder(Buy buy, User seller, Coupon coupon, Gifticon gifticon) {
         if (coupon != null) {
-            return orderCommandService.saveOrderOfBuy(buy, seller, coupon);
+            return orderCommandService.saveOrderOfBuy(buy, seller, coupon, gifticon);
         }
-        return orderCommandService.saveOrderOfBuyNotCoupon(buy, seller);
+        return orderCommandService.saveOrderOfBuyNotCoupon(buy, seller, gifticon);
     }
 }
