@@ -49,7 +49,6 @@ class SellRepositoryTest implements SellTest {
 
         Gifticon gifticon = Gifticon.builder()
             .gifticonUrl(TEST_GIFTICON_URL)
-            .order(null)
             .build();
         Gifticon savedGifticon = gifticonRepository.save(gifticon);
         Sell sell = Sell.builder()
