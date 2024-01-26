@@ -71,33 +71,29 @@ public class BaseIntegrationTest implements ProductTest, UserTest, CouponTest, B
         savedIcedAmericano = saveProduct(TEST_PRODUCT);
         savedCaffelatte = saveProduct(TEST_PRODUCT_SECOND);
         savedIcedCoffe = saveProduct(TEST_PRODUCT_THIRD);
-
         savedBuyer = saveBuyer(TEST_BUYER);
         savedSeller = saveSeller(TEST_SELLER);
-
-        System.out.println("savedBuyer.getId() = " + savedBuyer.getId());
-        System.out.println("savedSeller.getId() = " + savedSeller.getId());
-
         savedCoupon = saveCouponOf(savedBuyer);
-        savedOrder = saveOrderOf(savedIcedAmericano, savedBuyer, savedSeller);
-        savedGifticon = saveGifticonOf(savedOrder);
+        savedGifticon = saveGifticon();
         savedSell = saveSellOf(savedIcedAmericano, savedSeller, savedGifticon);
         savedBuy = saveBuyOf(savedBuyer, savedIcedAmericano);
+        savedOrder = saveOrderOf(savedIcedAmericano, savedBuyer, savedSeller, savedGifticon);
     }
 
     /**
      * Integration Test 환경을 위해 tearDown()에서 해당메서드를 호출해주어야 합니다.
      */
     protected void tearDownBaseIntegrationTest() {
+        orderRepository.deleteAllInBatch();
         buyRepository.deleteAllInBatch();
         sellRepository.deleteAllInBatch();
         gifticonRepository.deleteAllInBatch();
-        orderRepository.deleteAllInBatch();
         couponRepository.deleteAllInBatch();
         likeProductRepository.deleteAllInBatch();
-        productRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
     }
+
 
     private Buy saveBuyOf(User savedBuyer, Product savedProduct) {
         Long TEST_BUY_PRICE = 4_500L;
@@ -127,18 +123,17 @@ public class BaseIntegrationTest implements ProductTest, UserTest, CouponTest, B
         return sellRepository.save(sell);
     }
 
-    private Gifticon saveGifticonOf(Order savedOrder) {
+    private Gifticon saveGifticon() {
         String TEST_GIFTICON_URL = "images/images.png";
 
         Gifticon gifticon = Gifticon.builder()
             .gifticonUrl(TEST_GIFTICON_URL)
-            .order(savedOrder)
             .build();
         ReflectionTestUtils.setField(gifticon, "id", 2000L);
         return gifticonRepository.save(gifticon);
     }
 
-    private Order saveOrderOf(Product savedProduct, User savedBuyer, User savedSeller) {
+    private Order saveOrderOf(Product savedProduct, User savedBuyer, User savedSeller, Gifticon gifticon) {
         Long TEST_ORDER_FINAL_PRICE = 4_000L;
         Long TEST_ORDER_EXPECTED_PRICE = 4_500L;
 
@@ -146,6 +141,7 @@ public class BaseIntegrationTest implements ProductTest, UserTest, CouponTest, B
             .product(savedProduct)
             .buyer(savedBuyer)
             .seller(savedSeller)
+            .gifticon(gifticon)
             .finalPrice(TEST_ORDER_FINAL_PRICE)
             .expectedPrice(TEST_ORDER_EXPECTED_PRICE)
             .build();
