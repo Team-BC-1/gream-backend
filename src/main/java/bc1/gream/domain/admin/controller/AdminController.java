@@ -21,7 +21,7 @@ public class AdminController {
     public RestResponse<AdminProductResponseDto> addProducts(
         @RequestBody AdminProductRequestDto adminProductRequestDto
     ) {
-        productService.addProducts(adminProductRequestDto);
+        productService.addProduct(adminProductRequestDto);
         return RestResponse.success(new AdminProductResponseDto());
     }
 }

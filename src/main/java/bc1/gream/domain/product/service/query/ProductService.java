@@ -7,7 +7,6 @@ import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,20 +51,25 @@ public class ProductService {
     }
 
 
-    public void addProducts(AdminProductRequestDto adminProductRequestDto) {
-        Optional<Product> name = productRepository.findFirstByName(adminProductRequestDto.name());
-        if (name.isEmpty()) {
-            Product product = Product.builder().
-                name(adminProductRequestDto.name()).
-                brand(adminProductRequestDto.brand()).
-                description(adminProductRequestDto.description()).
-                imageUrl(adminProductRequestDto.imageUrl()).
-                price(adminProductRequestDto.price()).
-                build();
-            productRepository.save(product);
-        } else {
+    public void addProduct(AdminProductRequestDto adminProductRequestDto) {
+        String productName = adminProductRequestDto.name();
+
+        if (productRepository.existsByName(productName)) {
             throw new GlobalException(ResultCase.DUPLICATED_PRODUCT_NAME);
         }
+
+        Product product = buildProductFromRequest(adminProductRequestDto);
+        productRepository.save(product);
+    }
+
+    private Product buildProductFromRequest(AdminProductRequestDto adminProductRequestDto) {
+        return Product.builder()
+            .name(adminProductRequestDto.name())
+            .brand(adminProductRequestDto.brand())
+            .description(adminProductRequestDto.description())
+            .imageUrl(adminProductRequestDto.imageUrl())
+            .price(adminProductRequestDto.price())
+            .build();
     }
 
 }
