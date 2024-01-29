@@ -71,6 +71,7 @@ public class UserService {
         return user;
     }
 
+    @Transactional
     public UserPointRefundResponseDto refundsPoint(User user, UserPointRefundRequestDto requestDto) {
         User findUser = findUser(user.getLoginId());
 
@@ -81,9 +82,11 @@ public class UserService {
             .user(findUser)
             .build();
 
+        findUser.decreasePoint(requestDto.point());
+
         Refund savedRefund = refundRepository.save(refund);
 
-        return RefundMapper.INSTANCE.toUserPointRefundResponseDto(savedRefund);
+        return RefundMapper.INSTANCE.toUserPointRefundResponseDto(savedRefund, findUser);
     }
 
     public Refund findRefund(Long refundId) {
