@@ -1,6 +1,8 @@
 package bc1.gream.domain.user.controller;
 
+import bc1.gream.domain.user.dto.request.UserPointRefundRequestDto;
 import bc1.gream.domain.user.dto.request.UserSignupRequestDto;
+import bc1.gream.domain.user.dto.response.UserPointRefundResponseDto;
 import bc1.gream.domain.user.dto.response.UserPointResponseDto;
 import bc1.gream.domain.user.dto.response.UserSignupResponseDto;
 import bc1.gream.domain.user.service.UserService;
@@ -37,5 +39,14 @@ public class UserController {
     public RestResponse<UserPointResponseDto> pointsCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserPointResponseDto response = userService.pointsCheck(userDetails);
         return RestResponse.success(response);
+    }
+
+    @PostMapping("/points/refunds")
+    public RestResponse<UserPointRefundResponseDto> refundsPoint(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody UserPointRefundRequestDto requestDto
+    ) {
+        UserPointRefundResponseDto responseDto = userService.refundsPoint(userDetails.getUser(), requestDto);
+        return RestResponse.success(responseDto);
     }
 }
