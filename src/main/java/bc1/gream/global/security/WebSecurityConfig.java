@@ -1,10 +1,14 @@
 package bc1.gream.global.security;
 
+import bc1.gream.domain.oauth.RequestOAuthInfoService;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.exception.ExceptionHandlerFilter;
 import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
 import bc1.gream.global.jwt.JwtUtil;
+import bc1.gream.global.oauth.OAuthLoginFailureHandler;
+import bc1.gream.global.oauth.OAuthLoginSuccessHandler;
+import bc1.gream.global.oauth.service.OAuthServiceImpl;
 import bc1.gream.global.redis.RedisUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -42,6 +47,11 @@ public class WebSecurityConfig {
     private final LogoutHandler logoutHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final UserRepository userRepository;
+    private final RequestOAuthInfoService requestOAuthInfoService;
+
+    private final OAuthServiceImpl oAuth2Service;
+    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
+    private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,6 +76,11 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public OAuth2Filter oAuth2Filter() {
+        return new OAuth2Filter(jwtUtil, redisUtil, userRepository, requestOAuthInfoService);
+    }
+
+    @Bean
     public ExceptionHandlerFilter exceptionHandlerFilter() {
         return new ExceptionHandlerFilter();
     }
@@ -80,6 +95,7 @@ public class WebSecurityConfig {
         settingRequestAuthorization(http);
         settingFilterOrder(http);
         settingLogout(http);
+//        settingOAuth2(http);
 
         return http.build();
     }
@@ -102,6 +118,7 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // 유저 도메인
                 .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
+                .requestMatchers("/api/users/**").permitAll()
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 // health 체크
@@ -114,6 +131,7 @@ public class WebSecurityConfig {
     }
 
     private void settingFilterOrder(HttpSecurity http) throws Exception {
+        http.addFilterBefore(oAuth2Filter(), OAuth2LoginAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthFilter(), JwtLoginFilter.class);
         http.addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
@@ -126,5 +144,14 @@ public class WebSecurityConfig {
                 logout.addLogoutHandler(logoutHandler);
                 logout.logoutSuccessHandler(logoutSuccessHandler);
             });
+    }
+
+    private void settingOAuth2(HttpSecurity http) throws Exception {
+        http.oauth2Login((oauth2) -> oauth2
+            .loginProcessingUrl("/api/users/oauth/kakao")
+            .successHandler(oAuthLoginSuccessHandler)
+            .failureHandler(oAuthLoginFailureHandler)
+            .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service))
+            .permitAll());
     }
 }

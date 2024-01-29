@@ -70,7 +70,10 @@ public enum ResultCase {
     COUPON_TYPE_INVALID_FIXED(HttpStatus.CONFLICT, 6005, "올바른 형식의 할인율을 입력해주세요."),
 
     // S3 7000번대
-    IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다.");
+    IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다."),
+
+    // OAuth 8000번대
+    INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, 8000, "올바르지 않은 로그인 접근입니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
