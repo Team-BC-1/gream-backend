@@ -33,8 +33,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    // oauth2
-    implementation 'org.springframework.security:spring-security-oauth2-client:6.2.1'
     // Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
