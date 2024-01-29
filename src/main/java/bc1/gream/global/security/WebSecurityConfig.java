@@ -1,11 +1,12 @@
 package bc1.gream.global.security;
 
-import bc1.gream.domain.oauth.RequestOAuthInfoService;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.exception.ExceptionHandlerFilter;
 import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
 import bc1.gream.global.jwt.JwtUtil;
+import bc1.gream.global.oauth.OAuth2Filter;
+import bc1.gream.global.oauth.RequestOAuthInfoService;
 import bc1.gream.global.redis.RedisUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,6 @@
-package bc1.gream.domain.oauth;
+package bc1.gream.global.oauth;
 
 import bc1.gream.domain.user.entity.Provider;
-import bc1.gream.global.oauth.attributes.OAuthInfoResponse;
 
 public interface OAuthAPIClient {
 

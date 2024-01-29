@@ -1,7 +1,7 @@
-package bc1.gream.global.oauth.attributes.kakao;
+package bc1.gream.global.oauth.kakao;
 
 import bc1.gream.domain.user.entity.Provider;
-import bc1.gream.global.oauth.attributes.OAuthInfoResponse;
+import bc1.gream.global.oauth.OAuthInfoResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

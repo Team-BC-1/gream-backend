@@ -1,4 +1,4 @@
-package bc1.gream.domain.oauth.kakao;
+package bc1.gream.global.oauth.kakao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

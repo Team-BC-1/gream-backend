@@ -1,15 +1,14 @@
-package bc1.gream.global.security;
+package bc1.gream.global.oauth;
 
-import bc1.gream.domain.oauth.RequestOAuthInfoService;
-import bc1.gream.domain.oauth.kakao.KakaoLoginParam;
 import bc1.gream.domain.user.dto.response.UserLoginResponseDto;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.jwt.JwtUtil;
-import bc1.gream.global.oauth.attributes.OAuthInfoResponse;
+import bc1.gream.global.oauth.kakao.KakaoLoginParam;
 import bc1.gream.global.redis.RedisUtil;
+import bc1.gream.global.security.UserDetailsImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

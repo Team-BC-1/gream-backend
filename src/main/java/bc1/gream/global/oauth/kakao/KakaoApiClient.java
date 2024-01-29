@@ -1,10 +1,9 @@
-package bc1.gream.domain.oauth.kakao;
+package bc1.gream.global.oauth.kakao;
 
-import bc1.gream.domain.oauth.OAuthAPIClient;
-import bc1.gream.domain.oauth.OAuthLoginParam;
 import bc1.gream.domain.user.entity.Provider;
-import bc1.gream.global.oauth.attributes.OAuthInfoResponse;
-import bc1.gream.global.oauth.attributes.kakao.KakaoInfoResponse;
+import bc1.gream.global.oauth.OAuthAPIClient;
+import bc1.gream.global.oauth.OAuthInfoResponse;
+import bc1.gream.global.oauth.OAuthLoginParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

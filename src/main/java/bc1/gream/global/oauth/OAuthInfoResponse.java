@@ -1,4 +1,4 @@
-package bc1.gream.global.oauth.attributes;
+package bc1.gream.global.oauth;
 
 import bc1.gream.domain.user.entity.Provider;
 

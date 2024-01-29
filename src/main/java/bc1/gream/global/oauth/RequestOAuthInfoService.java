@@ -1,10 +1,9 @@
-package bc1.gream.domain.oauth;
+package bc1.gream.global.oauth;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 import bc1.gream.domain.user.entity.Provider;
-import bc1.gream.global.oauth.attributes.OAuthInfoResponse;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;

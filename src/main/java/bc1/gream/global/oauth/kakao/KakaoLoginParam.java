@@ -1,7 +1,7 @@
-package bc1.gream.domain.oauth.kakao;
+package bc1.gream.global.oauth.kakao;
 
-import bc1.gream.domain.oauth.OAuthLoginParam;
 import bc1.gream.domain.user.entity.Provider;
+import bc1.gream.global.oauth.OAuthLoginParam;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
