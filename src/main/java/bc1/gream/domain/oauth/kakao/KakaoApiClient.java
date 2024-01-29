@@ -23,12 +23,14 @@ public class KakaoApiClient implements OAuthAPIClient {
 
     private static final String GRANT_TYPE = "authorization_code";
     private final RestTemplate restTemplate;
-    @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
+    @Value("${oauth2.kakao.token-uri}")
     private String authUrl;
-    @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
+    @Value("${oauth2.kakao.user-info-uri}")
     private String apiUrl;
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    @Value("${oauth2.kakao.client-id}")
     private String clientId;
+    @Value("${oauth2.kakao.redirect-url}")
+    private String redirectUrl;
 
     @Override
     public Provider oAuthProvider() {
@@ -37,9 +39,7 @@ public class KakaoApiClient implements OAuthAPIClient {
 
     @Override
     public String requestAccessToken(OAuthLoginParam params) {
-//        String url = authUrl + "/oauth/token";
         String url = authUrl;
-        log.info("url : {}", url);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -47,21 +47,17 @@ public class KakaoApiClient implements OAuthAPIClient {
         MultiValueMap<String, String> body = params.makeBody();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
-        body.add("redirect_uri", "http://localhost:5173/login/kakao");
-        log.info("body : {}", body);
+        body.add("redirect_uri", redirectUrl);
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
         KakaoToken response = restTemplate.postForObject(url, request, KakaoToken.class);
-//        String response = restTemplate.postForObject(url, request, String.class);
         log.info("res : {}", response);
 
         assert response != null;
         return response.getAccessToken();
-//        return "";
     }
 
     @Override
     public OAuthInfoResponse requestOauthInfo(String accessToken) {
-//        String url = apiUrl + "/v2/user/me";
         String url = apiUrl;
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -69,7 +65,6 @@ public class KakaoApiClient implements OAuthAPIClient {
         httpHeaders.setBearerAuth(accessToken);
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//        body.add("property_keys", "[\"kakao_account.email\", \"kakao_account.profile\"]");
 
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
         return restTemplate.postForObject(url, request, KakaoInfoResponse.class);
