@@ -27,6 +27,7 @@ public enum ResultCase {
     // 만료된 리프레쉬 토큰 401
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 1006, "만료된 Refresh Token"),
     NOT_ENOUGH_POINT(HttpStatus.FORBIDDEN, 1007, "유저의 포인트가 부족합니다"),
+    REFUND_NOT_FOUND(HttpStatus.NOT_FOUND, 1008, "환급 정보가 없습니다."),
 
     // 상품 2000번대
     // 검색 결과 없음 404
