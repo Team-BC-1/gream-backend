@@ -24,7 +24,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -123,8 +122,8 @@ public class WebSecurityConfig {
     }
 
     private void settingFilterOrder(HttpSecurity http) throws Exception {
-        http.addFilterBefore(oAuth2Filter(), OAuth2LoginAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthFilter(), JwtLoginFilter.class);
+        http.addFilterBefore(oAuth2Filter(), JwtAuthFilter.class);
         http.addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
     }
