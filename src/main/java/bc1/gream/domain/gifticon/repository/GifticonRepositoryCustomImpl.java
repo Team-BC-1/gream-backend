@@ -19,6 +19,7 @@ public class GifticonRepositoryCustomImpl implements GifticonRepositoryCustom {
             .selectFrom(QGifticon.gifticon)
             .leftJoin(QGifticon.gifticon.order, QOrder.order)
             .where(QGifticon.gifticon.order.seller.eq(user))
+            .orderBy(QGifticon.gifticon.modifiedAt.desc())
             .fetch();
     }
 
@@ -28,6 +29,7 @@ public class GifticonRepositoryCustomImpl implements GifticonRepositoryCustom {
             .selectFrom(QGifticon.gifticon)
             .leftJoin(QGifticon.gifticon.order, QOrder.order)
             .where(QGifticon.gifticon.order.buyer.eq(user))
+            .orderBy(QGifticon.gifticon.modifiedAt.desc())
             .fetch();
     }
 }
