@@ -6,9 +6,6 @@ import bc1.gream.global.exception.ExceptionHandlerFilter;
 import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
 import bc1.gream.global.jwt.JwtUtil;
-import bc1.gream.global.oauth.OAuthLoginFailureHandler;
-import bc1.gream.global.oauth.OAuthLoginSuccessHandler;
-import bc1.gream.global.oauth.service.OAuthServiceImpl;
 import bc1.gream.global.redis.RedisUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +45,6 @@ public class WebSecurityConfig {
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final UserRepository userRepository;
     private final RequestOAuthInfoService requestOAuthInfoService;
-
-    private final OAuthServiceImpl oAuth2Service;
-    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
-    private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -95,7 +88,6 @@ public class WebSecurityConfig {
         settingRequestAuthorization(http);
         settingFilterOrder(http);
         settingLogout(http);
-//        settingOAuth2(http);
 
         return http.build();
     }
@@ -144,14 +136,5 @@ public class WebSecurityConfig {
                 logout.addLogoutHandler(logoutHandler);
                 logout.logoutSuccessHandler(logoutSuccessHandler);
             });
-    }
-
-    private void settingOAuth2(HttpSecurity http) throws Exception {
-        http.oauth2Login((oauth2) -> oauth2
-            .loginProcessingUrl("/api/users/oauth/kakao")
-            .successHandler(oAuthLoginSuccessHandler)
-            .failureHandler(oAuthLoginFailureHandler)
-            .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service))
-            .permitAll());
     }
 }
