@@ -56,7 +56,7 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false, length = 72) // BCrypt 암호화 시 72글자
     private String password;
 
-    @Column(name = "point") //
+    @Column(name = "point")
     private Long point;
 
     @Column(name = "role", nullable = false, length = 30)
@@ -67,14 +67,18 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Provider provider;
 
+    @Column(name = "oauth_id")
+    private String oauthId;
+
     @Builder
-    private User(String loginId, String nickname, String password, UserRole role, Provider provider) {
+    private User(String loginId, String nickname, String password, UserRole role, Provider provider, String oauthId) {
         this.loginId = loginId;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
         this.provider = provider;
         this.point = 100000L;
+        this.oauthId = oauthId;
     }
 
     @Transactional
