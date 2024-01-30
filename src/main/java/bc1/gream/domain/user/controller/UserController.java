@@ -6,6 +6,7 @@ import bc1.gream.domain.user.dto.response.UserPointRefundResponseDto;
 import bc1.gream.domain.user.dto.response.UserPointResponseDto;
 import bc1.gream.domain.user.dto.response.UserSignupResponseDto;
 import bc1.gream.domain.user.service.UserService;
+import bc1.gream.domain.user.service.command.RefundCommandService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final RefundCommandService refundCommandService;
 
     @PostMapping("/signup")
     @SecurityRequirements() // Swagger Security 적용 X
@@ -42,11 +44,12 @@ public class UserController {
     }
 
     @PostMapping("/points/refunds")
+    @Operation(summary = "사용자 포인트 환급 요청", description = "사용자의 포인트에 대한 환급요청을 처리합니다.")
     public RestResponse<UserPointRefundResponseDto> refundsPoint(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody UserPointRefundRequestDto requestDto
     ) {
-        UserPointRefundResponseDto responseDto = userService.refundsPoint(userDetails.getUser(), requestDto);
+        UserPointRefundResponseDto responseDto = refundCommandService.refundsPoint(userDetails.getUser(), requestDto);
         return RestResponse.success(responseDto);
     }
 }
