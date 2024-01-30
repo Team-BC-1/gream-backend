@@ -1,5 +1,6 @@
 package bc1.gream.global.security;
 
+import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.test.UserTest;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,4 +13,6 @@ public @interface WithMockCustomUser {
     String loginId() default UserTest.TEST_USER_LOGIN_ID;
 
     String password() default UserTest.TEST_USER_PASSWORD;
+
+    UserRole userRole() default UserRole.USER;
 }
