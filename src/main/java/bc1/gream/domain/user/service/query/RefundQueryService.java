@@ -1,4 +1,4 @@
-package bc1.gream.domain.user.service;
+package bc1.gream.domain.user.service.query;
 
 import bc1.gream.domain.user.entity.Refund;
 import bc1.gream.domain.user.repository.RefundRepository;

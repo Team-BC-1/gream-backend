@@ -3,7 +3,7 @@ package bc1.gream.domain.admin.controller;
 import bc1.gream.domain.admin.dto.request.AdminGetRefundRequestDto;
 import bc1.gream.domain.admin.dto.response.AdminGetRefundResponseDto;
 import bc1.gream.domain.admin.mapper.RefundMapper;
-import bc1.gream.domain.user.service.RefundQueryService;
+import bc1.gream.domain.user.service.query.RefundQueryService;
 import bc1.gream.global.common.RestResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
