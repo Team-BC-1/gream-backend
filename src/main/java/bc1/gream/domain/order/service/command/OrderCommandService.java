@@ -3,6 +3,7 @@ package bc1.gream.domain.order.service.command;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.helper.CouponCalculator;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.domain.sell.entity.Sell;
@@ -27,12 +28,13 @@ public class OrderCommandService {
      * @return 새로운 주문
      */
     @Transactional
-    public Order saveOrderOfBuy(Buy buy, User seller, Coupon coupon) {
+    public Order saveOrderOfBuy(Buy buy, User seller, Coupon coupon, Gifticon gifticon) {
         Long finalPrice = CouponCalculator.calculateDiscount(coupon, buy.getPrice());
         Order order = Order.builder()
             .product(buy.getProduct())
             .buyer(buy.getUser())
             .seller(seller)
+            .gifticon(gifticon)
             .finalPrice(finalPrice)
             .expectedPrice(buy.getPrice())
             .build();
@@ -40,7 +42,7 @@ public class OrderCommandService {
     }
 
     @Transactional
-    public Order saveOrderOfBuyNotCoupon(Buy buy, User seller) {
+    public Order saveOrderOfBuyNotCoupon(Buy buy, User seller, Gifticon gifticon) {
 
         Long finalPrice = buy.getPrice();
 
@@ -48,22 +50,24 @@ public class OrderCommandService {
             .product(buy.getProduct())
             .buyer(buy.getUser())
             .seller(seller)
+            .gifticon(gifticon)
             .finalPrice(finalPrice)
             .expectedPrice(buy.getPrice())
             .build();
-        
+
         return orderRepository.save(order);
     }
 
 
     @Transactional
-    public Order saveOrderOfSell(Sell sell, User buyer, Coupon coupon) {
+    public Order saveOrderOfSell(Sell sell, User buyer, Coupon coupon, Gifticon gifticon) {
         Long finalPrice = CouponCalculator.calculateDiscount(coupon, sell.getPrice());
 
         Order order = Order.builder()
             .product(sell.getProduct())
             .buyer(buyer)
             .seller(sell.getUser())
+            .gifticon(gifticon)
             .finalPrice(finalPrice)
             .expectedPrice(sell.getPrice())
             .build();
@@ -72,7 +76,7 @@ public class OrderCommandService {
     }
 
     @Transactional
-    public Order saveOrderOfSellNotCoupon(Sell sell, User buyer) {
+    public Order saveOrderOfSellNotCoupon(Sell sell, User buyer, Gifticon gifticon) {
 
         Long finalPrice = sell.getPrice();
 
@@ -80,6 +84,7 @@ public class OrderCommandService {
             .product(sell.getProduct())
             .buyer(buyer)
             .seller(sell.getUser())
+            .gifticon(gifticon)
             .finalPrice(finalPrice)
             .expectedPrice(sell.getPrice())
             .build();

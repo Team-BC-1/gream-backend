@@ -1,5 +1,6 @@
 package bc1.gream.domain.order.mapper;
 
+import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.product.dto.response.OrderTradeResponseDto;
@@ -32,4 +33,12 @@ public interface OrderMapper {
     @Mapping(expression = "java(order.getProduct().getName())", target = "productName")
     @Mapping(expression = "java(order.getProduct().getImageUrl())", target = "iamgeUrl")
     OrderAsSellerResponseDto toOrderAsSellerResponseDto(Order order);
+
+    @Mapping(expression = "java(order.getGifticon().getId())", target = "gifticonId")
+    @Mapping(source = "id", target = "orderId")
+    @Mapping(source = "createdAt", target = "orderCreatedAt")
+    @Mapping(expression = "java(order.getProduct().getId())", target = "productId")
+    @Mapping(expression = "java(order.getProduct().getName())", target = "productBrand")
+    @Mapping(expression = "java(order.getProduct().getBrand())", target = "productName")
+    BuyCheckOrderResponseDto toBuyCheckOrderResponseDto(Order order);
 }

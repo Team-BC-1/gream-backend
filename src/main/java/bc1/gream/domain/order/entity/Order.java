@@ -2,6 +2,7 @@ package bc1.gream.domain.order.entity;
 
 
 import bc1.gream.domain.common.model.BaseEntity;
+import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,7 +13,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -42,6 +45,10 @@ public class Order extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private User seller;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "gifticon_id", unique = true)
+    private Gifticon gifticon;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,11 +62,12 @@ public class Order extends BaseEntity {
     private Long expectedPrice; // 구매희망가격
 
     @Builder
-    private Order(Product product, User buyer, User seller, Long finalPrice, Long expectedPrice) {
+    private Order(Product product, User buyer, User seller, Long finalPrice, Long expectedPrice, Gifticon gifticon) {
         this.product = product;
         this.buyer = buyer;
         this.seller = seller;
         this.finalPrice = finalPrice;
         this.expectedPrice = expectedPrice;
+        this.gifticon = gifticon;
     }
 }

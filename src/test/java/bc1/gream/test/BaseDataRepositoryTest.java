@@ -70,20 +70,20 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
         savedBuyer = saveBuyer(TEST_BUYER);
         savedSeller = saveSeller(TEST_SELLER);
         savedCoupon = saveCouponOf(savedBuyer);
-        savedOrder = saveOrderOf(savedProduct, savedBuyer, savedSeller);
-        savedGifticon = saveGifticonOf(savedOrder);
+        savedGifticon = saveGifticon();
         savedSell = saveSellOf(savedProduct, savedSeller, savedGifticon);
         savedBuy = saveBuyOf(savedBuyer, savedProduct);
+        savedOrder = saveOrderOf(savedProduct, savedBuyer, savedSeller, savedGifticon);
     }
 
     /**
      * {@link DataJpaTest} 는 롤백이 default라 무관하지만, 만약 롤백을 false로 하셨다면, tearDown()에서 해당메서드를 호출하여 저장된 데이터를 삭제합니다.
      */
     protected void tearDownBaseDataRepositoryTest() {
+        orderRepository.deleteAllInBatch();
         buyRepository.deleteAllInBatch();
         sellRepository.deleteAllInBatch();
         gifticonRepository.deleteAllInBatch();
-        orderRepository.deleteAllInBatch();
         couponRepository.deleteAllInBatch();
         likeProductRepository.deleteAllInBatch();
         userRepository.deleteAllInBatch();
@@ -119,18 +119,17 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
         return sellRepository.save(sell);
     }
 
-    private Gifticon saveGifticonOf(Order savedOrder) {
+    private Gifticon saveGifticon() {
         String TEST_GIFTICON_URL = "images/images.png";
 
         Gifticon gifticon = Gifticon.builder()
             .gifticonUrl(TEST_GIFTICON_URL)
-            .order(savedOrder)
             .build();
         ReflectionTestUtils.setField(gifticon, "id", 2000L);
         return gifticonRepository.save(gifticon);
     }
 
-    private Order saveOrderOf(Product savedProduct, User savedBuyer, User savedSeller) {
+    private Order saveOrderOf(Product savedProduct, User savedBuyer, User savedSeller, Gifticon gifticon) {
         Long TEST_ORDER_FINAL_PRICE = 4_000L;
         Long TEST_ORDER_EXPECTED_PRICE = 4_500L;
 
@@ -138,6 +137,7 @@ public class BaseDataRepositoryTest implements ProductTest, UserTest, CouponTest
             .product(savedProduct)
             .buyer(savedBuyer)
             .seller(savedSeller)
+            .gifticon(gifticon)
             .finalPrice(TEST_ORDER_FINAL_PRICE)
             .expectedPrice(TEST_ORDER_EXPECTED_PRICE)
             .build();

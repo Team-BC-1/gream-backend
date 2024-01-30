@@ -37,13 +37,6 @@ spring:
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
-# SERVER
-server:
-  tomcat:
-    connection-timeout: 1800000 # 톰캣의 타임아웃 설정 (milsec)
-    access-log: # ACESS 에 대한 로깅
-      enabled: true
-      pattern: "%{yyyy-MM-dd HH:mm:ss}t\\t%s\\t%r\\t%{User-Agent}i\\t%{Referer}i\\t%a\\t%b"
 # s3
 cloud:
   aws:
@@ -54,3 +47,6 @@ cloud:
     credentials:
       access-key: ${S3_ACCESS_KEY}
       secret-key: ${S3_SECRET_ACCESS_KEY}
+logging:
+  level:
+    root: error

@@ -3,7 +3,7 @@ package bc1.gream.domain.buy.controller;
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
-import bc1.gream.domain.gifticon.service.query.GifticonQueryService;
+import bc1.gream.domain.order.service.query.OrderQueryService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserBoughtHistoryController {
 
-    private final GifticonQueryService gifticonQueryService;
+    private final OrderQueryService orderQueryService;
     private final BuyQueryService buyQueryService;
 
     @GetMapping("/end")
@@ -27,7 +27,7 @@ public class UserBoughtHistoryController {
     public RestResponse<List<BuyCheckOrderResponseDto>> getBoughtOrder(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return RestResponse.success(gifticonQueryService.getBoughtOrder(userDetails.getUser()));
+        return RestResponse.success(orderQueryService.findAllBoughtOrder(userDetails.getUser()));
     }
 
 

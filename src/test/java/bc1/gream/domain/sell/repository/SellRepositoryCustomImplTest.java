@@ -48,7 +48,6 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Gifticon gifticon1 = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
-                .order(null)
                 .build()
         );
         Sell samePriceBid = sellRepository.save(
@@ -63,7 +62,6 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Gifticon gifticon2 = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
-                .order(null)
                 .build()
         );
         Sell expensiveSellBid = sellRepository.save(
@@ -100,7 +98,6 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Gifticon gifticon1 = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
-                .order(null)
                 .build()
         );
         Sell samePriceBid = sellRepository.save(
@@ -115,7 +112,6 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Gifticon gifticon2 = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
-                .order(null)
                 .build()
         );
         Sell expensiveSellBid = sellRepository.save(
@@ -163,7 +159,6 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Gifticon cheaperGifticon = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
-                .order(null)
                 .build()
         );
         Sell cheaperSellBid = sellRepository.save(
@@ -178,7 +173,6 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Gifticon moreExpensiveGifticon = gifticonRepository.save(
             Gifticon.builder()
                 .gifticonUrl(TEST_GIFTICON_URL)
-                .order(null)
                 .build()
         );
         Sell moreExpensiveSellBid = sellRepository.save(
