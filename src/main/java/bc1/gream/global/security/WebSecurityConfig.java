@@ -1,5 +1,6 @@
 package bc1.gream.global.security;
 
+import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.exception.ExceptionHandlerFilter;
 import bc1.gream.global.jwt.JwtAuthFilter;
@@ -104,6 +105,8 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                // 관리자 도메인
+                .requestMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority())
                 // health 체크
                 .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                 // Swagger

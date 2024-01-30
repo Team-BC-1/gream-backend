@@ -35,6 +35,8 @@ public enum ResultCase {
     // 존재하지 않는 상품 404
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 2001, "해당 상품은 존재하지 않습니다."),
 
+    DUPLICATED_PRODUCT_NAME(HttpStatus.BAD_REQUEST, 2002, "해당 상품은 존재하지 않습니다."),
+
     // 구매 3000번대
     // 구매 요청 대상 상품이 이미 판매되었음 409
     BUY_PRODUCT_SOLD_OUT(HttpStatus.CONFLICT, 3000, "구매 요청 대상 상품이 이미 판매되었습니다."),

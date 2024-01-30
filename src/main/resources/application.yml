@@ -3,10 +3,17 @@ spring:
     active: prod
   # DATASOURCE
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_URL}/gream
-    username: ${DB_ID}
-    password: ${DB_PASSWORD}
+    hikari:
+      primary:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_URL}/gream
+        username: ${DB_ID}
+        password: ${DB_PASSWORD}
+      secondary:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_READ_ONLY_URL}/gream
+        username: ${DB_ID}
+        password: ${DB_PASSWORD}
   # JPA
   jpa:
     hibernate:
