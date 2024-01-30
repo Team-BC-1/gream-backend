@@ -49,7 +49,6 @@ public class KakaoApiClient implements OAuthAPIClient {
         body.add("redirect_uri", redirectUrl);
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
         KakaoToken response = restTemplate.postForObject(url, request, KakaoToken.class);
-        log.info("res : {}", response);
 
         assert response != null;
         return response.getAccessToken();

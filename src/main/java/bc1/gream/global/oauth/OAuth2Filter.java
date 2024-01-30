@@ -11,7 +11,6 @@ import bc1.gream.global.redis.RedisUtil;
 import bc1.gream.global.security.UserDetailsImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,11 +38,7 @@ public class OAuth2Filter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
-
-        String requestURI = request.getRequestURI();
-        log.info("url : {}", requestURI);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
 
         String code = request.getParameter("code");
         log.info("code : {}", code);
