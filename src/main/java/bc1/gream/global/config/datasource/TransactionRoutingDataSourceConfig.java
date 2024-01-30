@@ -3,7 +3,6 @@ package bc1.gream.global.config.datasource;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,10 +38,10 @@ public class TransactionRoutingDataSourceConfig {
         @Qualifier("secondaryDataSource") DataSource secondary) throws SQLException {
         TransactionRoutingDataSource routingDataSource = new TransactionRoutingDataSource();
 
-        Map<Object, Object> dataSourceMap = new HashMap<>();
-
-        dataSourceMap.put(DataSourceType.READ_WRITE, primary);
-        dataSourceMap.put(DataSourceType.READ_ONLY, secondary);
+        Map<Object, Object> dataSourceMap = Map.of(
+            DataSourceType.READ_WRITE, primary,
+            DataSourceType.READ_ONLY, secondary
+        );
 
         routingDataSource.setTargetDataSources(dataSourceMap);
         routingDataSource.setDefaultTargetDataSource(primary);
