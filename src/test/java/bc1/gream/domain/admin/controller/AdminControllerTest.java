@@ -6,8 +6,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bc1.gream.domain.admin.dto.request.AdminCreateCouponRequestDto;
 import bc1.gream.domain.coupon.entity.DiscountType;
-import bc1.gream.domain.coupon.service.command.CouponCommandService;
+import bc1.gream.domain.coupon.provider.CouponProvider;
+import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.domain.user.entity.UserRole;
+import bc1.gream.domain.user.service.command.RefundCommandService;
+import bc1.gream.domain.user.service.query.RefundQueryService;
 import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.UserTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +37,13 @@ class AdminControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private CouponCommandService couponCommandService;
+    private ProductService productService;
+    @MockBean
+    private RefundQueryService refundQueryService;
+    @MockBean
+    private RefundCommandService refundCommandService;
+    @MockBean
+    private CouponProvider couponProvider;
 
     @BeforeEach
     void setUp() {
