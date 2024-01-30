@@ -19,10 +19,10 @@ public class AdminController {
 
     @DeleteMapping("/refund/{id}")
     @Operation(summary = "유저 환급 승인", description = "유저가 신청한 환급 요청을 승인해주는 기능입니다.")
-    public RestResponse<AdminRefundPassResponseDto> refundPass(
+    public RestResponse<AdminRefundPassResponseDto> approveRefund(
         @PathVariable Long id
     ) {
-        AdminRefundPassResponseDto responseDto = adminService.refundPass(id);
+        AdminRefundPassResponseDto responseDto = adminService.approveRefund(id);
 
         return RestResponse.success(responseDto);
     }

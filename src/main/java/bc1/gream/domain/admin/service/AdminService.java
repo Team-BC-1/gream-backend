@@ -14,7 +14,7 @@ public class AdminService {
     private final UserService userService;
     private final RefundRepository refundRepository;
 
-    public AdminRefundPassResponseDto refundPass(Long refundId) {
+    public AdminRefundPassResponseDto approveRefund(Long refundId) {
 
         Refund refund = userService.findRefund(refundId);
 
