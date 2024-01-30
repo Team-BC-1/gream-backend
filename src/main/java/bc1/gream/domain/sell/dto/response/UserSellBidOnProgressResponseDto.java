@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 
 @Builder
-public record UserSellOnProgressResponseDto(
+public record UserSellBidOnProgressResponseDto(
     Long sellId,
-    Long sellPrice,
-    LocalDateTime bidStartedAt,
-    LocalDateTime bidDeadlineAt,
     Long productId,
     String productBrand,
     String productName,
     Long gifticonId,
-    String gifticonImageUrl
+    String gifticonImageUrl,
+    Long sellPrice,
+    LocalDateTime sellBidStartedAt,
+    LocalDateTime sellBidDeadlineAt
 ) {
 
 }

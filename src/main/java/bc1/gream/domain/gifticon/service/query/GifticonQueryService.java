@@ -1,7 +1,7 @@
 package bc1.gream.domain.gifticon.service.query;
 
 
-import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
+import bc1.gream.domain.buy.dto.response.UserPurchaseHistoryResponseDto;
 import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.gifticon.mapper.GifticonMapper;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
@@ -20,7 +20,7 @@ public class GifticonQueryService {
         return gifticonRepository.findAllSoldBySeller(user);
     }
 
-    public List<BuyCheckOrderResponseDto> getBoughtOrder(User user) {
+    public List<UserPurchaseHistoryResponseDto> getBoughtOrder(User user) {
         List<Gifticon> gifticons = gifticonRepository.findAllBoughtByBuyer(user);
 
         return gifticons.stream().map(GifticonMapper.INSTANCE::toBuyCheckOrderResponseDto).toList();

@@ -134,10 +134,10 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
 
         // THEN
         assertEquals(samePriceBid.getPrice(), allPriceToQuantityOf.getContent().get(0).sellPrice());
-        assertEquals(2L, allPriceToQuantityOf.getContent().get(0).quantity());
+        assertEquals(2L, allPriceToQuantityOf.getContent().get(0).sellQuantity());
         assertEquals(expensiveSellBid.getPrice(),
             allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).sellPrice());
-        assertEquals(1L, allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).quantity());
+        assertEquals(1L, allPriceToQuantityOf.getContent().get(allPriceToQuantityOf.getContent().size() - 1).sellQuantity());
     }
 
     @Test

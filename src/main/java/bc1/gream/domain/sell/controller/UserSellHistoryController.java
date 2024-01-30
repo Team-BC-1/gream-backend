@@ -2,8 +2,8 @@ package bc1.gream.domain.sell.controller;
 
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.mapper.OrderMapper;
-import bc1.gream.domain.sell.dto.response.OrderAsSellerResponseDto;
-import bc1.gream.domain.sell.dto.response.UserSellOnProgressResponseDto;
+import bc1.gream.domain.sell.dto.response.UserSalesHistroyResponseDto;
+import bc1.gream.domain.sell.dto.response.UserSellBidOnProgressResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.domain.sell.provider.SellerOrderProvider;
@@ -34,12 +34,12 @@ public class UserSellHistoryController {
      * @return 판매내역 목록
      */
     @GetMapping("/end")
-    @Operation(summary = "판매내역 히스토리 조회 요청", description = "판매자의 판매완료 내역 조회요청을 처리합니다.")
-    public RestResponse<List<OrderAsSellerResponseDto>> getSoldOrderOf(
+    @Operation(summary = "판매자 판매내역 히스토리 조회 요청", description = "판매자의 판매완료 내역 조회요청을 처리합니다.")
+    public RestResponse<List<UserSalesHistroyResponseDto>> getSoldOrderOf(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         List<Order> orders = sellerOrderProvider.getSoldOrderOf(userDetails.getUser());
-        List<OrderAsSellerResponseDto> responseDtos = orders.stream()
+        List<UserSalesHistroyResponseDto> responseDtos = orders.stream()
             .map(OrderMapper.INSTANCE::toOrderAsSellerResponseDto)
             .toList();
         return RestResponse.success(responseDtos);
@@ -52,12 +52,12 @@ public class UserSellHistoryController {
      * @return 판매입찰 목록
      */
     @GetMapping("/onprogress")
-    @Operation(summary = "판매입찰 히스토리 조회 요청", description = "진행 중인 판매자의 판매입찰 내역 조회요청을 처리합니다.")
-    public RestResponse<List<UserSellOnProgressResponseDto>> getUserSellOnProgress(
+    @Operation(summary = "판매자 판매입찰 히스토리 조회 요청", description = "판매자의 진행 중인 판매입찰 내역 조회요청을 처리합니다.")
+    public RestResponse<List<UserSellBidOnProgressResponseDto>> getUserSellOnProgress(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         List<Sell> sellsOnProgress = sellService.getUserSellOnProgressOf(userDetails.getUser());
-        List<UserSellOnProgressResponseDto> responseDtos = sellsOnProgress.stream()
+        List<UserSellBidOnProgressResponseDto> responseDtos = sellsOnProgress.stream()
             .map(SellMapper.INSTANCE::toUserSellOnProgressResponseDto)
             .toList();
         return RestResponse.success(responseDtos);

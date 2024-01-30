@@ -2,11 +2,11 @@ package bc1.gream.domain.buy.dto.response;
 
 import java.time.LocalDateTime;
 
-public record BuyCheckOrderResponseDto(
+public record UserPurchaseHistoryResponseDto(
     Long orderId,
     LocalDateTime orderCreatedAt,
-    Long expectedPrice,
-    Long finalPrice,
+    Long orderExpectedPrice,
+    Long orderFinalPrice,
     Long productId,
     String productBrand,
     String productName,

@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public record SellPriceToQuantityResponseDto(
     Long sellPrice,
-    Long quantity
+    Long sellQuantity
 ) {
 
 }

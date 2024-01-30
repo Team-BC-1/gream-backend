@@ -1,7 +1,7 @@
 package bc1.gream.domain.buy.mapper;
 
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
-import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
+import bc1.gream.domain.buy.dto.response.UserBuyBidOnProgressResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.product.dto.response.BuyTradeResponseDto;
 import org.mapstruct.Mapper;
@@ -14,13 +14,13 @@ public interface BuyMapper {
     BuyMapper INSTANCE = Mappers.getMapper(BuyMapper.class);
 
     @Mapping(source = "id", target = "buyId")
+    @Mapping(source = "price", target = "buyPrice")
     BuyBidResponseDto toBuyBidResponseDto(Buy buy);
 
     @Mapping(source = "id", target = "buyId")
     @Mapping(source = "price", target = "buyPrice")
-    @Mapping(source = "createdAt", target = "tradeDate")
+    @Mapping(source = "createdAt", target = "buyTradeDate")
     BuyTradeResponseDto toBuyTradeResponseDto(Buy buy);
 
-    @Mapping(source = "discountPrice", target = "discountPrice")
-    BuyCheckBidResponseDto toBuyCheckBidResponseDto(BuyCheckBidResponseDto bid, Long discountPrice);
+    UserBuyBidOnProgressResponseDto toBuyCheckBidResponseDto(UserBuyBidOnProgressResponseDto bid, Long discountPrice);
 }

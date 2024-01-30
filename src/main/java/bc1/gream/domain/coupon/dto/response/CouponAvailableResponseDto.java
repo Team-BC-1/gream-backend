@@ -4,9 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record CouponAvailableResponseDto(
-    String name,
-    String discountType,
-    Long discount
+    Long couponId,
+    String couponName,
+    String couponDiscountType,
+    Long couponDiscount
 ) {
 
 }

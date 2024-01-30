@@ -103,7 +103,7 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .stream()
             .map(tuple -> SellPriceToQuantityResponseDto.builder()
                 .sellPrice(tuple.get(sell.price))
-                .quantity(tuple.get(sell.count()))
+                .sellQuantity(tuple.get(sell.count()))
                 .build()
             )
             .toList();

@@ -1,7 +1,7 @@
 package bc1.gream.domain.buy.controller;
 
-import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
-import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
+import bc1.gream.domain.buy.dto.response.UserBuyBidOnProgressResponseDto;
+import bc1.gream.domain.buy.dto.response.UserPurchaseHistoryResponseDto;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.gifticon.service.query.GifticonQueryService;
 import bc1.gream.global.common.RestResponse;
@@ -24,7 +24,7 @@ public class UserBoughtHistoryController {
 
     @GetMapping("/end")
     @Operation(summary = "구매자 구매완료상품 조회 요청", description = "구매자의 구매완료한 상품 조회요청을 처리합니다.")
-    public RestResponse<List<BuyCheckOrderResponseDto>> getBoughtOrder(
+    public RestResponse<List<UserPurchaseHistoryResponseDto>> getBoughtOrder(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         return RestResponse.success(gifticonQueryService.getBoughtOrder(userDetails.getUser()));
@@ -33,7 +33,7 @@ public class UserBoughtHistoryController {
 
     @GetMapping("/onprogress")
     @Operation(summary = "구매자 진행 중인 구매입찰 조회 요청", description = "구매자의 진행 중인 구매입찰에 대한 조회요청을 처리합니다.")
-    public RestResponse<List<BuyCheckBidResponseDto>> getBuyBid(
+    public RestResponse<List<UserBuyBidOnProgressResponseDto>> getBuyBid(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         return RestResponse.success(buyQueryService.findAllBuyBidCoupon(userDetails.getUser()));

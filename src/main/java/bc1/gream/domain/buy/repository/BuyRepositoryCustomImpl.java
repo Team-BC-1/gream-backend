@@ -4,7 +4,7 @@ package bc1.gream.domain.buy.repository;
 import static bc1.gream.domain.buy.entity.QBuy.buy;
 import static bc1.gream.domain.product.entity.QProduct.product;
 
-import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
+import bc1.gream.domain.buy.dto.response.UserBuyBidOnProgressResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.entity.QBuy;
 import bc1.gream.domain.buy.repository.helper.BuyQueryOrderFactory;
@@ -131,13 +131,15 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     }
 
     @Override
-    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+    public List<UserBuyBidOnProgressResponseDto> findAllBuyBidCoupon(User user) {
         return queryFactory.select(
                 buy.id,
                 buy.price,
                 buy.product.id,
                 buy.product.brand,
                 buy.product.name,
+                buy.createdAt,
+                buy.deadlineAt,
                 QCoupon.coupon.id,
                 QCoupon.coupon.name,
                 QCoupon.coupon
@@ -148,16 +150,18 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .where(buy.user.eq(user))
             .fetch()
             .stream()
-            .map(tuple -> BuyCheckBidResponseDto.builder()
+            .map(tuple -> UserBuyBidOnProgressResponseDto.builder()
                 .buyId(tuple.get(buy.id))
-                .price(tuple.get(buy.price))
                 .productId(tuple.get(buy.product.id))
-                .productName(tuple.get(buy.product.name))
                 .productBrand(tuple.get(buy.product.brand))
+                .productName(tuple.get(buy.product.name))
                 .couponId(tuple.get(QCoupon.coupon.id))
                 .couponName(tuple.get(QCoupon.coupon.name))
+                .buyPrice(tuple.get(buy.price))
                 .discountPrice(tuple.get(buy.price))
                 .coupon(tuple.get(QCoupon.coupon))
+                .buyBidStartedAt(tuple.get(buy.createdAt))
+                .buyBidDeadlineAt(tuple.get(buy.deadlineAt))
                 .build()
             ).toList();
     }

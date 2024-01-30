@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 @JsonIgnoreProperties
 public record UserPointResponseDto(
-    Long point
+    Long userPoint
 ) {
 
 }

@@ -7,7 +7,7 @@ import lombok.Builder;
 public record SellTradeResponseDto(
     Long sellId,
     Long sellPrice,
-    LocalDateTime tradeDate
+    LocalDateTime sellTradeDate
 ) {
 
 }
