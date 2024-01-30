@@ -3,10 +3,17 @@ spring:
     active: prod
   # DATASOURCE
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_URL}/gream
-    username: ${DB_ID}
-    password: ${DB_PASSWORD}
+    hikari:
+      primary:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_URL}/gream
+        username: ${DB_ID}
+        password: ${DB_PASSWORD}
+      secondary:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_READ_ONLY_URL}/gream
+        username: ${DB_ID}
+        password: ${DB_PASSWORD}
   # JPA
   jpa:
     hibernate:
@@ -47,3 +54,10 @@ cloud:
     credentials:
       access-key: ${S3_ACCESS_KEY}
       secret-key: ${S3_SECRET_ACCESS_KEY}
+# OAuth2
+oauth2:
+  kakao:
+    token-uri: ${KAKAO_TOKEN_URI}
+    user-info-uri: ${KAKAO_USER_INFO_URI}
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-url: ${KAKAO_REDIRECT_URL}

@@ -1,10 +1,13 @@
 package bc1.gream.global.security;
 
+import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.exception.ExceptionHandlerFilter;
 import bc1.gream.global.jwt.JwtAuthFilter;
 import bc1.gream.global.jwt.JwtLoginFilter;
 import bc1.gream.global.jwt.JwtUtil;
+import bc1.gream.global.oauth.OAuth2Filter;
+import bc1.gream.global.oauth.RequestOAuthInfoService;
 import bc1.gream.global.redis.RedisUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +45,7 @@ public class WebSecurityConfig {
     private final LogoutHandler logoutHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final UserRepository userRepository;
+    private final RequestOAuthInfoService requestOAuthInfoService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,6 +67,11 @@ public class WebSecurityConfig {
     @Bean
     public JwtAuthFilter jwtAuthFilter() throws Exception {
         return new JwtAuthFilter(jwtUtil, redisUtil, userDetailsService);
+    }
+
+    @Bean
+    public OAuth2Filter oAuth2Filter() {
+        return new OAuth2Filter(jwtUtil, redisUtil, userRepository, requestOAuthInfoService);
     }
 
     @Bean
@@ -102,8 +111,11 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // 유저 도메인
                 .requestMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
+                .requestMatchers("/api/users/**").permitAll()
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                // 관리자 도메인
+                .requestMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority())
                 // health 체크
                 .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                 // Swagger
@@ -115,6 +127,7 @@ public class WebSecurityConfig {
 
     private void settingFilterOrder(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtAuthFilter(), JwtLoginFilter.class);
+        http.addFilterBefore(oAuth2Filter(), JwtAuthFilter.class);
         http.addFilterBefore(jwtLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(exceptionHandlerFilter(), LogoutFilter.class);
     }

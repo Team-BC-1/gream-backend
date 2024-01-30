@@ -1,5 +1,6 @@
 package bc1.gream.domain.product.service.query;
 
+import bc1.gream.domain.admin.dto.request.AdminProductRequestDto;
 import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
@@ -45,7 +46,26 @@ public class ProductService {
             .orElseThrow(() -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND));
     }
 
-    public List<Product> findAllByNameContaining(String name) {
-        return productRepository.findAllByNameContaining(name);
+
+    public void addProduct(AdminProductRequestDto adminProductRequestDto) {
+        String productName = adminProductRequestDto.name();
+
+        if (productRepository.existsByName(productName)) {
+            throw new GlobalException(ResultCase.DUPLICATED_PRODUCT_NAME);
+        }
+
+        Product product = buildProductFromRequest(adminProductRequestDto);
+        productRepository.save(product);
     }
+
+    private Product buildProductFromRequest(AdminProductRequestDto adminProductRequestDto) {
+        return Product.builder()
+            .name(adminProductRequestDto.name())
+            .brand(adminProductRequestDto.brand())
+            .description(adminProductRequestDto.description())
+            .imageUrl(adminProductRequestDto.imageUrl())
+            .price(adminProductRequestDto.price())
+            .build();
+    }
+
 }

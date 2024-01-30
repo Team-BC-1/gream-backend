@@ -2,13 +2,26 @@ package bc1.gream.domain.admin.controller;
 
 import bc1.gream.domain.admin.dto.request.AdminCreateCouponRequestDto;
 import bc1.gream.domain.admin.dto.response.AdminCreateCouponResponseDto;
+import bc1.gream.domain.admin.dto.request.AdminGetRefundRequestDto;
+import bc1.gream.domain.admin.dto.request.AdminProductRequestDto;
+import bc1.gream.domain.admin.dto.request.AdminRefundPassResponseDto;
+import bc1.gream.domain.admin.dto.response.AdminGetRefundResponseDto;
+import bc1.gream.domain.admin.dto.response.AdminProductResponseDto;
+import bc1.gream.domain.admin.mapper.RefundMapper;
+import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.user.service.command.RefundCommandService;
+import bc1.gream.domain.user.service.query.RefundQueryService;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.mapper.CouponMapper;
 import bc1.gream.domain.coupon.provider.CouponProvider;
 import bc1.gream.global.common.RestResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +31,43 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
 public class AdminController {
+
+    private final ProductService productService;
+    private final RefundQueryService refundQueryService;
+    private final RefundCommandService refundCommandService;
+
+    @GetMapping("/refunds")
+    @Operation(summary = "신청된 환급 리스트 조회 요청", description = "사용자가 신청한 환급 요청 리스트를 반환합니다.")
+    public RestResponse<List<AdminGetRefundResponseDto>> getRefunds(AdminGetRefundRequestDto requestDto) {
+
+        List<AdminGetRefundResponseDto> response = refundQueryService.getRefunds()
+            .stream()
+            .map(RefundMapper.INSTANCE::toAdminGetRefundResponseDto)
+            .toList();
+
+        return RestResponse.success(response);
+    }
+
+    @PostMapping("/products")
+    public RestResponse<AdminProductResponseDto> addProducts(
+        @RequestBody AdminProductRequestDto adminProductRequestDto
+    ) {
+        productService.addProduct(adminProductRequestDto);
+
+        return RestResponse.success(new AdminProductResponseDto());
+    }
+
+
+    @DeleteMapping("/refund/{id}")
+    @Operation(summary = "유저 환급 승인", description = "유저가 신청한 환급 요청을 승인해주는 기능입니다.")
+    public RestResponse<AdminRefundPassResponseDto> approveRefund(
+        @PathVariable Long id
+    ) {
+        AdminRefundPassResponseDto responseDto = refundCommandService.approveRefund(id);
+
+        return RestResponse.success(responseDto);
+    }
+}
 
     private final CouponProvider couponProvider;
 

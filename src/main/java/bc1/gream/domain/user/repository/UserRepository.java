@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select lp.product.id from LikeProduct lp where lp.user = :user")
     List<Long> findAllLikeProductIdByUser(User user);
+
+    Optional<User> findByOauthId(String oauthId);
 }
