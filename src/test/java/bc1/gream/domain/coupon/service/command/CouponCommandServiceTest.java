@@ -43,18 +43,21 @@ class CouponCommandServiceTest implements CouponTest {
     @Test
     void 새로운_쿠폰_생성_성공() {
         // GIVEN
-        AdminCreateCouponRequestDto adminCreateCouponRequestDto = new AdminCreateCouponRequestDto("쿠폰이름", DiscountType.FIX, 1000L,
-            CouponStatus.AVAILABLE);
+        AdminCreateCouponRequestDto adminCreateCouponRequestDto = AdminCreateCouponRequestDto.builder()
+            .name("쿠폰이름")
+            .discountType(DiscountType.FIX)
+            .discount(1000L)
+            .userLoginId(TEST_USER_LOGIN_ID)
+            .build();
         Coupon expectedCoupon = Coupon.builder()
             .name(adminCreateCouponRequestDto.name())
             .discountType(adminCreateCouponRequestDto.discountType())
             .discount(adminCreateCouponRequestDto.discount())
-            .status(adminCreateCouponRequestDto.status())
             .build();
         given(couponRepository.save(any(Coupon.class))).willReturn(expectedCoupon);
 
         // WHEN
-        Coupon savedCoupon = couponCommandService.createCoupon(adminCreateCouponRequestDto);
+        Coupon savedCoupon = couponCommandService.createCoupon(TEST_USER, adminCreateCouponRequestDto);
 
         // THEN
         then(couponRepository).should(times(1)).save(any(Coupon.class));
