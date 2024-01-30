@@ -5,11 +5,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bc1.gream.domain.admin.dto.request.AdminCreateCouponRequestDto;
-import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.entity.DiscountType;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.global.security.WithMockCustomUser;
+import bc1.gream.test.UserTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,12 @@ class AdminControllerTest {
     public void 새로운_쿠폰_추가_정상요청() throws Exception {
         // GIVEN
         String url = "/api/admin/coupon";
-        AdminCreateCouponRequestDto requestDto = new AdminCreateCouponRequestDto("쿠폰이름", DiscountType.FIX, 1000L, CouponStatus.AVAILABLE);
+        AdminCreateCouponRequestDto requestDto = AdminCreateCouponRequestDto.builder()
+            .name("쿠폰이름")
+            .discountType(DiscountType.FIX)
+            .discount(1000L)
+            .userLoginId(UserTest.TEST_USER_LOGIN_ID)
+            .build();
 
         // WHEN
         // THEN
@@ -62,13 +67,30 @@ class AdminControllerTest {
     public void 새로운_쿠폰_추가_유효하지_않은_요청() throws Exception {
         // GIVEN
         String url = "/api/admin/coupon";
-        AdminCreateCouponRequestDto requestDtoOfNull = new AdminCreateCouponRequestDto(null, null, null, null);
-        AdminCreateCouponRequestDto requestDtoOfNameOutOfSize = new AdminCreateCouponRequestDto("01234567890123456789012345678901234567891",
-            DiscountType.FIX, 1000L, CouponStatus.AVAILABLE);
-        AdminCreateCouponRequestDto requestDtoOfDiscountZero = new AdminCreateCouponRequestDto("쿠폰이름", DiscountType.FIX, 0L,
-            CouponStatus.AVAILABLE);
-        AdminCreateCouponRequestDto requestDtoOfDiscountNegative = new AdminCreateCouponRequestDto("쿠폰이름", DiscountType.FIX, -1000L,
-            CouponStatus.AVAILABLE);
+        AdminCreateCouponRequestDto requestDtoOfNull = AdminCreateCouponRequestDto.builder()
+            .name(null)
+            .discountType(null)
+            .discount(null)
+            .userLoginId(null)
+            .build();
+        AdminCreateCouponRequestDto requestDtoOfNameOutOfSize = AdminCreateCouponRequestDto.builder()
+            .name("01234567890123456789012345678901234567891")
+            .discountType(DiscountType.FIX)
+            .discount(1000L)
+            .userLoginId(UserTest.TEST_USER_LOGIN_ID)
+            .build();
+        AdminCreateCouponRequestDto requestDtoOfDiscountZero = AdminCreateCouponRequestDto.builder()
+            .name("01234567890123456789012345678901234567891")
+            .discountType(DiscountType.FIX)
+            .discount(0L)
+            .userLoginId(UserTest.TEST_USER_LOGIN_ID)
+            .build();
+        AdminCreateCouponRequestDto requestDtoOfDiscountNegative = AdminCreateCouponRequestDto.builder()
+            .name("01234567890123456789012345678901234567891")
+            .discountType(DiscountType.FIX)
+            .discount(-1000L)
+            .userLoginId(UserTest.TEST_USER_LOGIN_ID)
+            .build();
 
         // WHEN
         // THEN

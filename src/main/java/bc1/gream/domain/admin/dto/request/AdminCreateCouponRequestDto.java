@@ -1,14 +1,15 @@
 package bc1.gream.domain.admin.dto.request;
 
-import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.entity.DiscountType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
 @JsonIgnoreProperties
+@Builder
 public record AdminCreateCouponRequestDto(
     @NotBlank(message = "null 혹은 공백 입력은 불가합니다.")
     @Pattern(
@@ -21,8 +22,8 @@ public record AdminCreateCouponRequestDto(
     @NotNull(message = "null 입력은 불가합니다.")
     @Positive(message = "음수 혹은 0 입력은 불가합니다.")
     Long discount,
-    @NotNull(message = "null 입력은 불가합니다.")
-    CouponStatus status
+    @NotBlank(message = "null 입력은 불가합니다.")
+    String userLoginId
 ) {
 
 }
