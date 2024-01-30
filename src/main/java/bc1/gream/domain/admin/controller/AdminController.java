@@ -3,9 +3,8 @@ package bc1.gream.domain.admin.controller;
 import bc1.gream.domain.admin.dto.request.AdminRefundPassResponseDto;
 import bc1.gream.domain.admin.service.AdminService;
 import bc1.gream.global.common.RestResponse;
-import bc1.gream.global.security.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +18,11 @@ public class AdminController {
     private final AdminService adminService;
 
     @DeleteMapping("/refund/{id}")
+    @Operation(summary = "유저 환급 승인", description = "유저가 신청한 환급 요청을 승인해주는 기능입니다.")
     public RestResponse<AdminRefundPassResponseDto> refundPass(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long id
     ) {
-        AdminRefundPassResponseDto responseDto = adminService.refundPass(userDetails.getUser(), id);
+        AdminRefundPassResponseDto responseDto = adminService.refundPass(id);
 
         return RestResponse.success(responseDto);
     }
