@@ -7,7 +7,7 @@ import bc1.gream.domain.admin.dto.request.AdminRefundPassResponseDto;
 import bc1.gream.domain.admin.dto.response.AdminCreateCouponResponseDto;
 import bc1.gream.domain.admin.dto.response.AdminGetRefundResponseDto;
 import bc1.gream.domain.admin.dto.response.AdminProductResponseDto;
-import bc1.gream.domain.admin.mapper.RefundMapper;
+import bc1.gream.domain.user.mapper.RefundMapper;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.mapper.CouponMapper;
 import bc1.gream.domain.coupon.provider.CouponProvider;
