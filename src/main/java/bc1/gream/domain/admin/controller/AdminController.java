@@ -1,7 +1,7 @@
 package bc1.gream.domain.admin.controller;
 
-import bc1.gream.domain.admin.dto.AdminProductRequestDto;
-import bc1.gream.domain.admin.dto.AdminProductResponseDto;
+import bc1.gream.domain.admin.dto.request.AdminProductRequestDto;
+import bc1.gream.domain.admin.dto.response.AdminProductResponseDto;
 import bc1.gream.domain.product.service.query.ProductService;
 import bc1.gream.global.common.RestResponse;
 import lombok.RequiredArgsConstructor;

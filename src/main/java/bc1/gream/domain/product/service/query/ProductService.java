@@ -1,6 +1,6 @@
 package bc1.gream.domain.product.service.query;
 
-import bc1.gream.domain.admin.dto.AdminProductRequestDto;
+import bc1.gream.domain.admin.dto.request.AdminProductRequestDto;
 import bc1.gream.domain.product.dto.unit.ProductCondition;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.repository.ProductRepository;
@@ -44,10 +44,6 @@ public class ProductService {
     public Product findBy(Long id) throws GlobalException {
         return productRepository.findById(id)
             .orElseThrow(() -> new GlobalException(ResultCase.PRODUCT_NOT_FOUND));
-    }
-
-    public List<Product> findAllByNameContaining(String name) {
-        return productRepository.findAllByNameContaining(name);
     }
 
 
