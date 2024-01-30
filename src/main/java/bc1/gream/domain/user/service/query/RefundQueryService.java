@@ -22,6 +22,10 @@ public class RefundQueryService {
     public List<Refund> getRefunds() {
         return refundRepository.findAll();
     }
+
+    /**
+     * 특정 id에 해당하는 환급 정보를 반환
+     */
     public Refund findRefund(Long refundId) {
         return refundRepository.findById(refundId).orElseThrow(
             () -> new GlobalException(ResultCase.REFUND_NOT_FOUND)
