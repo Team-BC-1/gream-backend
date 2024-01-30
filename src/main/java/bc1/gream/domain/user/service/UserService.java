@@ -7,6 +7,7 @@ import bc1.gream.domain.user.entity.Provider;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.domain.user.entity.UserRole;
 import bc1.gream.domain.user.mapper.UserMapper;
+import bc1.gream.domain.user.repository.RefundRepository;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RefundRepository refundRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -54,4 +56,13 @@ public class UserService {
             throw new GlobalException(ResultCase.DUPLICATED_NICKNAME);
         }
     }
+
+    public User findUser(String loginId) {
+        User user = userRepository.findByLoginId(loginId).orElseThrow(
+            () -> new GlobalException(ResultCase.USER_NOT_FOUND)
+        );
+
+        return user;
+    }
+
 }

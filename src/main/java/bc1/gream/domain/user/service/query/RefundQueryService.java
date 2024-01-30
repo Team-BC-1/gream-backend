@@ -2,6 +2,8 @@ package bc1.gream.domain.user.service.query;
 
 import bc1.gream.domain.user.entity.Refund;
 import bc1.gream.domain.user.repository.RefundRepository;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.GlobalException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,4 +22,14 @@ public class RefundQueryService {
     public List<Refund> getRefunds() {
         return refundRepository.findAll();
     }
+
+    /**
+     * 특정 id에 해당하는 환급 정보를 반환
+     */
+    public Refund findRefund(Long refundId) {
+        return refundRepository.findById(refundId).orElseThrow(
+            () -> new GlobalException(ResultCase.REFUND_NOT_FOUND)
+        );
+    }
+
 }
