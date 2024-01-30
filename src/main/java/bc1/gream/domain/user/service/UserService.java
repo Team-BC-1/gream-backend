@@ -23,7 +23,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     @Transactional
     public UserSignupResponseDto signup(UserSignupRequestDto request) {
 
@@ -41,7 +40,6 @@ public class UserService {
 
         return new UserSignupResponseDto();
     }
-
 
     public UserPointResponseDto pointsCheck(UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
