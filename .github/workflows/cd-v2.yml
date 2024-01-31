@@ -59,7 +59,10 @@ jobs:
           -e TOSS_CLIENT_API_KEY=${{ secrets.TOSS_CLIENT_API_KEY }} -e TOSS_FAIL_URL=${{ secrets.TOSS_FAIL_URL }} \
           -e TOSS_SECRET_API_KEY=${{ secrets.TOSS_SECRET_API_KEY }} -e TOSS_SUCCESS_URL=${{ secrets.TOSS_SUCCESS_URL }} \
           -e PROFILE=prod -d --restart always --name csbroker-api $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> scripts/deploy.sh
-          echo "docker run -d -p 9090:9090 -v home/ubuntu/docker-compose/prometheus/prometheus.yml --name prometheus prom/prometheus"
+          echo "docker pull prom/prometheus" >> scripts/deploy.sh
+          echo "docker run -d -p 9090:9090 -v home/ubuntu/docker-compose/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml --name prometheus prom/prometheus" >> scripts/deploy.sh
+
+
 
       - name: upload to s3
         env:
