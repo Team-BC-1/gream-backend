@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: prod
+  # DATASOURCE
   datasource:
     url: jdbc:mysql://${DB_URL}/gream
     username: ${DB_ID}
@@ -79,3 +80,11 @@ server:
   tomcat:
     mbeanregistry:
       enabled: true
+
+# TOSS PAY
+payment:
+  toss:
+    test_client_api_key: ${TOSS_CLIENT_API_KEY}
+    test_secret_api_key: ${TOSS_SECRET_API_KEY}
+    success_url: ${TOSS_SUCCESS_URL}
+    fail_url: ${TOSS_FAIL_URL}
