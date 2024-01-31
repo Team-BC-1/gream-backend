@@ -117,7 +117,7 @@ public class WebSecurityConfig {
                 // 관리자 도메인
                 .requestMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority())
                 // health 체크
-                .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 // Swagger
                 .requestMatchers(HttpMethod.GET, "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 // 그 외
