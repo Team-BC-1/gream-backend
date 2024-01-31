@@ -20,7 +20,7 @@ public record UserSignupRequestDto(
     String nickname,
 
     @Pattern(
-        regexp = "^(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@#$%^&+=]{8,30}$",
+        regexp = "^(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9@#$%^&+=!]{8,30}$",
         message = "비밀번호는 영소문자, 숫자가 필수이고, 8이상 30이하 길이로 가능합니다.")
     String password) {
 

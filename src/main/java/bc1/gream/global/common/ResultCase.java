@@ -27,12 +27,15 @@ public enum ResultCase {
     // 만료된 리프레쉬 토큰 401
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, 1006, "만료된 Refresh Token"),
     NOT_ENOUGH_POINT(HttpStatus.FORBIDDEN, 1007, "유저의 포인트가 부족합니다"),
+    REFUND_NOT_FOUND(HttpStatus.NOT_FOUND, 1008, "환급 정보가 없습니다."),
 
     // 상품 2000번대
     // 검색 결과 없음 404
     SEARCH_RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, 2000, "검색 결과가 없습니다."),
     // 존재하지 않는 상품 404
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 2001, "해당 상품은 존재하지 않습니다."),
+
+    DUPLICATED_PRODUCT_NAME(HttpStatus.BAD_REQUEST, 2002, "해당 상품은 존재하지 않습니다."),
 
     // 구매 3000번대
     // 구매 요청 대상 상품이 이미 판매되었음 409
@@ -72,11 +75,8 @@ public enum ResultCase {
     // S3 7000번대
     IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다."),
 
-    // 토스페이 8000번대
-    UNSUPPORTED_PAYTYPE(HttpStatus.BAD_REQUEST, 8000, "아직 지원되지 않는 충전방식입니다."),
-    INVALID_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8001, "0원 이상의 금액만 충전가능합니다."),
-    UNMATCHED_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8002, "이전 결제요청 금액과 일치하지 않습니다."),
-    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 8003, "관련된 토스결제데이터가 존재하지 않습니다.");
+    // OAuth 8000번대
+    INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, 8000, "올바르지 않은 로그인 접근입니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;

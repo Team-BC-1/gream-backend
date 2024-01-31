@@ -1,5 +1,6 @@
 package bc1.gream.domain.coupon.mapper;
 
+import bc1.gream.domain.admin.dto.response.AdminCreateCouponResponseDto;
 import bc1.gream.domain.coupon.dto.response.CouponAvailableResponseDto;
 import bc1.gream.domain.coupon.dto.response.CouponUnavailableResponseDto;
 import bc1.gream.domain.coupon.entity.Coupon;
@@ -14,4 +15,6 @@ public interface CouponMapper {
     CouponAvailableResponseDto toCouponListResponseDto(Coupon coupon);
 
     CouponUnavailableResponseDto toCouponUsedListResponseDto(Coupon coupon);
+
+    AdminCreateCouponResponseDto toAdminCreateCouponResponseDto(Coupon coupon);
 }
