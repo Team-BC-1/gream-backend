@@ -61,5 +61,7 @@ class BuyQueryServiceTest implements UserTest {
 
         // then
         assertThat(exception.getResultCase()).isEqualTo(ResultCase.NOT_ENOUGH_POINT);
+        assertThat(exception.getResultCase().getCode()).isEqualTo(1007);
+        assertThat(exception.getResultCase().getMessage()).isEqualTo("유저의 포인트가 부족합니다");
     }
 }
