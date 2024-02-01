@@ -2,7 +2,6 @@ package bc1.gream.domain.buy.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -12,29 +11,26 @@ import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
 import bc1.gream.domain.buy.provider.BuyBidProvider;
 import bc1.gream.domain.order.validator.ProductValidator;
-import bc1.gream.global.security.UserDetailsImpl;
-import bc1.gream.global.security.WebSecurityConfig;
-import bc1.gream.test.MockSpringSecurityFilter;
+import bc1.gream.domain.product.entity.Product;
+import bc1.gream.domain.user.entity.User;
+import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.UserTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.security.Principal;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@WebMvcTest(controllers = {BuyBidController.class}, excludeFilters = {
-    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfig.class)})
+@WebMvcTest(controllers = BuyBidController.class)
+@WithMockCustomUser
 @ActiveProfiles("test")
 class BuyBidControllerTest implements UserTest, ProductTest {
 
@@ -45,25 +41,20 @@ class BuyBidControllerTest implements UserTest, ProductTest {
     @MockBean
     ProductValidator productValidator;
     private MockMvc mockMvc;
-    private Principal mockPrincipal;
     @Autowired
     private WebApplicationContext context;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-            .apply(springSecurity(new MockSpringSecurityFilter())).alwaysDo(print()).build();
-    }
-
-    private void mockUserSetup() {
-        UserDetailsImpl testUserDetails = new UserDetailsImpl(TEST_BUYER);
-        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+            .alwaysDo(print()).build();
     }
 
     @Test
-    void 구매_입찰_컨트롤러_성공_테스트() throws Exception {
-        mockUserSetup();
+    @DisplayName("구매 입찰 컨트롤러의 기능 중 새로운 구매 입찰을 만드는 기능 성공 테스트")
+    void 구매_입찰신청_성공_테스트() throws Exception {
 
+        // given
         BuyBidRequestDto requestDto = BuyBidRequestDto.builder()
             .price(4000L)
             .build();
@@ -77,10 +68,10 @@ class BuyBidControllerTest implements UserTest, ProductTest {
 
         Long productId = 1L;
         given(productValidator.validateBy(any(Long.class))).willReturn(TEST_PRODUCT);
-        given(buyBidProvider.buyBidProduct(TEST_BUYER, requestDto, TEST_PRODUCT)).willReturn(responseDto);
+        given(buyBidProvider.buyBidProduct(any(User.class), any(BuyBidRequestDto.class), any(Product.class))).willReturn(responseDto);
 
+        // when - then
         mockMvc.perform(post("/api/buy/{productId}", productId)
-                .principal(mockPrincipal)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpectAll(
