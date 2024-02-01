@@ -40,6 +40,7 @@ class BuyBidControllerTest implements UserTest, ProductTest {
     BuyBidProvider buyBidProvider;
     @MockBean
     ProductValidator productValidator;
+    @Autowired
     private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
