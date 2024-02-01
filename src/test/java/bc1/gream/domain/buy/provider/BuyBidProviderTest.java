@@ -21,6 +21,7 @@ import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
 import bc1.gream.test.ProductTest;
 import bc1.gream.test.UserTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,7 +45,9 @@ class BuyBidProviderTest implements CouponTest, UserTest, ProductTest, BuyTest {
     private CouponCommandService couponCommandService;
 
     @Test
-    void 상품_구매_입찰_Provider_성공_테스트() {
+    @DisplayName("구매입찰 Provider의 기능 중 상품 구매 입찰신청 기능 성공 테스트")
+    void 상품_구매_입찰신청_성공_테스트() {
+
         // given
         BuyBidRequestDto requestDto = BuyBidRequestDto.builder()
             .price(4000L)
@@ -65,7 +68,9 @@ class BuyBidProviderTest implements CouponTest, UserTest, ProductTest, BuyTest {
     }
 
     @Test
-    void 상품_구매_입찰_Provider_쿠폰_없을때_성공_테스트() {
+    void 상품_구매_입찰_추가_Provider_쿠폰_없을때_성공_테스트() {
+
+        // given
         BuyBidRequestDto requestDto = BuyBidRequestDto.builder()
             .price(4000L)
             .period(7)
