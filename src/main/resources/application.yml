@@ -54,6 +54,8 @@ cloud:
       access-key: ${S3_ACCESS_KEY}
       secret-key: ${S3_SECRET_ACCESS_KEY}
 
+
+
 # OAuth2
 oauth2:
   kakao:
@@ -77,5 +79,6 @@ management:
 # tomcat was 메트릭으로 변경
 server:
   tomcat:
+    connection-timeout: 1800000
     mbeanregistry:
       enabled: true
