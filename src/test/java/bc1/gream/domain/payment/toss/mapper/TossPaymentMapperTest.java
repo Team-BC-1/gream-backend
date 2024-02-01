@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import bc1.gream.domain.payment.toss.dto.request.TossPaymentInitialRequestDto;
+import bc1.gream.domain.payment.toss.dto.response.TossPaymentFailResponseDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentInitialResponseDto;
 import bc1.gream.domain.payment.toss.entity.OrderName;
 import bc1.gream.domain.payment.toss.entity.PayType;
 import bc1.gream.domain.payment.toss.entity.TossPayment;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.test.UserTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class TossPaymentMapperTest implements UserTest {
@@ -56,5 +58,23 @@ class TossPaymentMapperTest implements UserTest {
         assertEquals(successUrl, responseDto.paymentSuccessUrl());
         assertEquals(failUrl, responseDto.paymentFailUrl());
         assertTrue(responseDto.paymentHasSuccess());
+    }
+
+    @Test
+    @DisplayName("errorCode,errorMsg,orderId 을 입력받아 TossPaymentFailResponseDto 로 매핑합니다.")
+    public void errorCode_errorMsg_orderId_TO_TossPaymentFailResponseDto() {
+        // GIVEN
+        String errorCode = "에러코드";
+        String errorMsg = "에러메세지";
+        Long orderId = 100L;
+
+        // WHEN
+        TossPaymentFailResponseDto failResponseDto = TossPaymentMapper.INSTANCE.toTossPaymentFailResponseDto(errorCode, errorMsg,
+            orderId);
+
+        // THEN
+        assertEquals(failResponseDto.errorCode(), errorCode);
+        assertEquals(failResponseDto.errorMsg(), errorMsg);
+        assertEquals(failResponseDto.orderId(), orderId);
     }
 }
