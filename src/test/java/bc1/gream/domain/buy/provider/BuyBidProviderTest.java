@@ -64,4 +64,21 @@ class BuyBidProviderTest implements CouponTest, UserTest, ProductTest, BuyTest {
         assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
     }
 
+    @Test
+    void 상품_구매_입찰_Provider_쿠폰_없을때_성공_테스트() {
+        BuyBidRequestDto requestDto = BuyBidRequestDto.builder()
+            .price(4000L)
+            .period(7)
+            .build();
+
+        given(buyRepository.save(any(Buy.class))).willReturn(TEST_BUY);
+
+        // when
+        BuyBidResponseDto responseDto = buyBidProvider.buyBidProduct(TEST_BUYER, requestDto, TEST_PRODUCT);
+
+        // then
+        verify(buyQueryService, times(1)).userPointCheck(any(User.class), any(Long.class));
+        assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
+    }
+
 }
