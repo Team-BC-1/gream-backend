@@ -1,5 +1,8 @@
 package bc1.gream.domain.payment.toss.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record TossPaymentCardDto(
     String company,                     // "현대",
     String number,                      // "433012******1234",

@@ -1,10 +1,13 @@
 package bc1.gream.domain.payment.toss.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record TossPaymentSuccessResponseDto(
     String mId,                     // : "tosspayments", 가맹점 ID
     String version,                 // : "1.3", Payment 객체 응답 버전
     String paymentKey,              // : "5zJ4xY7m0kODnyRpQWGrN2xqGlNvLrKwv1M9ENjbeoPaZdL6",
-    String orderId,                 // : "IBboL1BJjaYHW6FA4nRjm",
+    String orderId,                 // : "192819120928L",
     String orderName,               // : "토스 티셔츠 외 2건",
     String currency,                // : "KRW",
     String method,                  // : "카드", 결제수단
