@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductLikeService {
+@Transactional
+public class ProductLikeCommandService {
 
 
     private final ProductRepository productRepository;
     private final LikeProductRepository likeProductRepository;
 
-    @Transactional
     public void likeProduct(User user, Long productId) {
         Product product = getProductBy(productId);
         boolean hasNotLikedThisProduct = user.getLikeProducts().stream()
@@ -32,7 +32,6 @@ public class ProductLikeService {
         }
     }
 
-    @Transactional
     public void dislikeProduct(User user, Long productId) {
         Product product = getProductBy(productId);
         user.removeLikeProduct(product);
