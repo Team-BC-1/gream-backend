@@ -1,6 +1,6 @@
 package bc1.gream.domain.sell.scheduler;
 
-import bc1.gream.domain.sell.service.SellService;
+import bc1.gream.domain.sell.service.command.SellCommandService;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +23,7 @@ public class SellDeadlineScheduler {
     private final static String REDIS_CLOSE_LOCK_VALUE = "LOCKED";
     private final static int REDIS_DISTRIBUTED_LOCK_TIMEOUT = 2;
 
-    private final SellService sellService;
+    private final SellCommandService sellCommandService;
     private final StringRedisTemplate redisTemplate;
 
     @Retryable(
@@ -36,7 +36,7 @@ public class SellDeadlineScheduler {
         Boolean hasLock = redisTemplate.opsForValue()
             .setIfAbsent(REDIS_CLOSE_LOCK, REDIS_CLOSE_LOCK_VALUE, REDIS_DISTRIBUTED_LOCK_TIMEOUT, TimeUnit.SECONDS);
         if (hasLock) {
-            sellService.deleteSellsOfDeadlineBefore(LocalDateTime.now());
+            sellCommandService.deleteSellsOfDeadlineBefore(LocalDateTime.now());
             redisTemplate.delete(REDIS_CLOSE_LOCK);
         }
     }
