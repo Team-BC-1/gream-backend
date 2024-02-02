@@ -61,7 +61,6 @@ public class CouponQueryService {
         return couponRepository.unavailable(user);
     }
 
-    @Transactional(readOnly = true)
     public Coupon findCouponById(Long couponId, User user) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(
             () -> new GlobalException(COUPON_NOT_FOUND)
