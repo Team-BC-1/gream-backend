@@ -26,7 +26,6 @@ public class OrderCommandService {
      * @param coupon 쿠폰
      * @return 새로운 주문
      */
-    @Transactional
     public Order saveOrderOfBuy(Buy buy, User seller, Coupon coupon) {
         Long finalPrice = CouponCalculator.calculateDiscount(coupon, buy.getPrice());
         Order order = Order.builder()
@@ -39,7 +38,6 @@ public class OrderCommandService {
         return orderRepository.save(order);
     }
 
-    @Transactional
     public Order saveOrderOfBuyNotCoupon(Buy buy, User seller) {
 
         Long finalPrice = buy.getPrice();
@@ -51,12 +49,10 @@ public class OrderCommandService {
             .finalPrice(finalPrice)
             .expectedPrice(buy.getPrice())
             .build();
-        
+
         return orderRepository.save(order);
     }
 
-
-    @Transactional
     public Order saveOrderOfSell(Sell sell, User buyer, Coupon coupon) {
         Long finalPrice = CouponCalculator.calculateDiscount(coupon, sell.getPrice());
 
@@ -71,7 +67,6 @@ public class OrderCommandService {
         return orderRepository.save(order);
     }
 
-    @Transactional
     public Order saveOrderOfSellNotCoupon(Sell sell, User buyer) {
 
         Long finalPrice = sell.getPrice();
