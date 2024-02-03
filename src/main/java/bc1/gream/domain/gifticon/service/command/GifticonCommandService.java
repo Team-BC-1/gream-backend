@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GifticonCommandService {
 
     private final GifticonRepository gifticonRepository;
 
-    @Transactional
     public Gifticon saveGifticon(String gifticonUrl, Order order) {
         Gifticon gifticon = Gifticon.builder()
             .gifticonUrl(gifticonUrl)
@@ -21,8 +21,7 @@ public class GifticonCommandService {
             .build();
         return gifticonRepository.save(gifticon);
     }
-
-    @Transactional
+    
     public void delete(Gifticon gifticon) {
         gifticonRepository.delete(gifticon);
     }
