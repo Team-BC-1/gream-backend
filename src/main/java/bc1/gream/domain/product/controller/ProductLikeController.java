@@ -6,7 +6,7 @@ import bc1.gream.domain.product.dto.response.ProductLikeResponseDto;
 import bc1.gream.domain.product.dto.response.ProductLikesResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
-import bc1.gream.domain.product.service.command.ProductLikeService;
+import bc1.gream.domain.product.service.command.ProductLikeCommandService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import bc1.gream.global.validator.OrderCriteriaValidator;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProductLikeController {
 
-    private final ProductLikeService productLikeService;
+    private final ProductLikeCommandService productLikeCommandService;
 
     /**
      * 상품 좋아요 요청
@@ -43,7 +43,7 @@ public class ProductLikeController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
     ) {
-        productLikeService.likeProduct(userDetails.getUser(), productId);
+        productLikeCommandService.likeProduct(userDetails.getUser(), productId);
         ProductLikeResponseDto responseDto = ProductMapper.INSTANCE.toLikeResponseDto("관심상품 등록");
         return RestResponse.success(responseDto);
     }
@@ -61,7 +61,7 @@ public class ProductLikeController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable("id") Long productId
     ) {
-        productLikeService.dislikeProduct(userDetails.getUser(), productId);
+        productLikeCommandService.dislikeProduct(userDetails.getUser(), productId);
         ProductDislikeResponseDto responseDto = ProductMapper.INSTANCE.toDislikeResponseDto("관심상품 등록 해제");
         return RestResponse.success(responseDto);
     }
@@ -80,7 +80,7 @@ public class ProductLikeController {
         @PageableDefault(size = 5) Pageable pageable
     ) {
         OrderCriteriaValidator.validateOrderCriteria(Buy.class, pageable);
-        List<Product> products = productLikeService.productLikes(userDetails.getUser(), pageable);
+        List<Product> products = productLikeCommandService.productLikes(userDetails.getUser(), pageable);
         List<ProductLikesResponseDto> response = products.stream().map(ProductMapper.INSTANCE::toProductLikesResponseDto).toList();
         return RestResponse.success(response);
     }

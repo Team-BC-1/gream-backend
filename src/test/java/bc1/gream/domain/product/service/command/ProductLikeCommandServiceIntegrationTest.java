@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Disabled("통합테스트는 로컬에서만 실행합니다. 실행 시, SECRET KEY 에 대한 IntelliJ 환경변수를 설정해주어야 합니다.")
 @Transactional
-class ProductLikeServiceIntegrationTest extends BaseIntegrationTest implements ProductTest, UserTest {
+class ProductLikeCommandServiceIntegrationTest extends BaseIntegrationTest implements ProductTest, UserTest {
 
     @Autowired
-    private ProductLikeService productLikeService;
+    private ProductLikeCommandService productLikeCommandService;
     @Autowired
     private LikeProductRepository likeProductRepository;
 
@@ -43,7 +43,7 @@ class ProductLikeServiceIntegrationTest extends BaseIntegrationTest implements P
         User user = savedBuyer;
 
         // WHEN
-        productLikeService.likeProduct(user, product.getId());
+        productLikeCommandService.likeProduct(user, product.getId());
 
         // THEN
         boolean hasNotLikedThisProduct = user.getLikeProducts().stream()
