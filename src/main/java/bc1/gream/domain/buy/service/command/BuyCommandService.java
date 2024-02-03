@@ -26,7 +26,7 @@ public class BuyCommandService {
         buyRepository.delete(buy);
     }
 
-    public boolean isBuyerLoggedInUser(Buy buy, User user) {
+    private boolean isBuyerLoggedInUser(Buy buy, User user) {
         return buy.getUser().getLoginId().equals(user.getLoginId());
     }
 
