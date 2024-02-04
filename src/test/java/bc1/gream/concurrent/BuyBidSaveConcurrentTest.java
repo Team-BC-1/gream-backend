@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @WithMockCustomUser
@@ -25,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 public class BuyBidSaveConcurrentTest extends BaseIntegrationTest {
 
-    private final AsyncTransaction asyncTransaction = new AsyncTransaction();
+    @Autowired
+    private AsyncTransaction asyncTransaction;
     @Autowired
     private ProductService productService;
     @Autowired
@@ -34,7 +34,7 @@ public class BuyBidSaveConcurrentTest extends BaseIntegrationTest {
     @BeforeEach
     void setUp() {
         setUpBaseIntegrationTest();
-        savedBuyer.increasePoint(1000000L);
+        savedBuyer.increasePoint(10000000000L);
     }
 
     @AfterEach
@@ -66,13 +66,5 @@ public class BuyBidSaveConcurrentTest extends BaseIntegrationTest {
             CompletableFuture<Void> allOf = CompletableFuture.allOf(multipleTxs.toArray(new CompletableFuture[0]));
             allOf.join();
         });
-    }
-
-    private static class AsyncTransaction {
-
-        @Transactional
-        public void run(Runnable runnable) {
-            runnable.run();
-        }
     }
 }
