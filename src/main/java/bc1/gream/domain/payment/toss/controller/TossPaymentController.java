@@ -6,13 +6,15 @@ import bc1.gream.domain.payment.toss.dto.response.TossPaymentInitialResponseDto;
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
 import bc1.gream.domain.payment.toss.entity.TossPayment;
 import bc1.gream.domain.payment.toss.mapper.TossPaymentMapper;
-import bc1.gream.domain.payment.toss.service.TossPaymentService;
+import bc1.gream.domain.payment.toss.service.PaymentService;
 import bc1.gream.domain.payment.toss.validator.TossPaymentRequestValidator;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TossPaymentController {
 
-    private final TossPaymentService tossPaymentService;
+    private final PaymentService paymentService;
 
     @PostMapping("/request")
     @Operation(summary = "토스페이 결제 검증/확인 요청", description = "결제정보에 대한 검증/확인 이후 필요한 값들을 반환합니다.")
@@ -37,7 +39,7 @@ public class TossPaymentController {
     ) {
         TossPaymentRequestValidator.validate(requestDto);
         TossPayment payment = TossPaymentMapper.INSTANCE.fromTossPaymentInitialRequestDto(userDetails.getUser(), requestDto);
-        TossPaymentInitialResponseDto responseDto = tossPaymentService.requestTossPayment(payment);
+        TossPaymentInitialResponseDto responseDto = paymentService.requestTossPayment(payment);
         return RestResponse.success(responseDto);
     }
 
@@ -47,9 +49,18 @@ public class TossPaymentController {
         @Schema(description = "토스 결제고유번호") @RequestParam String paymentKey,
         @Schema(description = "서버 주분고유번호") @RequestParam Long orderId,
         @Schema(description = "결제금액") @RequestParam Long amount
-    ) {
-        TossPaymentSuccessResponseDto responseDto = tossPaymentService.requestFinalTossPayment(paymentKey, orderId, amount);
-        return RestResponse.success(responseDto);
+    ) throws InterruptedException {
+        AtomicReference<TossPaymentSuccessResponseDto> responseDtoHolder = new AtomicReference<>();
+        Semaphore semaphore = new Semaphore(0);
+
+        paymentService.requestFinalTossPayment(paymentKey, orderId, amount, responseDto -> {
+            responseDtoHolder.set(responseDto);
+            semaphore.release();
+        });
+
+        semaphore.acquire();
+
+        return RestResponse.success(responseDtoHolder.get());
     }
 
     @GetMapping("/fail")
@@ -59,7 +70,7 @@ public class TossPaymentController {
         @Schema(description = "에러 메세지") @RequestParam String errorMsg,
         @Schema(description = "서버 주문고유번호") @RequestParam Long orderId
     ) {
-        TossPaymentFailResponseDto responseDto = tossPaymentService.requestFail(errorCode, errorMsg, orderId);
+        TossPaymentFailResponseDto responseDto = paymentService.requestFail(errorCode, errorMsg, orderId);
         return RestResponse.success(responseDto);
     }
 }
