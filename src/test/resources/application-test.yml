@@ -17,7 +17,6 @@ spring:
         generate_statistics: true # 쿼리수행 통계
         format_sql: true # SQL문 정렬하여 출력
         highlight_sql: true # SQL문 색 부여
-        dialect: org.hibernate.dialect.MySQL8Dialect
 
   # DB
   datasource:
@@ -86,10 +85,3 @@ server:
     connection-timeout: 1800000
     mbeanregistry:
       enabled: true
-# TOSS PAY
-payment:
-  toss:
-    test_client_api_key: ${TOSS_CLIENT_API_KEY}
-    test_secret_api_key: ${TOSS_SECRET_API_KEY}
-    success_url: ${TOSS_SUCCESS_URL}
-    fail_url: ${TOSS_FAIL_URL}
