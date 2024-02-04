@@ -2,7 +2,7 @@ package bc1.gream.domain.product.provider;
 
 import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.domain.sell.service.query.SellQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class SellOrderQueryProvider {
 
-    private final ProductService productQueryService;
+    private final ProductQueryService productQueryService;
     private final SellQueryService sellQueryService;
 
 

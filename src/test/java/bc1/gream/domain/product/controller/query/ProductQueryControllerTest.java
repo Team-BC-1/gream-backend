@@ -9,7 +9,7 @@ import bc1.gream.domain.product.controller.ProductQueryController;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.provider.BuyOrderQueryProvider;
 import bc1.gream.domain.product.provider.SellOrderQueryProvider;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.test.ProductTest;
 import java.util.List;
@@ -30,7 +30,7 @@ class ProductQueryControllerTest implements ProductTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ProductService productService;
+    private ProductQueryService productQueryService;
     @MockBean
     private ProductOrderQueryProvider productOrderQueryProvider;
     @MockBean
@@ -42,7 +42,7 @@ class ProductQueryControllerTest implements ProductTest {
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(
                 new ProductQueryController(
-                    productService,
+                    productQueryService,
                     productOrderQueryProvider,
                     sellOrderQueryProvider,
                     buyOrderQueryProvider
@@ -57,7 +57,7 @@ class ProductQueryControllerTest implements ProductTest {
     public void 상품_전체조회() throws Exception {
         // GIVEN
         List<Product> products = List.of();
-        lenient().when(productService.findAll()).thenReturn(products);
+        lenient().when(productQueryService.findAll()).thenReturn(products);
 
         // WHEN
         // THEN
@@ -70,7 +70,7 @@ class ProductQueryControllerTest implements ProductTest {
     public void 상품_전체조회_상세조건() throws Exception {
         // GIVEN
         List<Product> products = List.of();
-        lenient().when(productService.findAll()).thenReturn(products);
+        lenient().when(productQueryService.findAll()).thenReturn(products);
 
         // WHEN
         // THEN
