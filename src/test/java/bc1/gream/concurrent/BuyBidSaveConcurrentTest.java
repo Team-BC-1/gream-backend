@@ -1,4 +1,4 @@
-package bc1.gream.deadlock;
+package bc1.gream.concurrent;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockCustomUser
 @Disabled
 @ActiveProfiles("test")
-public class BuyBidSaveMultipleThreadTest extends BaseIntegrationTest {
+public class BuyBidSaveConcurrentTest extends BaseIntegrationTest {
 
     private final AsyncTransaction asyncTransaction = new AsyncTransaction();
     @Autowired
@@ -34,6 +34,7 @@ public class BuyBidSaveMultipleThreadTest extends BaseIntegrationTest {
     @BeforeEach
     void setUp() {
         setUpBaseIntegrationTest();
+        savedBuyer.increasePoint(1000000L);
     }
 
     @AfterEach
@@ -47,7 +48,6 @@ public class BuyBidSaveMultipleThreadTest extends BaseIntegrationTest {
         BuyBidRequestDto buyBidRequestDto = BuyBidRequestDto.builder()
             .price(1000L)
             .period(7)
-            .couponId(savedCoupon.getId())
             .build();
         int threadCount = 2500;
         List<CompletableFuture<Void>> multipleTxs = new ArrayList<>();
