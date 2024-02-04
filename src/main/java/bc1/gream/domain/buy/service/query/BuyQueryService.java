@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BuyQueryService {
 
     private final BuyRepository buyRepository;
@@ -39,7 +40,6 @@ public class BuyQueryService {
      * @param pageable 페이징 요청 데이터
      * @return 구매입찰가 내역 페이징 데이터
      */
-    @Transactional(readOnly = true)
     public Page<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Product product, Pageable pageable) {
         return buyRepository.findAllPriceToQuantityOf(product, pageable);
     }
@@ -51,7 +51,6 @@ public class BuyQueryService {
      * @param price     구매를 원하는 상품 가격
      * @return 구매입찰
      */
-    @Transactional(readOnly = true)
     public Buy getRecentBuyBidOf(Long productId, Long price) {
         return buyRepository.findByProductIdAndPrice(productId, price)
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));

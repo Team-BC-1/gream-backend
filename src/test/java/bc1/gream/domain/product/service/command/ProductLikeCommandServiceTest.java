@@ -25,13 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(MockitoExtension.class)
 @Rollback(value = true)
 @Transactional
-class ProductLikeServiceTest implements ProductTest, UserTest {
+class ProductLikeCommandServiceTest implements ProductTest, UserTest {
 
     @Mock
     ProductRepository productRepository;
 
     @InjectMocks
-    ProductLikeService productLikeService;
+    ProductLikeCommandService productLikeCommandService;
 
     @Test
     @DisplayName("관싱상품을 등록합니다.")
@@ -41,7 +41,7 @@ class ProductLikeServiceTest implements ProductTest, UserTest {
         given(productRepository.findById(TEST_PRODUCT_ID)).willReturn(Optional.of(TEST_PRODUCT));
 
         // WHEN
-        productLikeService.likeProduct(TEST_USER, TEST_PRODUCT_ID);
+        productLikeCommandService.likeProduct(TEST_USER, TEST_PRODUCT_ID);
 
         // THEN
         boolean hasUserLikeProduct = TEST_USER.getLikeProducts().stream()
@@ -61,7 +61,7 @@ class ProductLikeServiceTest implements ProductTest, UserTest {
         user.getLikeProducts().add(likeProduct);
 
         // WHEN
-        productLikeService.dislikeProduct(user, TEST_PRODUCT_ID);
+        productLikeCommandService.dislikeProduct(user, TEST_PRODUCT_ID);
 
         // THEN
         boolean hasUserLikeProduct = user.getLikeProducts().stream()
