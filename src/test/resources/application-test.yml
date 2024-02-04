@@ -2,6 +2,7 @@ spring:
   config:
     activate:
       on-profile: test
+
   # JPA
   jpa:
     database: h2
@@ -16,14 +17,31 @@ spring:
         generate_statistics: true # 쿼리수행 통계
         format_sql: true # SQL문 정렬하여 출력
         highlight_sql: true # SQL문 색 부여
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-  # REDIS
-  data:
-    redis:
-      host: ${REDIS_URL}
-      port: 6379
-      repositories:
-        enabled: false
+
+  # DB
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=user # exclude the user keyword from the list of reserved words
+    username: sa
+    password:
+  h2:
+    console: # H2 DB를 웹에서 관리할 수 있는 기능
+      enabled: true           # H2 Console 사용 여부
+      path: /h2-console       # H2 Console 접속 주소
+      settings:
+        web-allow-others: true  # 외부 배포 이후 H2 접속허용여부
+
+# LOG
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+      springframework:
+        transaction:
+          interceptor: trace # 트랜잭션 시작과 종료 로깅
 
 # JWT
 jwt:
@@ -67,29 +85,3 @@ server:
     connection-timeout: 1800000
     mbeanregistry:
       enabled: true
-
-
-  # DB
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=user # exclude the user keyword from the list of reserved words
-    username: sa
-    password:
-  h2:
-    console: # H2 DB를 웹에서 관리할 수 있는 기능
-      enabled: true           # H2 Console 사용 여부
-      path: /h2-console       # H2 Console 접속 주소
-      settings:
-        web-allow-others: true  # 외부 배포 이후 H2 접속허용여부
-
-# LOG
-logging:
-  level:
-    org:
-      hibernate:
-        orm:
-          jdbc:
-            bind: trace
-      springframework:
-        transaction:
-          interceptor: trace # 트랜잭션 시작과 종료 로깅
