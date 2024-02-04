@@ -1,7 +1,9 @@
 package bc1.gream.domain.payment.toss.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,7 +19,8 @@ import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
 import bc1.gream.domain.payment.toss.entity.OrderName;
 import bc1.gream.domain.payment.toss.entity.PayType;
 import bc1.gream.domain.payment.toss.entity.TossPayment;
-import bc1.gream.domain.payment.toss.service.TossPaymentService;
+import bc1.gream.domain.payment.toss.service.PaymentService;
+import bc1.gream.domain.payment.toss.service.event.TossPaymentSuccessCallback;
 import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.UserTest;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -46,7 +49,7 @@ class TossPaymentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private TossPaymentService tossPaymentService;
+    private PaymentService paymentService;
 
     @BeforeEach
     void setUp() {
@@ -74,7 +77,7 @@ class TossPaymentControllerTest {
             .userNickname(UserTest.TEST_USER_NICKNAME)
             .paymentHasSuccess(true)
             .build();
-        given(tossPaymentService.requestTossPayment(any(TossPayment.class)))
+        given(paymentService.requestTossPayment(any(TossPayment.class)))
             .willReturn(responseDto);
 
         // WHEN
@@ -132,12 +135,17 @@ class TossPaymentControllerTest {
             .card(expectedPaymentCard)
             .type("NORMAL")
             .build();
+        doAnswer(invocation -> {
+            TossPaymentSuccessCallback callback = invocation.getArgument(3);
+            callback.handle(responseDto);
+            return null;
+        }).when(paymentService).requestFinalTossPayment(
+            eq(paymentKey),
+            eq(orderId),
+            eq(amount),
+            any(TossPaymentSuccessCallback.class));
 
-        // WHEN
-        when(tossPaymentService.requestFinalTossPayment(paymentKey, orderId, amount))
-            .thenReturn(responseDto);
-
-        // THEN
+        // WHEN, THEN
         mockMvc.perform(
                 get(url)
                     .param("paymentKey", paymentKey)
@@ -183,7 +191,7 @@ class TossPaymentControllerTest {
             .build();
 
         // WHEN
-        when(tossPaymentService.requestFail(errorCode, errorMsg, orderId))
+        when(paymentService.requestFail(errorCode, errorMsg, orderId))
             .thenReturn(responseDto);
 
         // THEN
