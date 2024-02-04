@@ -61,7 +61,8 @@ public enum ResultCase {
     // 시스템 에러 500
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다."),
     // 잘못된 도메인 정렬값 입력 400
-    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 도메인 정렬값"),
+    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5003, "유효하지 않은 도메인 정렬값"),
+    THREAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5004, "유효하지 않은 도메인 정렬값"),
 
     // 쿠폰 6000번대
     // 쿠폰이 존재하지 않을 때 404
