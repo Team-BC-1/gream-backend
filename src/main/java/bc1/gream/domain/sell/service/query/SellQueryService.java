@@ -1,4 +1,4 @@
-package bc1.gream.domain.sell.service;
+package bc1.gream.domain.sell.service.query;
 
 import static bc1.gream.global.common.ResultCase.SELL_BID_PRODUCT_NOT_FOUND;
 
@@ -9,7 +9,6 @@ import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
 import java.util.List;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SellService {
+public class SellQueryService {
 
     private final SellRepository sellRepository;
 
@@ -43,20 +42,6 @@ public class SellService {
         );
     }
 
-    /**
-     * 판매입찰아이디와 판매입찰자에 대한 판매입찰을 삭제, 삭제된 판매입찰 반환
-     *
-     * @param sellId 판매입찰아이디
-     * @param seller 판매입찰자
-     * @return 삭제된 판매입찰
-     */
-    @Transactional
-    public Sell deleteSellByIdAndUser(Long sellId, User seller) {
-        Sell sell = findByIdAndUser(sellId, seller);
-        sellRepository.delete(sell);
-        return sell;
-    }
-
     @Transactional(readOnly = true)
     public Sell getRecentSellBidof(Long productId, Long price) {
         return sellRepository.findByProductIdAndPrice(productId, price).orElseThrow(
@@ -64,17 +49,7 @@ public class SellService {
         );
     }
 
-    @Transactional
-    public void delete(Sell sell) {
-        sellRepository.delete(sell);
-    }
-
     public List<Sell> getUserSellOnProgressOf(User seller) {
         return sellRepository.findAllByUser(seller);
-    }
-
-    @Transactional
-    public void deleteSellsOfDeadlineBefore(LocalDateTime dateTime) {
-        sellRepository.deleteSellsOfDeadlineBefore(dateTime);
     }
 }

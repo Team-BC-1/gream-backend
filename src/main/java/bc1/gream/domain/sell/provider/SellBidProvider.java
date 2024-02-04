@@ -9,7 +9,7 @@ import bc1.gream.domain.sell.dto.response.SellCancelBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.domain.sell.repository.SellRepository;
-import bc1.gream.domain.sell.service.SellService;
+import bc1.gream.domain.sell.service.command.SellCommandService;
 import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.entity.User;
@@ -29,7 +29,7 @@ public class SellBidProvider {
 
     private final SellRepository sellRepository;
     private final GifticonCommandService gifticonCommandService;
-    private final SellService sellService;
+    private final SellCommandService sellCommandService;
     private final S3ImageService s3ImageService;
 
     @Transactional
@@ -61,7 +61,7 @@ public class SellBidProvider {
 
 
     public SellCancelBidResponseDto sellCancelBid(User seller, Long sellId) {
-        Sell deletedSell = sellService.deleteSellByIdAndUser(sellId, seller);
+        Sell deletedSell = sellCommandService.deleteSellByIdAndUser(sellId, seller);
         gifticonCommandService.delete(deletedSell.getGifticon());
 
         return new SellCancelBidResponseDto(sellId);

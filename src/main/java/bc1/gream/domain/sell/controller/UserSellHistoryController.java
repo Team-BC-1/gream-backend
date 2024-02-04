@@ -7,7 +7,7 @@ import bc1.gream.domain.sell.dto.response.UserSellOnProgressResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.domain.sell.provider.SellerOrderProvider;
-import bc1.gream.domain.sell.service.SellService;
+import bc1.gream.domain.sell.service.query.SellQueryService;
 import bc1.gream.global.common.RestResponse;
 import bc1.gream.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserSellHistoryController {
 
     private final SellerOrderProvider sellerOrderProvider;
-    private final SellService sellService;
+    private final SellQueryService sellQueryService;
 
     /**
      * 판매자 판매내역 히스토리 조회 요청
@@ -56,7 +56,7 @@ public class UserSellHistoryController {
     public RestResponse<List<UserSellOnProgressResponseDto>> getUserSellOnProgress(
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        List<Sell> sellsOnProgress = sellService.getUserSellOnProgressOf(userDetails.getUser());
+        List<Sell> sellsOnProgress = sellQueryService.getUserSellOnProgressOf(userDetails.getUser());
         List<UserSellOnProgressResponseDto> responseDtos = sellsOnProgress.stream()
             .map(SellMapper.INSTANCE::toUserSellOnProgressResponseDto)
             .toList();
