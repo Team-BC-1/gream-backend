@@ -15,6 +15,7 @@ import bc1.gream.domain.sell.dto.response.SellBidResponseDto;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.provider.SellBidProvider;
 import bc1.gream.domain.sell.repository.SellRepository;
+import bc1.gream.domain.sell.service.command.SellCommandService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.infra.s3.S3ImageService;
 import bc1.gream.test.GifticonTest;
@@ -34,7 +35,7 @@ class SellBidProviderTest implements GifticonTest {
     @Mock
     GifticonCommandService gifticonCommandService;
     @Mock
-    SellService sellService;
+    SellCommandService sellCommandService;
     @Mock
     S3ImageService s3ImageService;
 
@@ -67,13 +68,13 @@ class SellBidProviderTest implements GifticonTest {
     @Test
     void sellCancelBidTest() {
         // given
-        given(sellService.deleteSellByIdAndUser(TEST_SELL_ID, TEST_USER)).willReturn(TEST_SELL);
+        given(sellCommandService.deleteSellByIdAndUser(TEST_SELL_ID, TEST_USER)).willReturn(TEST_SELL);
 
         // when
         sellBidProvider.sellCancelBid(TEST_USER, TEST_SELL_ID);
 
         // then
-        verify(sellService, times(1)).deleteSellByIdAndUser(any(Long.class), any(User.class));
+        verify(sellCommandService, times(1)).deleteSellByIdAndUser(any(Long.class), any(User.class));
 //        verify(gifticonRepository, times(1)).delete(any(Gifticon.class));
     }
 }

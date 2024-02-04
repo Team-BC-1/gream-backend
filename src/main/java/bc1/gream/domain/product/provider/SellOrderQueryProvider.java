@@ -3,7 +3,7 @@ package bc1.gream.domain.product.provider;
 import bc1.gream.domain.product.dto.response.SellPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.service.query.ProductService;
-import bc1.gream.domain.sell.service.SellService;
+import bc1.gream.domain.sell.service.query.SellQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class SellOrderQueryProvider {
 
-    private final ProductService productService;
-    private final SellService sellService;
+    private final ProductService productQueryService;
+    private final SellQueryService sellQueryService;
 
 
     /**
@@ -28,7 +28,7 @@ public class SellOrderQueryProvider {
      * @author 임지훈
      */
     public List<SellPriceToQuantityResponseDto> findAllSellBidsOf(Long productId, Pageable pageable) {
-        Product product = productService.findBy(productId);
-        return sellService.findAllSellBidsOf(product, pageable).getContent();
+        Product product = productQueryService.findBy(productId);
+        return sellQueryService.findAllSellBidsOf(product, pageable).getContent();
     }
 }

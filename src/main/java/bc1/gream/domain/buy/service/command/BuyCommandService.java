@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BuyCommandService {
 
     private final BuyRepository buyRepository;
@@ -25,16 +26,14 @@ public class BuyCommandService {
         buyRepository.delete(buy);
     }
 
-    public boolean isBuyerLoggedInUser(Buy buy, User user) {
+    private boolean isBuyerLoggedInUser(Buy buy, User user) {
         return buy.getUser().getLoginId().equals(user.getLoginId());
     }
 
-    @Transactional
     public void delete(Buy buy) {
         buyRepository.delete(buy);
     }
 
-    @Transactional
     public void deleteBuysOfDeadlineBefore(LocalDateTime dateTime) {
         buyRepository.deleteBuysOfDeadlineBefore(dateTime);
     }

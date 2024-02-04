@@ -1,25 +1,19 @@
 spring:
   profiles:
     active: prod
-  # DATASOURCE
+    # DATASOURCE
   datasource:
-    url: jdbc:mysql://${DB_URL}/gream
-    username: ${DB_ID}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  # DATASOURCE
-  #  datasource:
-  #    hikari:
-  #      primary:
-  #        driver-class-name: com.mysql.cj.jdbc.Driver
-  #        jdbc-url: jdbc:mysql://${DB_URL}/gream
-  #        username: ${DB_ID}
-  #        password: ${DB_PASSWORD}
-  #      secondary:
-  #        driver-class-name: com.mysql.cj.jdbc.Driver
-  #        jdbc-url: jdbc:mysql://${DB_READ_ONLY_URL}/gream
-  #        username: ${DB_ID}
-  #        password: ${DB_PASSWORD}
+    hikari:
+      primary:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_URL}/gream
+        username: ${DB_ID}
+        password: ${DB_PASSWORD}
+      secondary:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_READ_ONLY_URL}/gream
+        username: ${DB_ID}
+        password: ${DB_PASSWORD}
   # JPA
   jpa:
     hibernate:
@@ -78,6 +72,7 @@ management:
 # tomcat was 메트릭으로 변경
 server:
   tomcat:
+    connection-timeout: 1800000
     mbeanregistry:
       enabled: true
 
