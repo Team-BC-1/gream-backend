@@ -75,8 +75,11 @@ public enum ResultCase {
     // S3 7000번대
     IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다."),
 
-    // OAuth 8000번대
-    INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, 8000, "올바르지 않은 로그인 접근입니다.");
+    // 토스페이 8000번대
+    UNSUPPORTED_PAYTYPE(HttpStatus.BAD_REQUEST, 8000, "아직 지원되지 않는 충전방식입니다."),
+    INVALID_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8001, "0원 이상의 금액만 충전가능합니다."),
+    UNMATCHED_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8002, "이전 결제요청 금액과 일치하지 않습니다."),
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 8003, "관련된 토스결제데이터가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;

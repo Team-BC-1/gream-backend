@@ -2,6 +2,7 @@ package bc1.gream.domain.user.entity;
 
 import bc1.gream.domain.common.model.BaseEntity;
 import bc1.gream.domain.order.entity.Order;
+import bc1.gream.domain.payment.toss.entity.TossPayment;
 import bc1.gream.domain.product.entity.LikeProduct;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.global.common.ResultCase;
@@ -42,6 +43,10 @@ public class User extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "user", targetEntity = LikeProduct.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<LikeProduct> likeProducts = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", targetEntity = TossPayment.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    private final Set<TossPayment> tossPayments = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

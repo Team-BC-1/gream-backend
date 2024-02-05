@@ -43,30 +43,10 @@ logging:
 #        transaction:
 #          interceptor: trace # 트랜잭션 시작과 종료 로깅
 
-
-# ======================================================= (아래는 바꾸기 이전 ) ======================================
-
-#spring:
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:testdb;MODE=MySQL;
-#    username: sa
-#    password:
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#      dialect: org.hibernate.dialect.MySQL8InnoDBDialect
-#    defer-datasource-initialization: true
-#    sql:
-#      init:
-#        mode: always
-#        encoding: UTF-8
-#
-#logging:
-#  level:
-#    org.hibernate.SQL: debug
+# TOSS PAY
+payment:
+  toss:
+    test_client_api_key: ${TOSS_CLIENT_API_KEY}
+    test_secret_api_key: ${TOSS_SECRET_API_KEY}
+    success_url: ${TOSS_SUCCESS_URL}
+    fail_url: ${TOSS_FAIL_URL}
