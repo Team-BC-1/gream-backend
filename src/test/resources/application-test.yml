@@ -17,6 +17,7 @@ spring:
         generate_statistics: true # 쿼리수행 통계
         format_sql: true # SQL문 정렬하여 출력
         highlight_sql: true # SQL문 색 부여
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
   # DB
   datasource:
