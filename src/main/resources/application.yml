@@ -29,8 +29,11 @@ spring:
   # REDIS
   data:
     redis:
-      host: ${REDIS_URL}
       port: 6379
+      primary:
+        host: ${REDIS_URL}
+      replica:
+        host: ${REDIS_REPLICA_URL}
       repositories:
         enabled: false
 # JWT
