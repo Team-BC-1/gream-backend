@@ -8,7 +8,6 @@ import bc1.gream.domain.sell.provider.SellNowProvider;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
-import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.BaseIntegrationTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@WithMockCustomUser
 @Disabled
 @ActiveProfiles("test")
 public class SellNowConcurrentTest extends BaseIntegrationTest {
@@ -44,7 +42,7 @@ public class SellNowConcurrentTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void 동일한_판매입찰_동시에_구매입찰생성요청() {
+    public void 동일한_구매입찰_동시에_즉시판매요청() {
         // GIVEN
         SellNowRequestDto sellNowRequestDto = SellNowRequestDto.builder()
             .price(savedBuy.getPrice())
