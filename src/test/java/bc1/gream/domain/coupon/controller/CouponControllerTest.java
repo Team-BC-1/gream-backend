@@ -72,6 +72,24 @@ class CouponControllerTest implements CouponTest {
     }
 
     @Test
-    void unavailableCouponList() {
+    void 로그인_한_유저가_이미_사용한_쿠폰을_조회하는_컨트롤러_기능_성공_테스트() throws Exception {
+
+        // given
+        List<Coupon> couponList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            couponList.add((i % 2 == 0) ? TEST_COUPON_RATE_USED : TEST_COUPON_FIX_USED);
+        }
+        given(couponQueryService.unavailableCouponList(any(UserDetailsImpl.class))).willReturn(couponList);
+
+        // when - then
+        mockMvc.perform(get("/api/coupons/used"))
+            .andExpectAll(
+                status().isOk(),
+                jsonPath("$.code").value(0),
+                jsonPath("$.message").value("정상 처리 되었습니다"),
+                jsonPath("$.data.size()").value(5),
+                jsonPath("$.data[0].discountType").value("RATE"),
+                jsonPath("$.data[1].discountType").value("FIX")
+            );
     }
 }
