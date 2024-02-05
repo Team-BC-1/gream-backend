@@ -44,4 +44,17 @@ public interface UserTest {
         .role(UserRole.USER)
         .provider(Provider.LOCAL)
         .build();
+
+    Long TEST_ADMIN_USER_ID = 3L;
+    String TEST_ADMIN_LOGIN_ID = "admin01";
+    String TEST_ADMIN_NICKNAME = "admin01";
+    String TEST_ADMIN_PASSWORD = "ABcd5678#&";
+
+    User TEST_ADMIN_USER = User.builder()
+        .loginId(TEST_ADMIN_LOGIN_ID)
+        .nickname(TEST_ADMIN_NICKNAME)
+        .password(TEST_ADMIN_PASSWORD)
+        .role(UserRole.ADMIN)
+        .provider(Provider.LOCAL)
+        .build();
 }
