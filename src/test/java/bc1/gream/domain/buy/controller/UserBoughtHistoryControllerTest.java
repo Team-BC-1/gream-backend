@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.gifticon.service.query.GifticonQueryService;
@@ -74,6 +75,27 @@ class UserBoughtHistoryControllerTest {
     }
 
     @Test
-    void 사용자가_등록한_구매입찰_전체_조회_컨트롤러_기능_성공_테스트() {
+    void 사용자가_등록한_구매입찰_전체_조회_컨트롤러_기능_성공_테스트() throws Exception {
+
+        // given
+        List<BuyCheckBidResponseDto> responseDtoList = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            BuyCheckBidResponseDto responseDto = BuyCheckBidResponseDto.builder()
+                .buyId((long) i)
+                .price(1000L * i)
+                .build();
+
+            responseDtoList.add(responseDto);
+        }
+
+        given(buyQueryService.findAllBuyBidCoupon(any(User.class))).willReturn(responseDtoList);
+        // when - then
+        mockMvc.perform(get("/api/buy/history/onprogress"))
+            .andExpectAll(
+                status().isOk(),
+                jsonPath("$.code").value(0),
+                jsonPath("$.message").value("정상 처리 되었습니다"),
+                jsonPath("$.data.size()").value(5)
+            );
     }
 }
