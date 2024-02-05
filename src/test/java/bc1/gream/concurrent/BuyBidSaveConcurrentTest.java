@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.provider.BuyBidProvider;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.global.security.WithMockCustomUser;
 import bc1.gream.test.BaseIntegrationTest;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class BuyBidSaveConcurrentTest extends BaseIntegrationTest {
     @Autowired
     private AsyncTransaction asyncTransaction;
     @Autowired
-    private ProductService productService;
+    private ProductQueryService productQueryService;
     @Autowired
     private BuyBidProvider buyBidProvider;
 
@@ -54,7 +54,7 @@ public class BuyBidSaveConcurrentTest extends BaseIntegrationTest {
         for (int i = 0; i < threadCount; i++) {
             var tx = CompletableFuture.runAsync(
                 () -> {
-                    asyncTransaction.run(() -> productService.findAll());
+                    asyncTransaction.run(() -> productQueryService.findAll());
                     asyncTransaction.run(() -> buyBidProvider.buyBidProduct(savedBuyer, buyBidRequestDto, savedIcedAmericano));
                 });
             multipleTxs.add(tx);
