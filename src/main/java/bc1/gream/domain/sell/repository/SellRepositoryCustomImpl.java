@@ -13,6 +13,7 @@ import bc1.gream.domain.sell.repository.helper.SellQueryOrderFactory;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +76,7 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .leftJoin(sell.user, user)
             .where(sell.product.id.eq(productId), sell.price.eq(price))
             .orderBy(sell.createdAt.asc())
+            .setLockMode(LockModeType.PESSIMISTIC_WRITE)
             .fetchFirst();
         return Optional.ofNullable(foundSell);
     }

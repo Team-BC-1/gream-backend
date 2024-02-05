@@ -69,6 +69,6 @@ public class BuyNowConcurrentTest extends BaseIntegrationTest {
             allOf.join();
         });
         exception.printStackTrace();
-        assertEquals(ResultCase.BUY_BID_NOT_FOUND.getMessage(), exception.getCause().getMessage());
+        assertEquals(ResultCase.SELL_BID_PRODUCT_NOT_FOUND.getMessage(), exception.getCause().getMessage());
     }
 }
