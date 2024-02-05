@@ -24,10 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest implements ProductTest {
+class ProductQueryServiceTest implements ProductTest {
 
     @InjectMocks
-    ProductService productService;
+    ProductQueryService productQueryService;
 
     @Mock
     ProductRepository productRepository;
@@ -41,7 +41,7 @@ class ProductServiceTest implements ProductTest {
         given(productRepository.findById(TEST_PRODUCT_ID)).willReturn(Optional.of(TEST_PRODUCT));
 
         // WHEN
-        Product product = productService.findBy(TEST_PRODUCT_ID);
+        Product product = productQueryService.findBy(TEST_PRODUCT_ID);
 
         // THEN
         assertEquals(TEST_PRODUCT, product);
@@ -54,7 +54,7 @@ class ProductServiceTest implements ProductTest {
         given(productRepository.findAll()).willReturn(productMocks);
 
         // WHEN
-        List<Product> products = productService.findAll();
+        List<Product> products = productQueryService.findAll();
 
         // THEN
         boolean hasTestProduct = products.stream()
@@ -78,7 +78,7 @@ class ProductServiceTest implements ProductTest {
         given(productRepositoryCustom.findAllBy(condition)).willReturn(List.of(TEST_PRODUCT));
 
         // WHEN
-        List<Product> products = productService.findAllBy(condition);
+        List<Product> products = productQueryService.findAllBy(condition);
 
         // THEN
         System.out.println("products.size() = " + products.size());
@@ -95,11 +95,11 @@ class ProductServiceTest implements ProductTest {
             .endPrice(TEST_PRODUCT_PRICE + 500L)
             .build();
         Pageable pageRequest = PageRequest.of(1, 10, Sort.by("name").descending());
-        PageImpl page = new PageImpl(List.of(TEST_PRODUCT));
+        PageImpl<Product> page = new PageImpl<>(List.of(TEST_PRODUCT));
         given(productRepositoryCustom.findAllByPaging(condition, pageRequest)).willReturn(page);
 
         // WHEN
-        Page<Product> products = productService.findAllByPaging(condition, pageRequest);
+        Page<Product> products = productQueryService.findAllByPaging(condition, pageRequest);
 
         // THEN
         boolean hasTestProduct = products.stream()

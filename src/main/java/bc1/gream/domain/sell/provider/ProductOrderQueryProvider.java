@@ -3,7 +3,7 @@ package bc1.gream.domain.sell.provider;
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.service.query.OrderQueryService;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.query.ProductQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ProductOrderQueryProvider {
 
-    private final ProductService productService;
+    private final ProductQueryService productQueryService;
     private final OrderQueryService orderQueryService;
 
     /**
@@ -25,7 +25,7 @@ public class ProductOrderQueryProvider {
      * @author 임지훈
      */
     public List<Order> findAllTradesOf(Long productId) {
-        Product product = productService.findBy(productId);
+        Product product = productQueryService.findBy(productId);
         return orderQueryService.findAllTradesOf(product);
     }
 }
