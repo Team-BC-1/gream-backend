@@ -10,7 +10,7 @@ import bc1.gream.domain.admin.dto.response.AdminProductResponseDto;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.mapper.CouponMapper;
 import bc1.gream.domain.coupon.provider.CouponProvider;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.command.ProductCommandService;
 import bc1.gream.domain.user.mapper.RefundMapper;
 import bc1.gream.domain.user.service.command.RefundCommandService;
 import bc1.gream.domain.user.service.query.RefundQueryService;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final ProductService productService;
+    private final ProductCommandService productCommandService;
     private final RefundQueryService refundQueryService;
     private final RefundCommandService refundCommandService;
     private final CouponProvider couponProvider;
@@ -53,7 +53,7 @@ public class AdminController {
     public RestResponse<AdminProductResponseDto> addProducts(
         @RequestBody AdminProductRequestDto adminProductRequestDto
     ) {
-        productService.addProduct(adminProductRequestDto);
+        productCommandService.addProduct(adminProductRequestDto);
 
         return RestResponse.success(new AdminProductResponseDto());
     }

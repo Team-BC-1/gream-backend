@@ -7,7 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import bc1.gream.domain.order.entity.Order;
 import bc1.gream.domain.order.service.query.OrderQueryService;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.test.OrderTest;
 import bc1.gream.test.ProductTest;
@@ -27,7 +27,7 @@ class ProductOrderQueryProviderImplTest implements UserTest, ProductTest, OrderT
     ProductOrderQueryProvider productOrderQueryProvider;
 
     @Mock
-    ProductService productService;
+    ProductQueryService productQueryService;
 
     @Mock
     OrderQueryService orderQueryService;
@@ -36,7 +36,7 @@ class ProductOrderQueryProviderImplTest implements UserTest, ProductTest, OrderT
     @DisplayName("상품에 대한 모든 체결거래 내역을 조회합니다.")
     public void 체결거래내역_조회() {
         // GIVEN
-        given(productService.findBy(TEST_PRODUCT_ID)).willReturn(TEST_PRODUCT);
+        given(productQueryService.findBy(TEST_PRODUCT_ID)).willReturn(TEST_PRODUCT);
         given(orderQueryService.findAllTradesOf(TEST_PRODUCT)).willReturn(List.of(TEST_ORDER));
 
         // WHEN
