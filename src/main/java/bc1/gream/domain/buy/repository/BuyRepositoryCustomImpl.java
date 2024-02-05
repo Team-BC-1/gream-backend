@@ -64,32 +64,34 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     }
 
     /**
-     * 상품 id와 가격에 대해 가장 먼저 생성된 구매입찰 반환
+     * 상품 id와 가격에 대해 마감기한 이전의 가장 먼저 생성된 구매입찰 반환
      *
      * @param productId 상품 id
      * @param price     가격
+     * @param dateTime  주어진 시간
      * @return 가장 먼저 생성된 구매입찰
      */
     @Override
-    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price) {
+    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price, LocalDateTime dateTime) {
         Buy buy = queryFactory
             .selectFrom(QBuy.buy)
             .leftJoin(QBuy.buy.product, product)
-            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
+            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price), QBuy.buy.deadlineAt.loe(dateTime))
             .orderBy(QBuy.buy.createdAt.asc())
             .fetchFirst();
         return Optional.ofNullable(buy);
     }
 
     /**
-     * 상품에 대한 구매입찰가격수량에 대한 조건조회,페이징 처리. 기본정렬은 가격 내림차순
+     * 상품에 대한 구매입찰가격수량에 대한 조건조회,페이징 처리. 마감기한 이전의 데이터만 조회. 기본정렬은 가격 내림차순
      *
      * @param product  상품
      * @param pageable 페이징
+     * @param dateTime 주어진 시간
      * @return 구매입찰가격수량
      */
     @Override
-    public Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable) {
+    public Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable, LocalDateTime dateTime) {
         // Get Orders By Columns
         OrderSpecifier[] orderSpecifiers = BuyQueryOrderFactory.getOrdersOf(pageable.getSort());
 
@@ -98,7 +100,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .select(buy.price, buy.count())
             .from(buy)
             .leftJoin(buy.product, QProduct.product)
-            .where(buy.product.eq(product))
+            .where(buy.product.eq(product), buy.deadlineAt.loe(dateTime))
             .groupBy(buy.price)
             .orderBy(orderSpecifiers)
             .offset(pageable.getOffset())
@@ -131,7 +133,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     }
 
     @Override
-    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user, LocalDateTime dateTime) {
         return queryFactory.select(
                 buy.id,
                 buy.price,
@@ -145,7 +147,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .leftJoin(buy.product, product)
             .leftJoin(QCoupon.coupon)
             .on(QCoupon.coupon.id.eq(buy.couponId))
-            .where(buy.user.eq(user))
+            .where(buy.user.eq(user), buy.deadlineAt.loe(dateTime))
             .fetch()
             .stream()
             .map(tuple -> BuyCheckBidResponseDto.builder()
