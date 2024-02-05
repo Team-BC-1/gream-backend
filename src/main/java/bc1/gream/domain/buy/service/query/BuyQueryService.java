@@ -13,6 +13,7 @@ import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ public class BuyQueryService {
     private final BuyRepository buyRepository;
 
     public Buy findBuyById(Long buyId) {
-        return buyRepository.findById(buyId).orElseThrow(
+        return buyRepository.findByIdAndDeadlineAtLessThan(buyId, LocalDateTime.now()).orElseThrow(
             () -> new GlobalException(BUY_BID_NOT_FOUND)
         );
     }
@@ -41,7 +42,7 @@ public class BuyQueryService {
      * @return 구매입찰가 내역 페이징 데이터
      */
     public Page<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Product product, Pageable pageable) {
-        return buyRepository.findAllPriceToQuantityOf(product, pageable);
+        return buyRepository.findAllPriceToQuantityOf(product, pageable, LocalDateTime.now());
     }
 
     /**
@@ -52,12 +53,12 @@ public class BuyQueryService {
      * @return 구매입찰
      */
     public Buy getRecentBuyBidOf(Long productId, Long price) {
-        return buyRepository.findByProductIdAndPrice(productId, price)
+        return buyRepository.findByProductIdAndPrice(productId, price, LocalDateTime.now())
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
 
     public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
-        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user);
+        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user, LocalDateTime.now());
 
         return buyCheckBidResponseDtos.stream()
             .map(bid -> BuyMapper.INSTANCE.toBuyCheckBidResponseDto(bid, getFinalPrice(bid.coupon(), bid.discountPrice())))
