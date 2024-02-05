@@ -50,6 +50,17 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Thread 오류 대한 핸들러
+     *
+     * @param ex Thread 오류에 따른 InterruptedException
+     * @return Thread 에러케이스와 에러리스폰스
+     */
+    @ExceptionHandler(InterruptedException.class)
+    public ResponseEntity<RestResponse<ErrorResponseDto>> handlerInterruptedException(InterruptedException ex) {
+        return RestResponse.error(ResultCase.THREAD_ERROR, new ErrorResponseDto());
+    }
+
+    /**
      * Business 오류 발생에 대한 핸들러
      *
      * @param e Business 오류에 따른 GlobalException

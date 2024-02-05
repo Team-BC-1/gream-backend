@@ -61,7 +61,8 @@ public enum ResultCase {
     // 시스템 에러 500
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5002, "알 수 없는 에러가 발생했습니다."),
     // 잘못된 도메인 정렬값 입력 400
-    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5001, "유효하지 않은 도메인 정렬값"),
+    INVALID_ORDER_CRITERIA(HttpStatus.BAD_REQUEST, 5003, "유효하지 않은 도메인 정렬값"),
+    THREAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5004, "유효하지 않은 도메인 정렬값"),
 
     // 쿠폰 6000번대
     // 쿠폰이 존재하지 않을 때 404
@@ -75,8 +76,11 @@ public enum ResultCase {
     // S3 7000번대
     IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 7000, "이미지 업로드에 실패했습니다."),
 
-    // OAuth 8000번대
-    INVALID_OAUTH_PROVIDER(HttpStatus.BAD_REQUEST, 8000, "올바르지 않은 로그인 접근입니다.");
+    // 토스페이 8000번대
+    UNSUPPORTED_PAYTYPE(HttpStatus.BAD_REQUEST, 8000, "아직 지원되지 않는 충전방식입니다."),
+    INVALID_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8001, "0원 이상의 금액만 충전가능합니다."),
+    UNMATCHED_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8002, "이전 결제요청 금액과 일치하지 않습니다."),
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 8003, "관련된 토스결제데이터가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
