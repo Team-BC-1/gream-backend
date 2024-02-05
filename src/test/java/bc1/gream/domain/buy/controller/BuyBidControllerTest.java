@@ -2,6 +2,7 @@ package bc1.gream.domain.buy.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bc1.gream.domain.buy.dto.request.BuyBidRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyBidResponseDto;
+import bc1.gream.domain.buy.dto.response.BuyCancelBidResponseDto;
 import bc1.gream.domain.buy.provider.BuyBidProvider;
 import bc1.gream.domain.order.validator.ProductValidator;
 import bc1.gream.domain.product.entity.Product;
@@ -84,6 +86,22 @@ class BuyBidControllerTest implements UserTest, ProductTest {
     }
 
     @Test
-    void buyCancelBid() {
+    @DisplayName("구매 입찰 컨트롤러 기능 중 구매 입찰을 취소하는 기능 성공 테스트")
+    void 구매_입찰취소_성공_테스트() throws Exception {
+        // given
+        Long buyId = 1L;
+        BuyCancelBidResponseDto responseDto = BuyCancelBidResponseDto.builder()
+            .buyId(buyId)
+            .build();
+
+        given(buyBidProvider.buyCancelBid(any(User.class), any(Long.class))).willReturn(responseDto);
+        // when - then
+        mockMvc.perform(delete("/api/buy/bid/{buyId}", buyId))
+            .andExpectAll(
+                status().isOk(),
+                jsonPath("$.code").value(0),
+                jsonPath("$.message").value("정상 처리 되었습니다"),
+                jsonPath("$.data.buyId").value(buyId)
+            );
     }
 }
