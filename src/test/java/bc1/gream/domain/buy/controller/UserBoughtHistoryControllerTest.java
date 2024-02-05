@@ -13,7 +13,6 @@ import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.gifticon.service.query.GifticonQueryService;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.security.WithMockCustomUser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +30,6 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("test")
 class UserBoughtHistoryControllerTest {
 
-    @Autowired
-    protected ObjectMapper objectMapper;
     @MockBean
     GifticonQueryService gifticonQueryService;
     @MockBean
