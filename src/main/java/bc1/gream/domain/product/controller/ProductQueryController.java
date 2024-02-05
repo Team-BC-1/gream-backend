@@ -13,7 +13,7 @@ import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.product.mapper.ProductMapper;
 import bc1.gream.domain.product.provider.BuyOrderQueryProvider;
 import bc1.gream.domain.product.provider.SellOrderQueryProvider;
-import bc1.gream.domain.product.service.query.ProductService;
+import bc1.gream.domain.product.service.query.ProductQueryService;
 import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.provider.ProductOrderQueryProvider;
 import bc1.gream.global.common.RestResponse;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirements() // Swagger Security 적용 X
 public class ProductQueryController {
 
-    private final ProductService productService;
+    private final ProductQueryService productQueryService;
     private final ProductOrderQueryProvider productOrderQueryProvider;
     private final SellOrderQueryProvider sellOrderQueryProvider;
     private final BuyOrderQueryProvider buyOrderQueryProvider;
@@ -51,7 +51,7 @@ public class ProductQueryController {
         @RequestParam(required = false, defaultValue = "") String name
     ) {
         ProductCondition productCondition = ProductCondition.builder().brand(brand).name(name).build();
-        List<Product> products = productService.findAllBy(productCondition);
+        List<Product> products = productQueryService.findAllBy(productCondition);
         List<ProductPreviewResponseDto> responseDtos = products.stream()
             .map(ProductMapper.INSTANCE::toPreviewResponseDto)
             .toList();
@@ -66,7 +66,7 @@ public class ProductQueryController {
     public RestResponse<ProductDetailsResponseDto> findAllBy(
         @PathVariable("id") Long productId
     ) {
-        Product product = productService.findBy(productId);
+        Product product = productQueryService.findBy(productId);
         ProductDetailsResponseDto responseDto = ProductMapper.INSTANCE.toDetailsResponseDto(product);
         return RestResponse.success(responseDto);
     }
