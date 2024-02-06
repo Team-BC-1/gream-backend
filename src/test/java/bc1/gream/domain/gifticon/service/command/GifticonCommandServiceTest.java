@@ -29,4 +29,13 @@ class GifticonCommandServiceTest implements GifticonTest {
         // then
         verify(gifticonRepository, times(1)).save(any(Gifticon.class));
     }
+
+    @Test
+    void 등록되어있는_기프티콘을_삭제하는_서비스_기능_성공_테스트() {
+        // given - when
+        gifticonCommandService.delete(TEST_GIFTICON);
+
+        // then
+        verify(gifticonRepository, times(1)).delete(any(Gifticon.class));
+    }
 }
