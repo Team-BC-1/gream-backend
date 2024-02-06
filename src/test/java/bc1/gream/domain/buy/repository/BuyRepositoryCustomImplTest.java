@@ -9,6 +9,7 @@ import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import bc1.gream.test.BaseDataRepositoryTest;
 import bc1.gream.test.BuyTest;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,7 +59,8 @@ class BuyRepositoryCustomImplTest extends BaseDataRepositoryTest implements BuyT
         Pageable pageable = PageRequest.of(0, 10);
 
         // WHEN
-        Page<BuyPriceToQuantityResponseDto> allPriceToQuantityOf = buyRepositoryCustom.findAllPriceToQuantityOf(savedProduct, pageable);
+        Page<BuyPriceToQuantityResponseDto> allPriceToQuantityOf = buyRepositoryCustom.findAllPriceToQuantityOf(savedProduct, pageable,
+            LocalDateTime.now());
 
         // THEN
         assertEquals(expensiveBuyBid.getPrice(), allPriceToQuantityOf.getContent().get(0).buyPrice());

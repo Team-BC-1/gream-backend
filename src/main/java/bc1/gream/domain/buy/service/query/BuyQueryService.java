@@ -13,6 +13,7 @@ import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class BuyQueryService {
      * @return 구매입찰가 내역 페이징 데이터
      */
     public Page<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Product product, Pageable pageable) {
-        return buyRepository.findAllPriceToQuantityOf(product, pageable);
+        return buyRepository.findAllPriceToQuantityOf(product, pageable, LocalDateTime.now());
     }
 
     /**

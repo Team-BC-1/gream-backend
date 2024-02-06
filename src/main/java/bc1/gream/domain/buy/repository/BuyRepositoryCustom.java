@@ -4,8 +4,8 @@ import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
-import java.time.LocalDateTime;
 import bc1.gream.domain.user.entity.User;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ public interface BuyRepositoryCustom {
 
     Optional<Buy> findByProductIdAndPrice(Long productId, Long price);
 
-    Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable);
+    Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable, LocalDateTime localDateTime);
 
     void deleteBuysOfDeadlineBefore(LocalDateTime now);
 
