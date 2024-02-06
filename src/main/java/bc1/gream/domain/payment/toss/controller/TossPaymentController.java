@@ -34,8 +34,8 @@ public class TossPaymentController {
     @PostMapping("/request")
     @Operation(summary = "토스페이 결제 검증/확인 요청", description = "결제정보에 대한 검증/확인 이후 필요한 값들을 반환합니다.")
     public RestResponse<TossPaymentInitialResponseDto> requestTossPayment(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestBody TossPaymentInitialRequestDto requestDto
+        @Schema(description = "로그인한 사용자") @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @Schema(description = "토스페이 결제 정보") @Valid @RequestBody TossPaymentInitialRequestDto requestDto
     ) {
         TossPaymentRequestValidator.validate(requestDto);
         TossPayment payment = TossPaymentMapper.INSTANCE.fromTossPaymentInitialRequestDto(userDetails.getUser(), requestDto);
