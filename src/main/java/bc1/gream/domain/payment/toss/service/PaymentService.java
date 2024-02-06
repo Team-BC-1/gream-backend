@@ -53,13 +53,10 @@ public class PaymentService {
      */
     @Transactional
     public void requestFinalTossPayment(String paymentKey, String orderId, Long amount, TossPaymentSuccessCallback callback) {
-        this.verifyRequest(paymentKey, orderId, amount);
+        TossPayment tossPayment = this.verifyRequest(paymentKey, orderId, amount);
         eventPublisher.publishEvent(new TossPaymentSuccessEvent(
             this,
-            paymentKey,
-            orderId,
-            amount,
-            successUrl,
+            tossPayment,
             testSecretApiKey,
             callback)); // Provide method reference to the event listener
     }
@@ -88,14 +85,14 @@ public class PaymentService {
      * @param amount     결제액
      */
     @Transactional
-    void verifyRequest(String paymentKey, String orderId, Long amount) {
+    TossPayment verifyRequest(String paymentKey, String orderId, Long amount) {
         // 주문아이디 일치 검증
         TossPayment tossPayment = this.findBy(orderId);
         // 결제금액 일치 검증
         if (tossPayment.getAmount().equals(amount)) {
             tossPayment.setIsPaySuccess(true);
             tossPayment.setPaymentKey(paymentKey);
-            return;
+            return tossPayment;
         }
         throw new GlobalException(ResultCase.UNMATCHED_PAYMENT_AMOUNT);
     }
