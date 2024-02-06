@@ -126,6 +126,24 @@ class CouponQueryServiceTest implements CouponTest {
 
     @Test
     void unavailableCouponList() {
+
+        // given
+        List<Coupon> couponList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            couponList.add(TEST_COUPON_FIX_USED);
+        }
+
+        given(couponRepository.unavailable(any(User.class))).willReturn(couponList);
+        UserDetailsImpl userDetails = new UserDetailsImpl(TEST_USER);
+
+        // when
+        List<Coupon> resultList = couponQueryService.unavailableCouponList(userDetails);
+
+        // then
+        assertThat(resultList.get(0)).isEqualTo(couponList.get(0));
+        assertThat(resultList.get(1)).isEqualTo(couponList.get(1));
+        assertThat(resultList.get(2)).isEqualTo(couponList.get(2));
     }
 
     @Test
