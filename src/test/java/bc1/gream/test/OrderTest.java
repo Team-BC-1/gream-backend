@@ -15,4 +15,12 @@ public interface OrderTest extends UserTest, ProductTest {
         .finalPrice(TEST_ORDER_FINAL_PRICE)
         .expectedPrice(TEST_ORDER_EXPECTED_PRICE)
         .build();
+
+    Order TEST_ORDER_NOT_COUPON = Order.builder()
+        .product(TEST_PRODUCT)
+        .buyer(TEST_BUYER)
+        .seller(TEST_SELLER)
+        .finalPrice(TEST_ORDER_EXPECTED_PRICE)
+        .expectedPrice(TEST_ORDER_EXPECTED_PRICE)
+        .build();
 }
