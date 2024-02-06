@@ -15,7 +15,10 @@ import bc1.gream.domain.coupon.repository.CouponRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
+import bc1.gream.global.security.UserDetailsImpl;
 import bc1.gream.test.CouponTest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -100,8 +103,25 @@ class CouponQueryServiceTest implements CouponTest {
     }
 
     @Test
-    void availableCouponList() {
+    void 사용_가능한_유저의_쿠폰_리스트_조회_성공_테스트() {
 
+        // given
+        List<Coupon> couponList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            couponList.add(TEST_COUPON_FIX);
+        }
+
+        given(couponRepository.availableCoupon(any(User.class))).willReturn(couponList);
+        UserDetailsImpl userDetails = new UserDetailsImpl(TEST_USER);
+
+        // when
+        List<Coupon> resultList = couponQueryService.availableCouponList(userDetails);
+
+        // then
+        assertThat(resultList.get(0)).isEqualTo(couponList.get(0));
+        assertThat(resultList.get(1)).isEqualTo(couponList.get(1));
+        assertThat(resultList.get(2)).isEqualTo(couponList.get(2));
     }
 
     @Test
