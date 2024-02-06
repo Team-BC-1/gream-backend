@@ -18,7 +18,6 @@ public interface TossPaymentMapper {
     @Mapping(target = "orderId", expression = "java(java.util.UUID.randomUUID().toString())")
     TossPayment fromTossPaymentInitialRequestDto(User user, TossPaymentInitialRequestDto requestDto);
 
-    //    @Mapping(expression = "java( tossPayment.getPayType() )", target = "paymentPayType")
     @Mapping(expression = "java( tossPayment.getAmount() )", target = "paymentAmount")
     @Mapping(expression = "java( tossPayment.getOrderId() )", target = "paymentOrderId")
     @Mapping(expression = "java( tossPayment.getOrderName() )", target = "paymentOrderName")
