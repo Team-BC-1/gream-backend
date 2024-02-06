@@ -9,6 +9,7 @@ import bc1.gream.domain.order.repository.OrderRepository;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
 import bc1.gream.test.OrderTest;
+import bc1.gream.test.SellTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
+class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest, SellTest {
 
     @InjectMocks
     private OrderCommandService orderCommandService;
@@ -24,7 +25,7 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     private OrderRepository orderRepository;
 
     @Test
-    void 즉시구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_있을떄() {
+    void 즉시판매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_있을떄() {
         // given - when
         orderCommandService.saveOrderOfBuy(TEST_BUY_COUPON, TEST_SELLER, TEST_COUPON_FIX);
 
@@ -33,7 +34,7 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     }
 
     @Test
-    void 즉시구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_없을때() {
+    void 즉시판매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_없을때() {
         // given - when
         orderCommandService.saveOrderOfBuyNotCoupon(TEST_BUY, TEST_SELLER);
 
@@ -42,10 +43,11 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     }
 
     @Test
-    void () {
-    }
+    void 즉시구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_있을때() {
+        // given - when
+        orderCommandService.saveOrderOfSell(TEST_SELL, TEST_BUYER, TEST_COUPON_FIX);
 
-    @Test
-    void saveOrderOfSellNotCoupon() {
+        // then
+        verify(orderRepository, times(1)).save(any(Order.class));
     }
 }
