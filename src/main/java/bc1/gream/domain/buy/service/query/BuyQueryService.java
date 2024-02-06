@@ -57,8 +57,14 @@ public class BuyQueryService {
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
 
+    /**
+     * 구매자의 진행 중인 구매입찰에 대한 조회
+     *
+     * @param user 구매자
+     * @return 진행 중인 구매입찰
+     */
     public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
-        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user);
+        List<BuyCheckBidResponseDto> buyCheckBidResponseDtos = buyRepository.findAllBuyBidCoupon(user, LocalDateTime.now());
 
         return buyCheckBidResponseDtos.stream()
             .map(bid -> BuyMapper.INSTANCE.toBuyCheckBidResponseDto(bid, getFinalPrice(bid.coupon(), bid.discountPrice())))

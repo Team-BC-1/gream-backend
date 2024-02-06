@@ -21,5 +21,5 @@ public interface BuyRepositoryCustom {
 
     void deleteBuysOfDeadlineBefore(LocalDateTime now);
 
-    List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user);
+    List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user, LocalDateTime localDateTime);
 }

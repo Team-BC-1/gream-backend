@@ -103,7 +103,7 @@ class BuyRepositoryCustomImplTest extends BaseDataRepositoryTest implements BuyT
         }
 
         // WHEN
-        Buy foundBuy = buyRepositoryCustom.findByProductIdAndPrice(savedProduct.getId(), TEST_BUY_PRICE)
+        Buy foundBuy = buyRepositoryCustom.findByProductIdAndPrice(savedProduct.getId(), TEST_BUY_PRICE, LocalDateTime.now())
             .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
 
         // THEN

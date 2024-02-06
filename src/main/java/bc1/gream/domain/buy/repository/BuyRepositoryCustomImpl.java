@@ -131,8 +131,15 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .execute();
     }
 
+    /**
+     * 마감기한이 현재시간 이후이고, 구매자의 현재 진행 중인 구매입찰정보에 대해 조회
+     *
+     * @param user          구매자
+     * @param localDateTime 현재시간
+     * @return 쿠폰을 포함한 구매입찰정보
+     */
     @Override
-    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user, LocalDateTime localDateTime) {
         return queryFactory.select(
                 buy.id,
                 buy.price,
@@ -146,7 +153,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .leftJoin(buy.product, product)
             .leftJoin(QCoupon.coupon)
             .on(QCoupon.coupon.id.eq(buy.couponId))
-            .where(buy.user.eq(user))
+            .where(buy.user.eq(user), buy.deadlineAt.gt(localDateTime))
             .fetch()
             .stream()
             .map(tuple -> BuyCheckBidResponseDto.builder()
