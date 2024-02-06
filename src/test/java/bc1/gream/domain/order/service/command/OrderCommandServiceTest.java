@@ -24,7 +24,7 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     private OrderRepository orderRepository;
 
     @Test
-    void 구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_있을떄() {
+    void 즉시구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_있을떄() {
         // given - when
         orderCommandService.saveOrderOfBuy(TEST_BUY_COUPON, TEST_SELLER, TEST_COUPON_FIX);
 
@@ -33,7 +33,7 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     }
 
     @Test
-    void 구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_없을때() {
+    void 즉시구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_없을때() {
         // given - when
         orderCommandService.saveOrderOfBuyNotCoupon(TEST_BUY, TEST_SELLER);
 
@@ -42,7 +42,7 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     }
 
     @Test
-    void saveOrderOfSell() {
+    void () {
     }
 
     @Test
