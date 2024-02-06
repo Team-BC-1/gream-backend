@@ -17,4 +17,12 @@ public interface BuyTest extends UserTest, ProductTest {
         .user(TEST_USER)
         .product(TEST_PRODUCT)
         .build();
+
+    Buy TEST_BUY_COUPON = Buy.builder()
+        .price(TEST_BUY_PRICE)
+        .deadlineAt(TEST_DEADLINE_AT)
+        .user(TEST_USER)
+        .product(TEST_PRODUCT)
+        .couponId(1L)
+        .build();
 }
