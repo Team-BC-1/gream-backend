@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import bc1.gream.domain.buy.dto.response.BuyCheckOrderResponseDto;
 import bc1.gream.domain.gifticon.entity.Gifticon;
 import bc1.gream.domain.gifticon.repository.GifticonRepository;
 import bc1.gream.domain.user.entity.User;
@@ -25,7 +26,7 @@ class GifticonQueryServiceTest implements GifticonTest {
     private GifticonQueryService gifticonQueryService;
 
     @Test
-    void 판매자_기준_판매가_완료된_기프티콘_전체_조회하는_서비스_기능_성공_테스트() {
+    void 판매자_기준_거래가_완료된_기프티콘_전체_조회하는_서비스_기능_성공_테스트() {
         // given
         List<Gifticon> gifticonList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -45,6 +46,26 @@ class GifticonQueryServiceTest implements GifticonTest {
     }
 
     @Test
-    void getBoughtOrder() {
+    void 구매자_기준_거래가_완료된_기프티콘_전체_조회하는_서비스_기능_성공_테스트() {
+        // given
+        List<Gifticon> gifticonList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Gifticon gifticon = Gifticon.builder()
+                .gifticonUrl(TEST_GIFTICON_URL)
+                .order(TEST_ORDER)
+                .build();
+            gifticonList.add(gifticon);
+        }
+
+        given(gifticonRepository.findAllBoughtByBuyer(any(User.class))).willReturn(gifticonList);
+
+        // when
+        List<BuyCheckOrderResponseDto> resultList = gifticonQueryService.getBoughtOrder(TEST_USER);
+
+        // then
+        assertThat(resultList.get(0).gifticonUrl()).isEqualTo(TEST_GIFTICON_URL);
+        assertThat(resultList.get(1).gifticonUrl()).isEqualTo(TEST_GIFTICON_URL);
+        assertThat(resultList.get(2).gifticonUrl()).isEqualTo(TEST_GIFTICON_URL);
+        assertThat(resultList.get(3).gifticonUrl()).isEqualTo(TEST_GIFTICON_URL);
     }
 }
