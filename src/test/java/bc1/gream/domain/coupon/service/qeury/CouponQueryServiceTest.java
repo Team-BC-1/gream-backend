@@ -162,6 +162,40 @@ class CouponQueryServiceTest implements CouponTest {
     }
 
     @Test
+    void 쿠폰을_아이디와_유저로_체크하는_서비스_기능_쿠폰이_존재하지_않으므로_인한_실패_테스트() {
+
+        // given
+        given(couponRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        // when
+        GlobalException exception = assertThrows(GlobalException.class, () -> {
+            couponQueryService.findCouponById(TEST_COUPON_ID, TEST_USER);
+        });
+
+        // then
+        assertThat(exception.getResultCase()).isEqualTo(ResultCase.COUPON_NOT_FOUND);
+        assertThat(exception.getResultCase().getCode()).isEqualTo(ResultCase.COUPON_NOT_FOUND.getCode());
+        assertThat(exception.getResultCase().getMessage()).isEqualTo(ResultCase.COUPON_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    void 쿠폰을_아이디와_유저로_체크하는_서비스_기능_쿠폰이_유저의_소유가_아니므로_인한_실패_테스트() {
+
+        // given
+        given(couponRepository.findById(any(Long.class))).willReturn(Optional.of(TEST_COUPON_OF_TEST_USER));
+
+        // when
+        GlobalException exception = assertThrows(GlobalException.class, () -> {
+            couponQueryService.findCouponById(TEST_COUPON_ID, TEST_BUYER);
+        });
+
+        // then
+        assertThat(exception.getResultCase()).isEqualTo(ResultCase.NOT_AUTHORIZED);
+        assertThat(exception.getResultCase().getCode()).isEqualTo(ResultCase.NOT_AUTHORIZED.getCode());
+        assertThat(exception.getResultCase().getMessage()).isEqualTo(ResultCase.NOT_AUTHORIZED.getMessage());
+    }
+
+    @Test
     @DisplayName("쿠폰에 대한 회원 접근권한을 검증합니다.")
     public void 쿠폰_회원접근권한_검증() {
         // GIVEN
