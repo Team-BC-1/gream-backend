@@ -61,19 +61,20 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
     }
 
     /**
-     * 상품 id와 가격에 대해 가장 나중에 생성된 판매입찰 반환
+     * 상품 id와 가격에 대해 가장 나중에 생성된 판매입찰 반환. 마감기한이 현재시간 이후인지 확인
      *
-     * @param productId 상품 id
-     * @param price     가격
+     * @param productId     상품 id
+     * @param price         가격
+     * @param localDateTime 현재시간
      * @return 가장 나중에 생성된 판매입찰 반환
      */
     @Override
-    public Optional<Sell> findByProductIdAndPrice(Long productId, Long price) {
+    public Optional<Sell> findByProductIdAndPrice(Long productId, Long price, LocalDateTime localDateTime) {
         Sell foundSell = queryFactory.selectFrom(sell)
             .leftJoin(sell.product, product)
             .leftJoin(sell.gifticon, gifticon)
             .leftJoin(sell.user, user)
-            .where(sell.product.id.eq(productId), sell.price.eq(price))
+            .where(sell.product.id.eq(productId), sell.price.eq(price), sell.deadlineAt.gt(localDateTime))
             .orderBy(sell.createdAt.asc())
             .fetchFirst();
         return Optional.ofNullable(foundSell);

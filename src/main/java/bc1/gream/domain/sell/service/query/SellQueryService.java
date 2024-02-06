@@ -45,7 +45,7 @@ public class SellQueryService {
 
     @Transactional(readOnly = true)
     public Sell getRecentSellBidof(Long productId, Long price) {
-        return sellRepository.findByProductIdAndPrice(productId, price).orElseThrow(
+        return sellRepository.findByProductIdAndPrice(productId, price, LocalDateTime.now()).orElseThrow(
             () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
         );
     }
