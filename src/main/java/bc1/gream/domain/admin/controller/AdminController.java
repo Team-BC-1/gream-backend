@@ -52,7 +52,7 @@ public class AdminController {
     @PostMapping("/products")
     @Operation(summary = "상품 생성 요청 [어드민 ONLY]", description = "어드민 권한의 관리자의 상품 생성 요청을 처리합니다.")
     public RestResponse<AdminProductResponseDto> addProducts(
-        @RequestBody AdminProductRequestDto adminProductRequestDto
+        @Valid @RequestBody AdminProductRequestDto adminProductRequestDto
     ) {
         productCommandService.addProduct(adminProductRequestDto);
 
