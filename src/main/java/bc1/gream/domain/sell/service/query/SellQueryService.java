@@ -50,7 +50,13 @@ public class SellQueryService {
         );
     }
 
+    /**
+     * 진행 중인 판매자의 판매입찰 내역 조회
+     *
+     * @param seller 판매자
+     * @return 마감기한 이전의 진행 중인 판매입찰 리스트
+     */
     public List<Sell> getUserSellOnProgressOf(User seller) {
-        return sellRepository.findAllByUser(seller);
+        return sellRepository.findAllByUserAndDeadlineAtGreaterThan(seller, LocalDateTime.now());
     }
 }
