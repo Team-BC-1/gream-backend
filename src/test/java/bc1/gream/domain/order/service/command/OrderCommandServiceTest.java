@@ -33,7 +33,12 @@ class OrderCommandServiceTest implements OrderTest, BuyTest, CouponTest {
     }
 
     @Test
-    void saveOrderOfBuyNotCoupon() {
+    void 구매로_인하여_새로운_주문이_생기는_서비스_기능_성공_테스트_쿠폰이_없을때() {
+        // given - when
+        orderCommandService.saveOrderOfBuyNotCoupon(TEST_BUY, TEST_SELLER);
+
+        // then
+        verify(orderRepository, times(1)).save(any(Order.class));
     }
 
     @Test
