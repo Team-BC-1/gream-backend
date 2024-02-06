@@ -147,7 +147,18 @@ class CouponQueryServiceTest implements CouponTest {
     }
 
     @Test
-    void findCouponById() {
+    void 쿠폰을_아이디와_유저로_체크하는_서비스_기능_성공_테스트() {
+
+        // given
+        given(couponRepository.findById(any(Long.class))).willReturn(Optional.of(TEST_COUPON_OF_TEST_USER));
+
+        // when
+        Coupon coupon = couponQueryService.findCouponById(TEST_COUPON_ID, TEST_USER);
+
+        // then
+        assertThat(coupon.getName()).isEqualTo(TEST_COUPON_OF_TEST_USER.getName());
+        assertThat(coupon.getDiscount()).isEqualTo(TEST_COUPON_OF_TEST_USER.getDiscount());
+        assertThat(coupon.getStatus()).isEqualTo(TEST_COUPON_OF_TEST_USER.getStatus());
     }
 
     @Test
