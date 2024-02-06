@@ -47,7 +47,7 @@ public class TossPaymentController {
     @Operation(summary = "토스페이 결제 성공 리다이렉트", description = "결제 성공 시 최종 결제 승인 요청을 보냅니다.")
     public RestResponse<TossPaymentSuccessResponseDto> requestFinalTossPayment(
         @Schema(description = "토스 결제고유번호") @RequestParam String paymentKey,
-        @Schema(description = "서버 주분고유번호") @RequestParam Long orderId,
+        @Schema(description = "서버 주분고유번호") @RequestParam String orderId,
         @Schema(description = "결제금액") @RequestParam Long amount
     ) throws InterruptedException {
         AtomicReference<TossPaymentSuccessResponseDto> responseDtoHolder = new AtomicReference<>();
@@ -68,7 +68,7 @@ public class TossPaymentController {
     public RestResponse<TossPaymentFailResponseDto> requestFail(
         @Schema(description = "에러 코드") @RequestParam String errorCode,
         @Schema(description = "에러 메세지") @RequestParam String errorMsg,
-        @Schema(description = "서버 주문고유번호") @RequestParam Long orderId
+        @Schema(description = "서버 주문고유번호") @RequestParam String orderId
     ) {
         TossPaymentFailResponseDto responseDto = paymentService.requestFail(errorCode, errorMsg, orderId);
         return RestResponse.success(responseDto);

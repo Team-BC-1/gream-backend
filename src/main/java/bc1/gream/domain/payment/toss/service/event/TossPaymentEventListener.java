@@ -29,11 +29,12 @@ public class TossPaymentEventListener {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
         JSONObject param = new JSONObject();
+        param.put("paymentKey", event.getPaymentKey());
         param.put("orderId", event.getOrderId());
         param.put("amount", event.getAmount());
 
         TossPaymentSuccessResponseDto responseDto = rest.postForObject(
-            event.getSuccessUrl() + event.getPaymentKey(),
+            "https://api.tosspayments.com/v1/payments/confirm",
             new HttpEntity<>(param, headers),
             TossPaymentSuccessResponseDto.class
         );

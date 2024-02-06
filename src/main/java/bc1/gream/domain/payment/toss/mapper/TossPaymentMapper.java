@@ -15,10 +15,10 @@ public interface TossPaymentMapper {
     TossPaymentMapper INSTANCE = Mappers.getMapper(TossPaymentMapper.class);
 
     // orderId 는 UUID 를 사용한 랜덤값 사용
-    @Mapping(target = "orderId", expression = "java(java.util.UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE)")
+    @Mapping(target = "orderId", expression = "java(java.util.UUID.randomUUID().toString())")
     TossPayment fromTossPaymentInitialRequestDto(User user, TossPaymentInitialRequestDto requestDto);
 
-    @Mapping(expression = "java( tossPayment.getPayType() )", target = "paymentPayType")
+    //    @Mapping(expression = "java( tossPayment.getPayType() )", target = "paymentPayType")
     @Mapping(expression = "java( tossPayment.getAmount() )", target = "paymentAmount")
     @Mapping(expression = "java( tossPayment.getOrderId() )", target = "paymentOrderId")
     @Mapping(expression = "java( tossPayment.getOrderName() )", target = "paymentOrderName")
@@ -34,5 +34,5 @@ public interface TossPaymentMapper {
         String failUrl
     );
 
-    TossPaymentFailResponseDto toTossPaymentFailResponseDto(String errorCode, String errorMsg, Long orderId);
+    TossPaymentFailResponseDto toTossPaymentFailResponseDto(String errorCode, String errorMsg, String orderId);
 }

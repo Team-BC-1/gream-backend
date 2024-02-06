@@ -7,14 +7,15 @@ import org.springframework.context.ApplicationEvent;
 public class TossPaymentSuccessEvent extends ApplicationEvent {
 
     private final String paymentKey;
-    private final Long orderId;
+    private final String orderId;
     private final Long amount;
     private final String successUrl;
     private final String testSecretApiKey;
 
     private final TossPaymentSuccessCallback callback;
 
-    public TossPaymentSuccessEvent(Object source, String paymentKey, Long orderId, Long amount, String successUrl, String testSecretApiKey,
+    public TossPaymentSuccessEvent(Object source, String paymentKey, String orderId, Long amount, String successUrl,
+        String testSecretApiKey,
         TossPaymentSuccessCallback callback) {
         super(source);
         this.paymentKey = paymentKey;

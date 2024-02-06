@@ -6,7 +6,7 @@ import lombok.Builder;
 public record TossPaymentFailResponseDto(
     String errorCode,
     String errorMsg,
-    Long orderId
+    String orderId
 ) {
 
 }
