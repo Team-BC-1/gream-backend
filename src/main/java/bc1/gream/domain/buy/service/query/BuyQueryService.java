@@ -53,7 +53,7 @@ public class BuyQueryService {
      * @return 구매입찰
      */
     public Buy getRecentBuyBidOf(Long productId, Long price) {
-        return buyRepository.findByProductIdAndPrice(productId, price)
+        return buyRepository.findByProductIdAndPrice(productId, price, LocalDateTime.now())
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
     }
 

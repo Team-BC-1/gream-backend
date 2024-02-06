@@ -15,7 +15,7 @@ public interface BuyRepositoryCustom {
 
     Page<Buy> findAllPricesOf(Product product, Pageable pageable);
 
-    Optional<Buy> findByProductIdAndPrice(Long productId, Long price);
+    Optional<Buy> findByProductIdAndPrice(Long productId, Long price, LocalDateTime localDateTime);
 
     Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable, LocalDateTime localDateTime);
 

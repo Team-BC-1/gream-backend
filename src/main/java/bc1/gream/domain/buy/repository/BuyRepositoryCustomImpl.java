@@ -64,18 +64,18 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     }
 
     /**
-     * 상품 id와 가격에 대해 가장 먼저 생성된 구매입찰 반환
+     * 상품 id와 가격에 대해 가장 먼저 생성된 구매입찰 반환. 마감기한이 현재시간 이후인지 확인
      *
      * @param productId 상품 id
      * @param price     가격
      * @return 가장 먼저 생성된 구매입찰
      */
     @Override
-    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price) {
+    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price, LocalDateTime localDateTime) {
         Buy buy = queryFactory
             .selectFrom(QBuy.buy)
             .leftJoin(QBuy.buy.product, product)
-            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
+            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price), QBuy.buy.deadlineAt.gt(localDateTime))
             .orderBy(QBuy.buy.createdAt.asc())
             .fetchFirst();
         return Optional.ofNullable(buy);
