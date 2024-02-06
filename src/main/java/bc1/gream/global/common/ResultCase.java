@@ -80,7 +80,8 @@ public enum ResultCase {
     UNSUPPORTED_ORDER_NAME(HttpStatus.BAD_REQUEST, 8000, "지원되지 않는 주문입니다."),
     INVALID_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8001, "0원 이상의 금액만 충전가능합니다."),
     UNMATCHED_PAYMENT_AMOUNT(HttpStatus.BAD_REQUEST, 8002, "이전 결제요청 금액과 일치하지 않습니다."),
-    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 8003, "관련된 토스결제데이터가 존재하지 않습니다.");
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 8003, "관련된 토스결제데이터가 존재하지 않습니다."),
+    TOSS_FINAL_REQUEST_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, 8004, "토스 최종요청에 대한 토스 서버 응답장애가 발생하였습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer code;
