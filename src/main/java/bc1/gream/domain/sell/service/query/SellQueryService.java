@@ -8,6 +8,7 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class SellQueryService {
      */
     @Transactional(readOnly = true)
     public Page<SellPriceToQuantityResponseDto> findAllSellBidsOf(Product product, Pageable pageable) {
-        return sellRepository.findAllPriceToQuantityOf(product, pageable);
+        return sellRepository.findAllPriceToQuantityOf(product, pageable, LocalDateTime.now());
     }
 
 

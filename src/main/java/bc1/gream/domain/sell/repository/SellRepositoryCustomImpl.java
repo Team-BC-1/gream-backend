@@ -80,14 +80,15 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
     }
 
     /**
-     * 상품에 대한 판매입찰가격수량에 대한 조건조회,페이징 처리. 기본정렬은 가격 오름차순
+     * 상품에 대한 판매입찰가격수량에 대한 조건조회,페이징 처리. 마감기한이 현재시간 이후인지 확인. 기본정렬은 가격 오름차순
      *
-     * @param product  상품
-     * @param pageable 페이징
+     * @param product       상품
+     * @param pageable      페이징
+     * @param localDateTime 현재시간
      * @return 판매입찰가격수량
      */
     @Override
-    public Page<SellPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable) {
+    public Page<SellPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable, LocalDateTime localDateTime) {
         // Get Orders By Columns
         OrderSpecifier[] orderSpecifiers = SellQueryOrderFactory.getOrdersOf(pageable.getSort());
 
@@ -96,7 +97,7 @@ public class SellRepositoryCustomImpl implements SellRepositoryCustom {
             .select(sell.price, sell.count())
             .from(sell)
             .leftJoin(sell.product, QProduct.product)
-            .where(sell.product.eq(product))
+            .where(sell.product.eq(product), sell.deadlineAt.gt(localDateTime))
             .groupBy(sell.price)
             .orderBy(orderSpecifiers)
             .fetch()
