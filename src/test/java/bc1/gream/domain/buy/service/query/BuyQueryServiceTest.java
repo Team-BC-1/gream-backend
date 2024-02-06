@@ -137,7 +137,7 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
     }
 
     @Test
-    void 현재_진행중인_유저의_구매입찰_전체_조회_서비스_기능_성공_테스트() {
+    void 현재_진행중인_유저의_구매입찰에_쿠폰이_존재할때_전체_조회_서비스_기능_성공_테스트() {
 
         // given
         List<BuyCheckBidResponseDto> responseDtoList = new ArrayList<>();
@@ -146,7 +146,41 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
                 .buyId((long) i)
                 .price(1000L * i)
                 .discountPrice(1000L * i)
-                .coupon((i % 2 == 0) ? TEST_COUPON_FIX : null)
+                .coupon(TEST_COUPON_FIX)
+                .build();
+
+            responseDtoList.add(responseDto);
+        }
+        given(buyRepository.findAllBuyBidCoupon(any(User.class))).willReturn(responseDtoList);
+
+        // when
+        List<BuyCheckBidResponseDto> resultList = buyQueryService.findAllBuyBidCoupon(TEST_USER);
+
+        // then
+        assertThat(resultList.size()).isEqualTo(5);
+        assertThat(resultList.get(0).discountPrice()).isEqualTo(
+            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(0).discountPrice()));
+        assertThat(resultList.get(1).discountPrice()).isEqualTo(
+            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(1).discountPrice()));
+        assertThat(resultList.get(2).discountPrice()).isEqualTo(
+            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(2).discountPrice()));
+        assertThat(resultList.get(3).discountPrice()).isEqualTo(
+            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(3).discountPrice()));
+        assertThat(resultList.get(4).discountPrice()).isEqualTo(
+            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(4).discountPrice()));
+    }
+
+    @Test
+    void 현재_진행중인_유저의_구매입찰에_쿠폰이_존재하지_않을때_전체_조회_서비스_기능_성공_테스트() {
+
+        // given
+        List<BuyCheckBidResponseDto> responseDtoList = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            BuyCheckBidResponseDto responseDto = BuyCheckBidResponseDto.builder()
+                .buyId((long) i)
+                .price(1000L * i)
+                .discountPrice(1000L * i)
+                .coupon(null)
                 .build();
 
             responseDtoList.add(responseDto);
@@ -159,12 +193,9 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
         // then
         assertThat(resultList.size()).isEqualTo(5);
         assertThat(resultList.get(0).discountPrice()).isEqualTo(responseDtoList.get(0).discountPrice());
-        assertThat(resultList.get(1).discountPrice()).isEqualTo(
-            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(1).discountPrice()));
+        assertThat(resultList.get(1).discountPrice()).isEqualTo(responseDtoList.get(1).discountPrice());
         assertThat(resultList.get(2).discountPrice()).isEqualTo(responseDtoList.get(2).discountPrice());
-        assertThat(resultList.get(3).discountPrice()).isEqualTo(
-            CouponCalculator.calculateDiscount(TEST_COUPON_FIX, responseDtoList.get(3).discountPrice()));
-        assertThat(resultList.get(4).discountPrice()).isEqualTo(responseDtoList.get(4).discountPrice());
+        assertThat(resultList.get(3).discountPrice()).isEqualTo(responseDtoList.get(3).discountPrice());
     }
 
     @Test
