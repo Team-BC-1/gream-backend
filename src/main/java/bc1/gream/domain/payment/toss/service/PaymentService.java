@@ -49,7 +49,7 @@ public class PaymentService {
      * @param paymentKey 토스 결제고유번호
      * @param orderId    서버 주문고유번호
      * @param amount     결제액
-     * @return 토스페이 최종요청 결과
+     * @param callback   TOSS 최종 요청 결과값 콜백
      */
     @Transactional
     public void requestFinalTossPayment(String paymentKey, String orderId, Long amount, TossPaymentSuccessCallback callback) {
@@ -93,6 +93,7 @@ public class PaymentService {
         TossPayment tossPayment = this.findBy(orderId);
         // 결제금액 일치 검증
         if (tossPayment.getAmount().equals(amount)) {
+            tossPayment.setIsPaySuccess(true);
             tossPayment.setPaymentKey(paymentKey);
             return;
         }
