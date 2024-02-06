@@ -5,7 +5,6 @@ import lombok.Builder;
 
 @Builder
 public record TossPaymentInitialRequestDto(
-//    PayType payType,    // 결제방법
     Long amount,        // 결제금액
     OrderName orderName // 주문명
 ) {
