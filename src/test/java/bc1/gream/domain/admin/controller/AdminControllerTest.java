@@ -1,6 +1,8 @@
 package bc1.gream.domain.admin.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -10,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import bc1.gream.domain.admin.dto.request.AdminCreateCouponRequestDto;
 import bc1.gream.domain.admin.dto.request.AdminGetRefundRequestDto;
 import bc1.gream.domain.admin.dto.request.AdminProductRequestDto;
+import bc1.gream.domain.admin.dto.request.AdminRefundPassResponseDto;
 import bc1.gream.domain.coupon.entity.DiscountType;
 import bc1.gream.domain.coupon.provider.CouponProvider;
 import bc1.gream.domain.product.service.command.ProductCommandService;
@@ -107,6 +110,22 @@ class AdminControllerTest implements RefundTest {
         mockMvc.perform(post("/api/admin/products")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
+            .andExpectAll(
+                status().isOk(),
+                jsonPath("$.code").value(0),
+                jsonPath("$.message").value("정상 처리 되었습니다")
+            );
+    }
+
+    @Test
+    void 유저가_요청한_환급내역_관리자가_승인하는_컨트롤러_기능_성공_테스트() throws Exception {
+
+        // given
+        AdminRefundPassResponseDto responseDto = new AdminRefundPassResponseDto();
+        given(refundCommandService.approveRefund(any(Long.class))).willReturn(responseDto);
+
+        // when - then
+        mockMvc.perform(delete("/api/admin/refund/{id}", TEST_REFUND_ID))
             .andExpectAll(
                 status().isOk(),
                 jsonPath("$.code").value(0),
