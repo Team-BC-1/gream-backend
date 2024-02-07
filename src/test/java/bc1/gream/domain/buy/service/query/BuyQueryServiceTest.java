@@ -16,6 +16,7 @@ import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -91,7 +92,8 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
         Page<BuyPriceToQuantityResponseDto> responseDtoPage = new PageImpl<>(responseDtoList.subList(start, end), pageable,
             responseDtoList.size());
 
-        given(buyRepository.findAllPriceToQuantityOf(any(Product.class), any(Pageable.class))).willReturn(responseDtoPage);
+        given(buyRepository.findAllPriceToQuantityOf(any(Product.class), any(Pageable.class), any(LocalDateTime.class))).willReturn(
+            responseDtoPage);
         // when
         Page<BuyPriceToQuantityResponseDto> returnPage = buyQueryService.findAllBuyBidsOf(TEST_PRODUCT, pageable);
 
@@ -108,7 +110,8 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
     void 가장_최근의_구매입찰을_찾아오는_서비스_기능_성공_테스트() {
 
         // given
-        given(buyRepository.findByProductIdAndPrice(any(Long.class), any(Long.class))).willReturn(Optional.of(TEST_BUY));
+        given(buyRepository.findByProductIdAndPrice(any(Long.class), any(Long.class), any(LocalDateTime.class))).willReturn(
+            Optional.of(TEST_BUY));
 
         // when
         Buy resultBuy = buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE);
@@ -123,7 +126,8 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
     void 가장_최근의_구매입찰을_찾아오는_서비스_기능_실패_테스트() {
 
         // given
-        given(buyRepository.findByProductIdAndPrice(any(Long.class), any(Long.class))).willReturn(Optional.empty());
+        given(buyRepository.findByProductIdAndPrice(any(Long.class), any(Long.class), any(LocalDateTime.class))).willReturn(
+            Optional.empty());
 
         // when
         GlobalException exception = assertThrows(GlobalException.class, () -> {
@@ -151,7 +155,7 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
 
             responseDtoList.add(responseDto);
         }
-        given(buyRepository.findAllBuyBidCoupon(any(User.class))).willReturn(responseDtoList);
+        given(buyRepository.findAllBuyBidCoupon(any(User.class), any(LocalDateTime.class))).willReturn(responseDtoList);
 
         // when
         List<BuyCheckBidResponseDto> resultList = buyQueryService.findAllBuyBidCoupon(TEST_USER);
