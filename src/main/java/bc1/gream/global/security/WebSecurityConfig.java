@@ -115,7 +115,7 @@ public class WebSecurityConfig {
                 // 상품 도메인
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
                 // 관리자 도메인
-                .requestMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority())
+                .requestMatchers("/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority())
                 // health 체크
                 .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/actuator").permitAll()
