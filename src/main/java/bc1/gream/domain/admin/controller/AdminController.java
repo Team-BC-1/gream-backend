@@ -38,7 +38,7 @@ public class AdminController {
     private final CouponProvider couponProvider;
 
     @GetMapping("/refunds")
-    @Operation(summary = "신청된 환급 리스트 조회 요청", description = "사용자가 신청한 환급 요청 리스트를 반환합니다.")
+    @Operation(summary = "신청된 환급 리스트 조회 요청 [어드민 ONLY]", description = "어드민 권한의 관리자가 유저의 환급 요청 리스트를 반환합니다.")
     public RestResponse<List<AdminGetRefundResponseDto>> getRefunds(AdminGetRefundRequestDto requestDto) {
 
         List<AdminGetRefundResponseDto> response = refundQueryService.getRefunds()
@@ -50,8 +50,9 @@ public class AdminController {
     }
 
     @PostMapping("/products")
+    @Operation(summary = "상품 생성 요청 [어드민 ONLY]", description = "어드민 권한의 관리자의 상품 생성 요청을 처리합니다.")
     public RestResponse<AdminProductResponseDto> addProducts(
-        @RequestBody AdminProductRequestDto adminProductRequestDto
+        @Valid @RequestBody AdminProductRequestDto adminProductRequestDto
     ) {
         productCommandService.addProduct(adminProductRequestDto);
 
@@ -59,7 +60,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/refund/{id}")
-    @Operation(summary = "유저 환급 승인", description = "유저가 신청한 환급 요청을 승인해주는 기능입니다.")
+    @Operation(summary = "유저 환급 승인 [어드민 ONLY]", description = "어드민 권한의 관리자가 유저의 환급 요청을 승인해주는 기능입니다.")
     public RestResponse<AdminRefundPassResponseDto> approveRefund(
         @PathVariable Long id
     ) {
