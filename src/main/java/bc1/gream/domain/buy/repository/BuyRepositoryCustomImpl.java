@@ -65,18 +65,18 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     }
 
     /**
-     * 상품 id와 가격에 대해 가장 먼저 생성된 구매입찰 반환
+     * 상품 id와 가격에 대해 가장 먼저 생성된 구매입찰 반환. 마감기한이 현재시간 이후인지 확인
      *
      * @param productId 상품 id
      * @param price     가격
      * @return 가장 먼저 생성된 구매입찰
      */
     @Override
-    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price) {
+    public Optional<Buy> findByProductIdAndPrice(Long productId, Long price, LocalDateTime localDateTime) {
         Buy buy = queryFactory
             .selectFrom(QBuy.buy)
             .leftJoin(QBuy.buy.product, product)
-            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
+            .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price), QBuy.buy.deadlineAt.gt(localDateTime))
             .orderBy(QBuy.buy.createdAt.asc())
             .setLockMode(LockModeType.PESSIMISTIC_WRITE)
             .fetchFirst();
@@ -84,14 +84,15 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
     }
 
     /**
-     * 상품에 대한 구매입찰가격수량에 대한 조건조회,페이징 처리. 기본정렬은 가격 내림차순
+     * 상품에 대한 구매입찰가격수량에 대한 조건조회,페이징 처리. 마감기한이 현재시간 이후인지 비교. 기본정렬은 가격 내림차순
      *
-     * @param product  상품
-     * @param pageable 페이징
+     * @param product       상품
+     * @param pageable      페이징
+     * @param localDateTime 현재시간
      * @return 구매입찰가격수량
      */
     @Override
-    public Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable) {
+    public Page<BuyPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable, LocalDateTime localDateTime) {
         // Get Orders By Columns
         OrderSpecifier[] orderSpecifiers = BuyQueryOrderFactory.getOrdersOf(pageable.getSort());
 
@@ -100,7 +101,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .select(buy.price, buy.count())
             .from(buy)
             .leftJoin(buy.product, QProduct.product)
-            .where(buy.product.eq(product))
+            .where(buy.product.eq(product), buy.deadlineAt.gt(localDateTime))
             .groupBy(buy.price)
             .orderBy(orderSpecifiers)
             .offset(pageable.getOffset())
@@ -132,8 +133,15 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .execute();
     }
 
+    /**
+     * 마감기한이 현재시간 이후이고, 구매자의 현재 진행 중인 구매입찰정보에 대해 조회
+     *
+     * @param user          구매자
+     * @param localDateTime 현재시간
+     * @return 쿠폰을 포함한 구매입찰정보
+     */
     @Override
-    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user) {
+    public List<BuyCheckBidResponseDto> findAllBuyBidCoupon(User user, LocalDateTime localDateTime) {
         return queryFactory.select(
                 buy.id,
                 buy.price,
@@ -147,7 +155,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .leftJoin(buy.product, product)
             .leftJoin(QCoupon.coupon)
             .on(QCoupon.coupon.id.eq(buy.couponId))
-            .where(buy.user.eq(user))
+            .where(buy.user.eq(user), buy.deadlineAt.gt(localDateTime))
             .fetch()
             .stream()
             .map(tuple -> BuyCheckBidResponseDto.builder()
