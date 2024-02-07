@@ -13,8 +13,12 @@ import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import bc1.gream.global.redis.RedisCacheName;
+import bc1.gream.global.redis.RestPage;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@CacheConfig(cacheNames = RedisCacheName.PRODUCTS_BUY)
 public class BuyQueryService {
 
     private final BuyRepository buyRepository;
@@ -40,8 +45,9 @@ public class BuyQueryService {
      * @param pageable 페이징 요청 데이터
      * @return 구매입찰가 내역 페이징 데이터
      */
+    @Cacheable(key = "#product.id + #pageable.pageNumber")
     public Page<BuyPriceToQuantityResponseDto> findAllBuyBidsOf(Product product, Pageable pageable) {
-        return buyRepository.findAllPriceToQuantityOf(product, pageable);
+        return new RestPage<>(buyRepository.findAllPriceToQuantityOf(product, pageable));
     }
 
     /**
