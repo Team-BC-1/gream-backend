@@ -1,6 +1,7 @@
 package bc1.gream.domain.payment.toss.service.event;
 
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
+import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import java.nio.charset.StandardCharsets;
@@ -18,13 +19,13 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class TossPaymentEventListener {
 
-
     private static TossPaymentSuccessResponseDto sendFinalRequest(RestTemplate rest, HttpHeaders headers, JSONObject param) {
-        return rest.postForObject(
+        TossPaymentSuccessResponseDto responseDto = rest.postForObject(
             "https://api.tosspayments.com/v1/payments/confirm",
             new HttpEntity<>(param, headers),
             TossPaymentSuccessResponseDto.class
         );
+        return responseDto;
     }
 
     private static void checkPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
