@@ -1,9 +1,6 @@
 package bc1.gream.domain.payment.toss.service.event;
 
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
-import bc1.gream.domain.user.entity.User;
-import bc1.gream.global.common.ResultCase;
-import bc1.gream.global.exception.GlobalException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
@@ -26,17 +23,6 @@ public class TossPaymentEventListener {
             TossPaymentSuccessResponseDto.class
         );
         return responseDto;
-    }
-
-    private static void updateUserPointByPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
-        assert responseDto != null;
-        if (responseDto.status().equals("DONE")) {
-            User user = event.getTossPayment().getUser();
-            user.increasePoint(event.getTossPayment().getAmount());
-            event.getCallback().handle(responseDto);
-        } else {
-            throw new GlobalException(ResultCase.TOSS_FINAL_REQUEST_FAIL);
-        }
     }
 
     private static JSONObject setTossPaymentFinalRequestJSONObject(TossPaymentSuccessEvent event) {
@@ -66,7 +52,5 @@ public class TossPaymentEventListener {
         JSONObject param = setTossPaymentFinalRequestJSONObject(event);
 
         TossPaymentSuccessResponseDto responseDto = sendFinalRequest(rest, headers, param);
-
-        updateUserPointByPaymentStatus(event, responseDto);
     }
 }
