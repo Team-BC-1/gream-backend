@@ -88,7 +88,12 @@ class AdminControllerTest implements RefundTest {
             .andExpectAll(
                 status().isOk(),
                 jsonPath("$.code").value(0),
-                jsonPath("$.message").value("정상 처리 되었습니다")
+                jsonPath("$.message").value("정상 처리 되었습니다"),
+                jsonPath("$.data[0].refundBank").value("농협은행"),
+                jsonPath("$.data[1].refundBank").value("농협은행"),
+                jsonPath("$.data[2].refundBank").value("농협은행"),
+                jsonPath("$.data[3].refundBank").value("농협은행"),
+                jsonPath("$.data[4].refundBank").value("농협은행")
             );
     }
 
