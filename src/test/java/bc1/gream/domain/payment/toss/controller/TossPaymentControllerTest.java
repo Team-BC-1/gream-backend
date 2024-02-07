@@ -65,12 +65,10 @@ class TossPaymentControllerTest {
         // GIVEN
         String url = "/api/payments/toss/request";
         TossPaymentInitialRequestDto requestDto = TossPaymentInitialRequestDto.builder()
-            .payType(PayType.CARD)
             .amount(1000L)
             .orderName(OrderName.CHARGE_POINT)
             .build();
         TossPaymentInitialResponseDto responseDto = TossPaymentInitialResponseDto.builder()
-            .paymentPayType(PayType.CARD)
             .paymentAmount(1000L)
             .paymentOrderName(OrderName.CHARGE_POINT)
             .userLoginId(UserTest.TEST_USER_LOGIN_ID)
@@ -88,7 +86,6 @@ class TossPaymentControllerTest {
                     .content(objectMapper.writeValueAsString(requestDto))
             ).andDo(print())
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.paymentPayType").value(String.valueOf(PayType.CARD)))
             .andExpect(jsonPath("$.data.paymentAmount").value(1000L))
             .andExpect(jsonPath("$.data.paymentOrderName").value(String.valueOf(OrderName.CHARGE_POINT)))
             .andExpect(jsonPath("$.data.userLoginId").value(UserTest.TEST_USER_LOGIN_ID))
@@ -102,7 +99,7 @@ class TossPaymentControllerTest {
         // GIVEN
         String url = "/api/payments/toss/success";
         String paymentKey = "alisb2039sdbkn";
-        Long orderId = 192819120928L;
+        String orderId = "A1212S-QKNSDB-A120AN";
         Long amount = 1000L;
         TossPaymentCardDto expectedPaymentCard = TossPaymentCardDto.builder()
             .company("현대")
@@ -183,7 +180,7 @@ class TossPaymentControllerTest {
         String url = "/api/payments/toss/fail";
         String errorCode = "에러 코드";
         String errorMsg = "에러 메시지";
-        Long orderId = 3L;
+        String orderId = "A1212S-QKNSDB-A120AN";
         TossPaymentFailResponseDto responseDto = TossPaymentFailResponseDto.builder()
             .errorCode(errorCode)
             .errorMsg(errorMsg)
