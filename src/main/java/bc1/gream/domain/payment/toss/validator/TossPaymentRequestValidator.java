@@ -21,7 +21,10 @@ public final class TossPaymentRequestValidator {
 
     private static void validateAmount(Long amount) {
         if (Long.compare(amount, 0L) <= 0L) {
-            throw new GlobalException(ResultCase.INVALID_PAYMENT_AMOUNT);
+            throw new GlobalException(ResultCase.ZERO_NEGATIVE_PAYMENT_AMOUNT);
+        }
+        if (amount < 100L) {
+            throw new GlobalException(ResultCase.LESS_THAN_HUNDRED_WON_PAYMENT_AMOUNT);
         }
     }
 }

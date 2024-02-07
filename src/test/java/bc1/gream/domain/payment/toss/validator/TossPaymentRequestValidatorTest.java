@@ -49,7 +49,7 @@ class TossPaymentRequestValidatorTest {
             () -> TossPaymentRequestValidator.validate(negativeAmountRequest));
 
         // THEN
-        assertEquals(ResultCase.INVALID_PAYMENT_AMOUNT, zeroAmountException.getResultCase());
-        assertEquals(ResultCase.INVALID_PAYMENT_AMOUNT, negativeAmountException.getResultCase());
+        assertEquals(ResultCase.ZERO_NEGATIVE_PAYMENT_AMOUNT, zeroAmountException.getResultCase());
+        assertEquals(ResultCase.ZERO_NEGATIVE_PAYMENT_AMOUNT, negativeAmountException.getResultCase());
     }
 }
