@@ -12,9 +12,9 @@ public interface SellRepositoryCustom {
 
     Page<Sell> findAllPricesOf(Product product, Pageable pageable);
 
-    Optional<Sell> findByProductIdAndPrice(Long productId, Long price);
+    Optional<Sell> findByProductIdAndPrice(Long productId, Long price, LocalDateTime localDateTime);
 
-    Page<SellPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable);
+    Page<SellPriceToQuantityResponseDto> findAllPriceToQuantityOf(Product product, Pageable pageable, LocalDateTime localDateTime);
 
     void deleteSellsOfDeadlineBefore(LocalDateTime dateTime);
 }

@@ -14,6 +14,7 @@ import bc1.gream.global.config.QueryDslConfig;
 import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.SellTest;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,7 +86,7 @@ class SellRepositoryTest implements SellTest {
         }
 
         // WHEN
-        Sell foundSell = sellRepository.findByProductIdAndPrice(savedProduct.getId(), TEST_SELL_PRICE)
+        Sell foundSell = sellRepository.findByProductIdAndPrice(savedProduct.getId(), TEST_SELL_PRICE, LocalDateTime.now())
             .orElseThrow(() -> new GlobalException(ResultCase.SELL_BID_PRODUCT_NOT_FOUND));
 
         // THEN

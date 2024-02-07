@@ -8,6 +8,7 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class SellQueryService {
      */
     @Transactional(readOnly = true)
     public Page<SellPriceToQuantityResponseDto> findAllSellBidsOf(Product product, Pageable pageable) {
-        return sellRepository.findAllPriceToQuantityOf(product, pageable);
+        return sellRepository.findAllPriceToQuantityOf(product, pageable, LocalDateTime.now());
     }
 
 
@@ -44,12 +45,18 @@ public class SellQueryService {
 
     @Transactional(readOnly = true)
     public Sell getRecentSellBidof(Long productId, Long price) {
-        return sellRepository.findByProductIdAndPrice(productId, price).orElseThrow(
+        return sellRepository.findByProductIdAndPrice(productId, price, LocalDateTime.now()).orElseThrow(
             () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
         );
     }
 
+    /**
+     * 진행 중인 판매자의 판매입찰 내역 조회
+     *
+     * @param seller 판매자
+     * @return 마감기한 이전의 진행 중인 판매입찰 리스트
+     */
     public List<Sell> getUserSellOnProgressOf(User seller) {
-        return sellRepository.findAllByUser(seller);
+        return sellRepository.findAllByUserAndDeadlineAtGreaterThan(seller, LocalDateTime.now());
     }
 }
