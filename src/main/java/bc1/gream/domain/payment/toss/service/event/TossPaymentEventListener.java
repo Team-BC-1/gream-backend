@@ -1,7 +1,6 @@
 package bc1.gream.domain.payment.toss.service.event;
 
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
-import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import java.nio.charset.StandardCharsets;
@@ -13,26 +12,26 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.RestTemplate;
 
 @Component
+@Transactional
 public class TossPaymentEventListener {
 
+
     private static TossPaymentSuccessResponseDto sendFinalRequest(RestTemplate rest, HttpHeaders headers, JSONObject param) {
-        TossPaymentSuccessResponseDto responseDto = rest.postForObject(
+        return rest.postForObject(
             "https://api.tosspayments.com/v1/payments/confirm",
             new HttpEntity<>(param, headers),
             TossPaymentSuccessResponseDto.class
         );
-        return responseDto;
     }
 
-    private static void updateUserPointByPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
+    private static void checkPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
         assert responseDto != null;
         if (responseDto.status().equals("DONE")) {
-            User user = event.getTossPayment().getUser();
-            user.increasePoint(event.getTossPayment().getAmount());
             event.getCallback().handle(responseDto);
         } else {
             throw new GlobalException(ResultCase.TOSS_FINAL_REQUEST_FAIL);
@@ -67,6 +66,6 @@ public class TossPaymentEventListener {
 
         TossPaymentSuccessResponseDto responseDto = sendFinalRequest(rest, headers, param);
 
-        updateUserPointByPaymentStatus(event, responseDto);
+        checkPaymentStatus(event, responseDto);
     }
 }
