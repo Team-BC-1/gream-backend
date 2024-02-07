@@ -1,6 +1,9 @@
 package bc1.gream.domain.payment.toss.service.event;
 
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
+import bc1.gream.domain.user.entity.User;
+import bc1.gream.global.common.ResultCase;
+import bc1.gream.global.exception.GlobalException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
@@ -16,29 +19,54 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class TossPaymentEventListener {
 
+    private static TossPaymentSuccessResponseDto sendFinalRequest(RestTemplate rest, HttpHeaders headers, JSONObject param) {
+        TossPaymentSuccessResponseDto responseDto = rest.postForObject(
+            "https://api.tosspayments.com/v1/payments/confirm",
+            new HttpEntity<>(param, headers),
+            TossPaymentSuccessResponseDto.class
+        );
+        return responseDto;
+    }
+
+    private static void updateUserPointByPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
+        assert responseDto != null;
+        if (responseDto.status().equals("DONE")) {
+            User user = event.getTossPayment().getUser();
+            user.increasePoint(event.getTossPayment().getAmount());
+            event.getCallback().handle(responseDto);
+        } else {
+            throw new GlobalException(ResultCase.TOSS_FINAL_REQUEST_FAIL);
+        }
+    }
+
+    private static JSONObject setTossPaymentFinalRequestJSONObject(TossPaymentSuccessEvent event) {
+        JSONObject param = new JSONObject();
+        param.put("paymentKey", event.getTossPayment().getPaymentKey());
+        param.put("orderId", event.getTossPayment().getOrderId());
+        param.put("amount", event.getTossPayment().getAmount());
+        return param;
+    }
+
+    private static void setTossHeaders(TossPaymentSuccessEvent event, HttpHeaders headers) {
+        String testSecretApiKey = event.getTestSecretApiKey() + ":";
+        String encodedAuth = new String(Base64.getEncoder().encode(testSecretApiKey.getBytes(StandardCharsets.UTF_8)));
+        headers.setBasicAuth(encodedAuth);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+    }
+
     @Async
     @TransactionalEventListener
     public void handleTossPaymentSuccess(TossPaymentSuccessEvent event) {
         RestTemplate rest = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
 
-        String testSecretApiKey = event.getTestSecretApiKey() + ":";
-        String encodedAuth = new String(Base64.getEncoder().encode(testSecretApiKey.getBytes(StandardCharsets.UTF_8)));
-        headers.setBasicAuth(encodedAuth);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        setTossHeaders(event, headers);
 
-        JSONObject param = new JSONObject();
-        param.put("orderId", event.getOrderId());
-        param.put("amount", event.getAmount());
+        JSONObject param = setTossPaymentFinalRequestJSONObject(event);
 
-        TossPaymentSuccessResponseDto responseDto = rest.postForObject(
-            event.getSuccessUrl() + event.getPaymentKey(),
-            new HttpEntity<>(param, headers),
-            TossPaymentSuccessResponseDto.class
-        );
+        TossPaymentSuccessResponseDto responseDto = sendFinalRequest(rest, headers, param);
 
-        // Use the functional interface to pass the result back to TossPaymentController
-        event.getCallback().handle(responseDto);
+        updateUserPointByPaymentStatus(event, responseDto);
     }
 }

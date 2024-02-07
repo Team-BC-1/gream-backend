@@ -11,6 +11,7 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.test.BaseDataRepositoryTest;
 import bc1.gream.test.SellTest;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
@@ -130,7 +131,8 @@ class SellRepositoryCustomImplTest extends BaseDataRepositoryTest implements Sel
         Pageable pageable = PageRequest.of(1, 10);
 
         // WHEN
-        Page<SellPriceToQuantityResponseDto> allPriceToQuantityOf = sellRepositoryCustom.findAllPriceToQuantityOf(savedProduct, pageable);
+        Page<SellPriceToQuantityResponseDto> allPriceToQuantityOf = sellRepositoryCustom.findAllPriceToQuantityOf(savedProduct, pageable,
+            LocalDateTime.now());
 
         // THEN
         assertEquals(samePriceBid.getPrice(), allPriceToQuantityOf.getContent().get(0).sellPrice());

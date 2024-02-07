@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
-import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.coupon.repository.CouponRepository;
+import bc1.gream.domain.product.repository.ProductRepository;
 import bc1.gream.domain.user.repository.UserRepository;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.config.QueryDslConfig;
@@ -14,6 +14,7 @@ import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.jpa.AuditingConfig;
 import bc1.gream.test.BuyTest;
 import bc1.gream.test.CouponTest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -87,7 +88,7 @@ class BuyRepositoryTest implements BuyTest, CouponTest {
         List<Buy> foundBuys = new ArrayList<>();
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
-                Buy buy = buyRepository.findByProductIdAndPrice(TEST_PRODUCT_ID, TEST_BUY_PRICE)
+                Buy buy = buyRepository.findByProductIdAndPrice(TEST_PRODUCT_ID, TEST_BUY_PRICE, LocalDateTime.now())
                     .orElseThrow(() -> new GlobalException(ResultCase.BUY_BID_NOT_FOUND));
                 foundBuys.add(buy);
 //                try{

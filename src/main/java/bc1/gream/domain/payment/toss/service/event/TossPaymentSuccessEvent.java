@@ -1,26 +1,20 @@
 package bc1.gream.domain.payment.toss.service.event;
 
+import bc1.gream.domain.payment.toss.entity.TossPayment;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class TossPaymentSuccessEvent extends ApplicationEvent {
 
-    private final String paymentKey;
-    private final Long orderId;
-    private final Long amount;
-    private final String successUrl;
+    private final TossPayment tossPayment;
     private final String testSecretApiKey;
 
     private final TossPaymentSuccessCallback callback;
 
-    public TossPaymentSuccessEvent(Object source, String paymentKey, Long orderId, Long amount, String successUrl, String testSecretApiKey,
-        TossPaymentSuccessCallback callback) {
+    public TossPaymentSuccessEvent(Object source, TossPayment tossPayment, String testSecretApiKey, TossPaymentSuccessCallback callback) {
         super(source);
-        this.paymentKey = paymentKey;
-        this.orderId = orderId;
-        this.amount = amount;
-        this.successUrl = successUrl;
+        this.tossPayment = tossPayment;
         this.testSecretApiKey = testSecretApiKey;
         this.callback = callback;
     }

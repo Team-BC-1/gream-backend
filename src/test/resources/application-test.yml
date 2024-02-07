@@ -39,14 +39,49 @@ logging:
         orm:
           jdbc:
             bind: trace
-#      springframework:
-#        transaction:
-#          interceptor: trace # 트랜잭션 시작과 종료 로깅
+      springframework:
+        transaction:
+          interceptor: trace # 트랜잭션 시작과 종료 로깅
 
-# TOSS PAY
-payment:
-  toss:
-    test_client_api_key: ${TOSS_CLIENT_API_KEY}
-    test_secret_api_key: ${TOSS_SECRET_API_KEY}
-    success_url: ${TOSS_SUCCESS_URL}
-    fail_url: ${TOSS_FAIL_URL}
+# JWT
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+
+# s3
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+    stack.auto: false
+    region.static: ${REGION}
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_ACCESS_KEY}
+
+# OAuth2
+oauth2:
+  kakao:
+    token-uri: ${KAKAO_TOKEN_URI}
+    user-info-uri: ${KAKAO_USER_INFO_URI}
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-url: ${KAKAO_REDIRECT_URL}
+
+# Actuator 설정
+management:
+  endpoints:
+    prometheus: # 활성화를 원하는 엔드포인트의 id
+      enabled: true
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# tomcat was 메트릭으로 변경
+server:
+  tomcat:
+    connection-timeout: 1800000
+    mbeanregistry:
+      enabled: true

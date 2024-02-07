@@ -49,17 +49,14 @@ public class PaymentService {
      * @param paymentKey 토스 결제고유번호
      * @param orderId    서버 주문고유번호
      * @param amount     결제액
-     * @return 토스페이 최종요청 결과
+     * @param callback   TOSS 최종 요청 결과값 콜백
      */
     @Transactional
-    public void requestFinalTossPayment(String paymentKey, Long orderId, Long amount, TossPaymentSuccessCallback callback) {
-        this.verifyRequest(paymentKey, orderId, amount);
+    public void requestFinalTossPayment(String paymentKey, String orderId, Long amount, TossPaymentSuccessCallback callback) {
+        TossPayment tossPayment = this.verifyRequest(paymentKey, orderId, amount);
         eventPublisher.publishEvent(new TossPaymentSuccessEvent(
             this,
-            paymentKey,
-            orderId,
-            amount,
-            successUrl,
+            tossPayment,
             testSecretApiKey,
             callback)); // Provide method reference to the event listener
     }
@@ -73,7 +70,7 @@ public class PaymentService {
      * @return 결제실패정보
      */
     @Transactional
-    public TossPaymentFailResponseDto requestFail(String errorCode, String errorMsg, Long orderId) {
+    public TossPaymentFailResponseDto requestFail(String errorCode, String errorMsg, String orderId) {
         TossPayment tossPayment = this.findBy(orderId);
         tossPayment.setIsPaySuccess(false);
         tossPayment.setPayFailReason(errorMsg);
@@ -88,19 +85,20 @@ public class PaymentService {
      * @param amount     결제액
      */
     @Transactional
-    void verifyRequest(String paymentKey, Long orderId, Long amount) {
+    TossPayment verifyRequest(String paymentKey, String orderId, Long amount) {
         // 주문아이디 일치 검증
         TossPayment tossPayment = this.findBy(orderId);
         // 결제금액 일치 검증
         if (tossPayment.getAmount().equals(amount)) {
+            tossPayment.setIsPaySuccess(true);
             tossPayment.setPaymentKey(paymentKey);
-            return;
+            return tossPayment;
         }
         throw new GlobalException(ResultCase.UNMATCHED_PAYMENT_AMOUNT);
     }
 
     @Transactional(readOnly = true)
-    TossPayment findBy(Long orderId) {
+    TossPayment findBy(String orderId) {
         return tossPaymentRepository.findByOrderId(orderId)
             .orElseThrow(() -> new GlobalException(ResultCase.PAYMENT_NOT_FOUND));
     }

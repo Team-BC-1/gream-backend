@@ -44,7 +44,7 @@ public class TossPayment extends BaseEntity {
     private Long amount;
 
     @Column
-    private Long orderId;
+    private String orderId;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -63,7 +63,7 @@ public class TossPayment extends BaseEntity {
     private String payFailReason;
 
     @Builder
-    private TossPayment(User user, PayType payType, Long amount, Long orderId, OrderName orderName) {
+    private TossPayment(User user, PayType payType, Long amount, String orderId, OrderName orderName) {
         this.user = user;
         this.payType = payType;
         this.amount = amount;
