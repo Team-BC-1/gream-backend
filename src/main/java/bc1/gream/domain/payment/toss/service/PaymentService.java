@@ -54,6 +54,7 @@ public class PaymentService {
     @Transactional
     public void requestFinalTossPayment(String paymentKey, String orderId, Long amount, TossPaymentSuccessCallback callback) {
         TossPayment tossPayment = this.verifyRequest(paymentKey, orderId, amount);
+        tossPayment.getUser().increasePoint(amount);
         eventPublisher.publishEvent(new TossPaymentSuccessEvent(
             this,
             tossPayment,
