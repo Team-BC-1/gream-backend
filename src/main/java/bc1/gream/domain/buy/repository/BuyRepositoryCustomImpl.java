@@ -16,6 +16,7 @@ import bc1.gream.domain.user.entity.User;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -77,6 +78,7 @@ public class BuyRepositoryCustomImpl implements BuyRepositoryCustom {
             .leftJoin(QBuy.buy.product, product)
             .where(QBuy.buy.product.id.eq(productId), QBuy.buy.price.eq(price))
             .orderBy(QBuy.buy.createdAt.asc())
+            .setLockMode(LockModeType.PESSIMISTIC_WRITE)
             .fetchFirst();
         return Optional.ofNullable(buy);
     }

@@ -71,13 +71,8 @@ public class BaseIntegrationTest implements ProductTest, UserTest, CouponTest, B
         savedIcedAmericano = saveProduct(TEST_PRODUCT);
         savedCaffelatte = saveProduct(TEST_PRODUCT_SECOND);
         savedIcedCoffe = saveProduct(TEST_PRODUCT_THIRD);
-
         savedBuyer = saveBuyer(TEST_BUYER);
         savedSeller = saveSeller(TEST_SELLER);
-
-        System.out.println("savedBuyer.getId() = " + savedBuyer.getId());
-        System.out.println("savedSeller.getId() = " + savedSeller.getId());
-
         savedCoupon = saveCouponOf(savedBuyer);
         savedOrder = saveOrderOf(savedIcedAmericano, savedBuyer, savedSeller);
         savedGifticon = saveGifticonOf(savedOrder);
