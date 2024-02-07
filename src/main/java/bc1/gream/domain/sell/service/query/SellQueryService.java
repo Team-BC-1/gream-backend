@@ -8,8 +8,12 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
+import bc1.gream.global.redis.RedisCacheName;
+import bc1.gream.global.redis.RestPage;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@CacheConfig(cacheNames = RedisCacheName.PRODUCTS_SELL)
 public class SellQueryService {
 
     private final SellRepository sellRepository;
@@ -30,10 +35,10 @@ public class SellQueryService {
      * @return 판매입찰가 내역 페이징 데이터
      */
     @Transactional(readOnly = true)
+    @Cacheable(key = "#product.id + #pageable.pageNumber")
     public Page<SellPriceToQuantityResponseDto> findAllSellBidsOf(Product product, Pageable pageable) {
-        return sellRepository.findAllPriceToQuantityOf(product, pageable);
+        return new RestPage<>(sellRepository.findAllPriceToQuantityOf(product, pageable));
     }
-
 
     @Transactional(readOnly = true)
     public Sell findByIdAndUser(Long sellId, User user) {
