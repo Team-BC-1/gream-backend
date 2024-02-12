@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -101,20 +103,33 @@ class AdminControllerTest implements RefundTest {
     void 관리자가_새로운_상품을_추가하는_컨트롤러_기능_성공_테스트() throws Exception {
 
         // given
+        MockMultipartFile file = new MockMultipartFile(
+            "file",
+            "emptyFile.png",
+            "png",
+            new byte[0]
+        );
         AdminProductRequestDto requestDto = AdminProductRequestDto.builder()
             .brand("스타벅스")
             .name("콜드브루")
-            .imageUrl("C:/")
+            .file(file)
             .description("콜드브루")
             .price(6000L)
             .build();
 
-        String json = objectMapper.writeValueAsString(requestDto);
-
         // when - then
-        mockMvc.perform(post("/api/admin/products")
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                multipart("/api/admin/products")
+                    .file("file", file.getBytes())
+                    .param("brand", requestDto.brand())
+                    .param("name", requestDto.name())
+                    .param("description", requestDto.description())
+                    .param("price", String.valueOf(requestDto.price()))
+                    .with(request -> {
+                        request.setMethod("POST");
+                        return request;
+                    })
+                    .contentType(MediaType.MULTIPART_FORM_DATA))
             .andExpectAll(
                 status().isOk(),
                 jsonPath("$.code").value(0),
