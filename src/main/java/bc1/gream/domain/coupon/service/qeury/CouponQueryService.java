@@ -24,27 +24,13 @@ public class CouponQueryService {
 
     public Coupon checkCoupon(Long couponId, User buyer, CouponStatus status) {
 
-        Coupon coupon = findByCouponId(couponId);
-
-        if (!isCheckCouponUser(coupon, buyer)) {
-            throw new GlobalException(ResultCase.NOT_AUTHORIZED);
-        }
+        Coupon coupon = findCouponById(couponId, buyer);
 
         if (!isCheckCouponStatus(coupon, status)) {
             throw new GlobalException(ResultCase.COUPON_STATUS_CHANGE_FAIL);
         }
 
         return coupon;
-    }
-
-    private Coupon findByCouponId(Long couponId) {
-        return couponRepository.findById(couponId).orElseThrow(
-            () -> new GlobalException(ResultCase.COUPON_NOT_FOUND)
-        );
-    }
-
-    private boolean isCheckCouponUser(Coupon coupon, User user) {
-        return coupon.getUser().getLoginId().equals(user.getLoginId());
     }
 
     private boolean isCheckCouponStatus(Coupon coupon, CouponStatus status) {
