@@ -61,9 +61,7 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
         given(buyRepository.findById(any(Long.class))).willReturn(Optional.empty());
 
         // when
-        GlobalException exception = assertThrows(GlobalException.class, () -> {
-            buyQueryService.findBuyById(any(Long.class));
-        });
+        GlobalException exception = assertThrows(GlobalException.class, () -> buyQueryService.findBuyById(any(Long.class)));
 
         // then
         assertThat(exception.getResultCase()).isEqualTo(ResultCase.BUY_BID_NOT_FOUND);
@@ -130,9 +128,8 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
             Optional.empty());
 
         // when
-        GlobalException exception = assertThrows(GlobalException.class, () -> {
-            buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE);
-        });
+        GlobalException exception = assertThrows(GlobalException.class,
+            () -> buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE));
 
         // then
         assertThat(exception.getResultCase()).isEqualTo(ResultCase.BUY_BID_NOT_FOUND);
@@ -155,7 +152,7 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
 
             responseDtoList.add(responseDto);
         }
-        given(buyRepository.findAllBuyBidCoupon(any(User.class))).willReturn(responseDtoList);
+        given(buyRepository.findAllBuyBidCoupon(any(User.class), any(LocalDateTime.class))).willReturn(responseDtoList);
 
         // when
         List<BuyCheckBidResponseDto> resultList = buyQueryService.findAllBuyBidCoupon(TEST_USER);
@@ -219,9 +216,7 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
         ReflectionTestUtils.setField(TEST_USER, "point", 3000L);
 
         // when
-        GlobalException exception = assertThrows(GlobalException.class, () -> {
-            buyQueryService.userPointCheck(TEST_USER, 5000L);
-        });
+        GlobalException exception = assertThrows(GlobalException.class, () -> buyQueryService.userPointCheck(TEST_USER, 5000L));
 
         // then
         assertThat(exception.getResultCase()).isEqualTo(ResultCase.NOT_ENOUGH_POINT);
