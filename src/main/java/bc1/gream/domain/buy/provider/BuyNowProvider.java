@@ -4,7 +4,6 @@ import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
 import bc1.gream.domain.coupon.entity.Coupon;
-import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.order.entity.Order;
@@ -34,10 +33,10 @@ public class BuyNowProvider {
         // 해당상품과 가격에 대한 판매입찰
         Sell sell = sellQueryService.getRecentSellBidof(productId, requestDto.price());
         // 쿠폰 조회
-        Coupon coupon = getCoupon(requestDto.couponId(), buyer);
+        Coupon coupon = couponQueryService.getCouponFrom(requestDto.couponId(), buyer);
 
         // 새로운 주문
-        Order order = saveOrder(sell, buyer, coupon);
+        Order order = orderCommandService.saveOrderOf(sell, buyer, coupon);
         // 판매입찰 기프티콘에 주문 저장
         sell.getGifticon().updateOrder(order);
         // 해당 판매입찰 삭제
@@ -54,21 +53,5 @@ public class BuyNowProvider {
 
         // 매핑
         return OrderMapper.INSTANCE.toBuyNowResponseDto(order);
-    }
-
-    private Coupon getCoupon(Long couponId, User buyer) {
-        if (couponId != null) {
-            Coupon coupon = couponQueryService.checkCoupon(couponId, buyer, CouponStatus.AVAILABLE);
-            couponCommandService.changeCouponStatus(coupon, CouponStatus.ALREADY_USED);
-            return coupon;
-        }
-        return null;
-    }
-
-    private Order saveOrder(Sell sell, User buyer, Coupon coupon) {
-        if (coupon != null) {
-            return orderCommandService.saveOrderOfSell(sell, buyer, coupon);
-        }
-        return orderCommandService.saveOrderOfSellNotCoupon(sell, buyer);
     }
 }
