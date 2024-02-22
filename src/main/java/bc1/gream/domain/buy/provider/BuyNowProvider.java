@@ -3,6 +3,7 @@ package bc1.gream.domain.buy.provider;
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
+import bc1.gream.domain.buy.validator.BuyAvailabilityVerifier;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
@@ -34,6 +35,8 @@ public class BuyNowProvider {
         Sell sell = sellQueryService.getRecentSellBidof(productId, requestDto.price());
         // 쿠폰 조회
         Coupon coupon = couponQueryService.getCouponFrom(requestDto.couponId(), buyer);
+        // 구매자에 대한 구매가능성 여부 검증
+        BuyAvailabilityVerifier.verifyBuyerEligibility(sell.getPrice(), coupon, buyer);
 
         // 새로운 주문
         Order order = orderCommandService.saveOrderOf(sell, buyer, coupon);
@@ -41,10 +44,6 @@ public class BuyNowProvider {
         sell.getGifticon().updateOrder(order);
         // 해당 판매입찰 삭제
         sellCommandService.delete(sell);
-
-        // 구매가능검증 :: 사용자 포인트가 finalPrice 보다 작다면 예외처리
-        // << 이건 컨트롤러 단에서 검증 해줘야하 하지 않을까???
-        buyQueryService.userPointCheck(buyer, order.getFinalPrice());
 
         // 즉시구매자 포인트 감소
         buyer.decreasePoint(order.getFinalPrice());
