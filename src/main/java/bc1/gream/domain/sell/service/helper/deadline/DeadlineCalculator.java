@@ -1,17 +1,20 @@
 package bc1.gream.domain.sell.service.helper.deadline;
 
-import bc1.gream.domain.sell.dto.request.SellBidRequestDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public final class DeadlineCalculator {
 
-    public static LocalDateTime getDeadlineOf(SellBidRequestDto requestDto) {
-        Integer period = Deadline.getPeriod(requestDto.period());
-        LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX,
-            period);
-        return deadlineAt;
+    /**
+     * 현재일자로부터 입력주기에 따른 마감일자를 반환
+     *
+     * @param period 입력주기
+     * @return 마감일자
+     */
+    public static LocalDateTime getDeadlineOf(Integer period) {
+        Integer calculatedPeriod = Deadline.getPeriod(period);
+        return calculateDeadlineBy(LocalDate.now(), LocalTime.MAX, calculatedPeriod);
     }
 
     /**

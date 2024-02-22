@@ -31,14 +31,13 @@ public class SellBidProvider {
 
     @Transactional
     public SellBidResponseDto createSellBid(User seller, SellBidRequestDto requestDto, Product product) {
-
         // 기프티콘 이미지 S3 저장
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
         // 기프티콘 생성, 저장
         Gifticon gifticon = gifticonCommandService.saveGifticon(url, null);
-        // 마감기한 계산
-        LocalDateTime deadlineAt = DeadlineCalculator.getDeadlineOf(requestDto);
 
+        // 마감기한 계산
+        LocalDateTime deadlineAt = DeadlineCalculator.getDeadlineOf(requestDto.period());
         // 판매입찰 생성 및 저장
         Sell sell = Sell.builder()
             .price(requestDto.price())
@@ -53,6 +52,7 @@ public class SellBidProvider {
         return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);
     }
 
+    @Transactional
     public SellCancelBidResponseDto sellCancelBid(User seller, Long sellId) {
         Sell deletedSell = sellCommandService.deleteSellByIdAndUser(sellId, seller);
         gifticonCommandService.delete(deletedSell.getGifticon());
