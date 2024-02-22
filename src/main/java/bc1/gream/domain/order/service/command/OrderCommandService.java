@@ -81,4 +81,19 @@ public class OrderCommandService {
 
         return orderRepository.save(order);
     }
+
+    /**
+     * 즉시판매 시, 쿠폰 상태에 따른 주문 체결
+     *
+     * @param buy    판매입찰
+     * @param seller 판매자
+     * @param coupon 쿠폰
+     * @return 체결된 주문
+     */
+    public Order saveOrder(Buy buy, User seller, Coupon coupon) {
+        if (coupon != null) {
+            return saveOrderOfBuy(buy, seller, coupon);
+        }
+        return saveOrderOfBuyNotCoupon(buy, seller);
+    }
 }
