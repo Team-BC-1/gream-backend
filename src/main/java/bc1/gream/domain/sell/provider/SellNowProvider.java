@@ -34,9 +34,9 @@ public class SellNowProvider {
         // 해당상품과 가격에 대한 구매입찰
         Buy buy = buyQueryService.getRecentBuyBidOf(productId, requestDto.price());
         // 쿠폰 조회
-        Coupon coupon = couponQueryService.getCouponFrom(buy);
+        Coupon coupon = couponQueryService.getCouponFrom(buy.getCouponId(), buy.getUser());
         // 새로운 주문
-        Order order = orderCommandService.saveOrder(buy, user, coupon);
+        Order order = orderCommandService.saveOrderOf(buy, user, coupon);
 
         // 기프티콘 이미지 S3 저장
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
