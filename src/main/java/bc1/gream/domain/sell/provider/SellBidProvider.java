@@ -10,13 +10,10 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.mapper.SellMapper;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.sell.service.command.SellCommandService;
-import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.infra.s3.S3ImageService;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,13 +34,10 @@ public class SellBidProvider {
 
         // 기프티콘 이미지 S3 저장
         String url = s3ImageService.getUrlAfterUpload(requestDto.file());
-
         // 기프티콘 생성, 저장
         Gifticon gifticon = gifticonCommandService.saveGifticon(url, null);
-        // 마감기한 지정 : LocalTime.Max :: 23시 59분 59초
-        Integer period = Deadline.getPeriod(requestDto.period());
-        LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX,
-            period);
+        // 마감기한 계산
+        LocalDateTime deadlineAt = DeadlineCalculator.getDeadlineOf(requestDto);
 
         // 판매입찰 생성 및 저장
         Sell sell = Sell.builder()
@@ -58,7 +52,6 @@ public class SellBidProvider {
         // 매퍼로 변환
         return SellMapper.INSTANCE.toSellBidResponseDto(savedSell);
     }
-
 
     public SellCancelBidResponseDto sellCancelBid(User seller, Long sellId) {
         Sell deletedSell = sellCommandService.deleteSellByIdAndUser(sellId, seller);
