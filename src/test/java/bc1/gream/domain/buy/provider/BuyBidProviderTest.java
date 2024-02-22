@@ -2,7 +2,10 @@ package bc1.gream.domain.buy.provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -13,6 +16,7 @@ import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.buy.service.command.BuyCommandService;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
+import bc1.gream.domain.buy.validator.BuyAvailabilityVerifier;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
@@ -27,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +53,6 @@ class BuyBidProviderTest implements CouponTest, UserTest, ProductTest, BuyTest {
     @Test
     @DisplayName("구매입찰 Provider의 기능 중 상품 구매 입찰신청 기능 성공 테스트")
     void 상품_구매_입찰신청_성공_테스트() {
-
         // given
         BuyBidRequestDto requestDto = BuyBidRequestDto.builder()
             .price(4000L)
@@ -56,17 +60,20 @@ class BuyBidProviderTest implements CouponTest, UserTest, ProductTest, BuyTest {
             .period(7)
             .build();
 
-        given(couponQueryService.checkCoupon(requestDto.couponId(), TEST_BUYER, CouponStatus.AVAILABLE)).willReturn(TEST_COUPON_FIX);
+        given(couponQueryService.getCouponFrom(requestDto.couponId(), TEST_BUYER)).willReturn(TEST_COUPON_FIX);
         given(buyRepository.save(any(Buy.class))).willReturn(TEST_BUY);
 
-        // when
-        BuyBidResponseDto responseDto = buyBidProvider.buyBidProduct(TEST_BUYER, requestDto, TEST_PRODUCT);
+        try (MockedStatic<BuyAvailabilityVerifier> mockedStatic = mockStatic(BuyAvailabilityVerifier.class)) {
+            // when
+            BuyBidResponseDto responseDto = buyBidProvider.buyBidProduct(TEST_BUYER, requestDto, TEST_PRODUCT);
 
-        // then
-        verify(couponCommandService, times(1)).changeCouponStatus(any(Coupon.class), any(CouponStatus.class));
-        verify(buyQueryService, times(1)).userPointCheck(any(User.class), any(Long.class));
-        assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
+            // then
+            mockedStatic.verify(
+                () -> BuyAvailabilityVerifier.verifyBuyerEligibility(eq(requestDto.price()), nullable(Coupon.class), any(User.class)));
+            assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
+        }
     }
+
 
     @Test
     void 상품_구매_입찰_추가_Provider_쿠폰_없을때_성공_테스트() {
@@ -79,12 +86,15 @@ class BuyBidProviderTest implements CouponTest, UserTest, ProductTest, BuyTest {
 
         given(buyRepository.save(any(Buy.class))).willReturn(TEST_BUY);
 
-        // when
-        BuyBidResponseDto responseDto = buyBidProvider.buyBidProduct(TEST_BUYER, requestDto, TEST_PRODUCT);
+        try (MockedStatic<BuyAvailabilityVerifier> mockedStatic = mockStatic(BuyAvailabilityVerifier.class)) {
+            // when
+            BuyBidResponseDto responseDto = buyBidProvider.buyBidProduct(TEST_BUYER, requestDto, TEST_PRODUCT);
 
-        // then
-        verify(buyQueryService, times(1)).userPointCheck(any(User.class), any(Long.class));
-        assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
+            // then
+            mockedStatic.verify(
+                () -> BuyAvailabilityVerifier.verifyBuyerEligibility(eq(requestDto.price()), nullable(Coupon.class), any(User.class)));
+            assertThat(responseDto.price()).isEqualTo(TEST_BUY_PRICE);
+        }
     }
 
     @Test
