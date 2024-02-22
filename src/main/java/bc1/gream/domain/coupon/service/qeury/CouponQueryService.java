@@ -3,6 +3,7 @@ package bc1.gream.domain.coupon.service.qeury;
 import static bc1.gream.global.common.ResultCase.COUPON_NOT_FOUND;
 import static bc1.gream.global.common.ResultCase.NOT_AUTHORIZED;
 
+import bc1.gream.domain.buy.entity.Buy;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.repository.CouponRepository;
@@ -11,6 +12,7 @@ import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import bc1.gream.global.security.UserDetailsImpl;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,5 +63,22 @@ public class CouponQueryService {
 
     public boolean isMatchCouponUser(User user, Coupon coupon) {
         return coupon.getUser().getLoginId().equals(user.getLoginId());
+    }
+
+
+    /**
+     * 구매입찰로부터 쿠폰 조회
+     *
+     * @param buy 구매입찰
+     * @return 구매입찰 시 등록된 쿠폰, 없다면 null 반환
+     */
+    public Coupon getCouponFrom(Buy buy) {
+        if (Objects.isNull(buy.getCouponId())) {
+            return null;
+        }
+        // 쿠폰 조회, 사용처리
+        Coupon coupon = findCouponById(buy.getCouponId(), buy.getUser());
+        coupon.changeStatus(CouponStatus.ALREADY_USED);
+        return coupon;
     }
 }
