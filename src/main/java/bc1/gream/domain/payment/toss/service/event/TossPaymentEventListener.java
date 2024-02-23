@@ -20,12 +20,11 @@ import org.springframework.web.client.RestTemplate;
 public class TossPaymentEventListener {
 
     private static TossPaymentSuccessResponseDto sendFinalRequest(RestTemplate rest, HttpHeaders headers, JSONObject param) {
-        TossPaymentSuccessResponseDto responseDto = rest.postForObject(
+        return rest.postForObject(
             "https://api.tosspayments.com/v1/payments/confirm",
             new HttpEntity<>(param, headers),
             TossPaymentSuccessResponseDto.class
         );
-        return responseDto;
     }
 
     private static void updateUserPointByPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
@@ -55,7 +54,7 @@ public class TossPaymentEventListener {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
     }
 
-    @Async
+    @Async("tossPaymentsExecutor")
     @TransactionalEventListener
     public void handleTossPaymentSuccess(TossPaymentSuccessEvent event) {
         RestTemplate rest = new RestTemplate();
