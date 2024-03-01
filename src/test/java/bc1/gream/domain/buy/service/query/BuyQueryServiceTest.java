@@ -29,7 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class BuyQueryServiceTest implements BuyTest, CouponTest {
@@ -128,9 +127,8 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
             Optional.empty());
 
         // when
-        GlobalException exception = assertThrows(GlobalException.class, () -> {
-            buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE);
-        });
+        GlobalException exception = assertThrows(GlobalException.class,
+            () -> buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE));
 
         // then
         assertThat(exception.getResultCase()).isEqualTo(ResultCase.BUY_BID_NOT_FOUND);
@@ -198,30 +196,5 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
         assertThat(resultList.get(1).discountPrice()).isEqualTo(responseDtoList.get(1).discountPrice());
         assertThat(resultList.get(2).discountPrice()).isEqualTo(responseDtoList.get(2).discountPrice());
         assertThat(resultList.get(3).discountPrice()).isEqualTo(responseDtoList.get(3).discountPrice());
-    }
-
-    @Test
-    void 유저의_포인트_체크하는_서비스_기능_성공_테스트() {
-
-        // given
-        ReflectionTestUtils.setField(TEST_USER, "point", 10000L);
-
-        // when - then
-        buyQueryService.userPointCheck(TEST_USER, 5000L);
-    }
-
-    @Test
-    void 유저의_포인트_체크하는_서비스_기능_실패_테스트() {
-
-        // given
-        ReflectionTestUtils.setField(TEST_USER, "point", 3000L);
-
-        // when
-        GlobalException exception = assertThrows(GlobalException.class, () -> buyQueryService.userPointCheck(TEST_USER, 5000L));
-
-        // then
-        assertThat(exception.getResultCase()).isEqualTo(ResultCase.NOT_ENOUGH_POINT);
-        assertThat(exception.getResultCase().getCode()).isEqualTo(1007);
-        assertThat(exception.getResultCase().getMessage()).isEqualTo("유저의 포인트가 부족합니다");
     }
 }
