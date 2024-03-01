@@ -2,15 +2,18 @@ package bc1.gream.domain.buy.provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import bc1.gream.domain.buy.dto.request.BuyNowRequestDto;
 import bc1.gream.domain.buy.dto.response.BuyNowResponseDto;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
+import bc1.gream.domain.buy.validator.BuyAvailabilityVerifier;
 import bc1.gream.domain.coupon.entity.Coupon;
-import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.order.service.command.OrderCommandService;
@@ -25,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,46 +51,47 @@ class BuyNowProviderTest implements SellTest, CouponTest, OrderTest {
 
     @Test
     void 판매입찰_되어있는_상품_쿠폰_있을시_즉시_구매하는_Provider_기능_성공_테스트() {
-
         // given
         BuyNowRequestDto requestDto = BuyNowRequestDto.builder()
-            .price(5000L)
+            .price(TEST_SELL_PRICE)
             .couponId(1L)
             .build();
 
         given(sellQueryService.getRecentSellBidof(any(Long.class), any(Long.class))).willReturn(TEST_SELL);
-        given(couponQueryService.checkCoupon(any(Long.class), any(User.class), any(CouponStatus.class))).willReturn(TEST_COUPON_FIX);
-        given(orderCommandService.saveOrderOfSell(any(Sell.class), any(User.class), any(Coupon.class))).willReturn(TEST_ORDER);
+        given(couponQueryService.getCouponFrom(anyLong(), any(User.class))).willReturn(TEST_COUPON_FIX);
+        given(orderCommandService.saveOrderOf(any(Sell.class), any(User.class), any(Coupon.class))).willReturn(TEST_ORDER);
 
-        // when
-        BuyNowResponseDto responseDto = buyNowProvider.buyNowProduct(TEST_BUYER, requestDto, TEST_PRODUCT_ID);
+        try (MockedStatic<BuyAvailabilityVerifier> mockedStatic = mockStatic(BuyAvailabilityVerifier.class)) {
+            // when
+            BuyNowResponseDto responseDto = buyNowProvider.buyNowProduct(TEST_BUYER, requestDto, TEST_PRODUCT_ID);
 
-        // then
-        assertThat(responseDto.finalPrice()).isEqualTo(4000L);
-        assertThat(responseDto.expectedPrice()).isEqualTo(4500L);
-        verify(sellCommandService, times(1)).delete(any(Sell.class));
-        verify(couponCommandService, times(1)).changeCouponStatus(any(Coupon.class), any(CouponStatus.class));
-        verify(buyQueryService, times(1)).userPointCheck(any(User.class), any(Long.class));
+            // then
+            assertThat(responseDto.finalPrice()).isEqualTo(TEST_SELL_PRICE - TEST_DISCOUNT);
+            assertThat(responseDto.expectedPrice()).isEqualTo(TEST_SELL_PRICE);
+            mockedStatic.verify(() -> BuyAvailabilityVerifier.verifyBuyerEligibility(anyLong(), any(Coupon.class), any(User.class)));
+            verify(sellCommandService, times(1)).delete(any(Sell.class));
+        }
     }
 
     @Test
     void 판매입찰_되어있는_상품_쿠폰_없을시_즉시_구매하는_Provider_기능_성공_테스트() {
-
         // given
         BuyNowRequestDto requestDto = BuyNowRequestDto.builder()
-            .price(5000L)
+            .price(TEST_SELL_PRICE)
             .build();
 
         given(sellQueryService.getRecentSellBidof(any(Long.class), any(Long.class))).willReturn(TEST_SELL);
-        given(orderCommandService.saveOrderOfSellNotCoupon(any(Sell.class), any(User.class))).willReturn(TEST_ORDER_NOT_COUPON);
+        given(orderCommandService.saveOrderOf(any(Sell.class), any(User.class), nullable(Coupon.class))).willReturn(TEST_ORDER_NOT_COUPON);
 
-        // when
-        BuyNowResponseDto responseDto = buyNowProvider.buyNowProduct(TEST_BUYER, requestDto, TEST_PRODUCT_ID);
+        try (MockedStatic<BuyAvailabilityVerifier> mockedStatic = mockStatic(BuyAvailabilityVerifier.class)) {
+            // when
+            BuyNowResponseDto responseDto = buyNowProvider.buyNowProduct(TEST_BUYER, requestDto, TEST_PRODUCT_ID);
 
-        // then
-        assertThat(responseDto.finalPrice()).isEqualTo(4500L);
-        assertThat(responseDto.expectedPrice()).isEqualTo(4500L);
-        verify(sellCommandService, times(1)).delete(any(Sell.class));
-        verify(buyQueryService, times(1)).userPointCheck(any(User.class), any(Long.class));
+            // then
+            assertThat(responseDto.finalPrice()).isEqualTo(TEST_SELL_PRICE);
+            assertThat(responseDto.expectedPrice()).isEqualTo(TEST_SELL_PRICE);
+            mockedStatic.verify(() -> BuyAvailabilityVerifier.verifyBuyerEligibility(anyLong(), nullable(Coupon.class), any(User.class)));
+            verify(sellCommandService, times(1)).delete(any(Sell.class));
+        }
     }
 }

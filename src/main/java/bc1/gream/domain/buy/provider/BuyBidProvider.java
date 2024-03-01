@@ -8,18 +8,16 @@ import bc1.gream.domain.buy.mapper.BuyMapper;
 import bc1.gream.domain.buy.repository.BuyRepository;
 import bc1.gream.domain.buy.service.command.BuyCommandService;
 import bc1.gream.domain.buy.service.query.BuyQueryService;
+import bc1.gream.domain.buy.validator.BuyAvailabilityVerifier;
 import bc1.gream.domain.coupon.entity.Coupon;
 import bc1.gream.domain.coupon.entity.CouponStatus;
 import bc1.gream.domain.coupon.helper.CouponCalculator;
 import bc1.gream.domain.coupon.service.command.CouponCommandService;
 import bc1.gream.domain.coupon.service.qeury.CouponQueryService;
 import bc1.gream.domain.product.entity.Product;
-import bc1.gream.domain.sell.service.helper.deadline.Deadline;
 import bc1.gream.domain.sell.service.helper.deadline.DeadlineCalculator;
 import bc1.gream.domain.user.entity.User;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,24 +35,25 @@ public class BuyBidProvider {
 
     @Transactional
     public BuyBidResponseDto buyBidProduct(User buyer, BuyBidRequestDto requestDto, Product product) {
-        Long price = requestDto.price();
-        Integer period = Deadline.getPeriod(requestDto.period());
-        LocalDateTime deadlineAt = DeadlineCalculator.calculateDeadlineBy(LocalDate.now(), LocalTime.MAX, period);
-        Long couponId = requestDto.couponId();
-        Coupon coupon = getCoupon(requestDto.couponId(), buyer);
-        Long finalPrice = calcPrice(coupon, price);
+        // 쿠폰 조회
+        Coupon coupon = couponQueryService.getCouponFrom(requestDto.couponId(), buyer);
+        // 구매자에 대한 구매가능성 여부 검증
+        BuyAvailabilityVerifier.verifyBuyerEligibility(requestDto.price(), coupon, buyer);
+        // 할인적용된 최종가격
+        Long finalPrice = CouponCalculator.calculateDiscount(coupon, requestDto.price());
 
+        // 마감기한에 따른 구매입찰 생성, 저장
+        LocalDateTime deadlineAt = DeadlineCalculator.getDeadlineOf(requestDto.period());
         Buy buy = Buy.builder()
-            .price(price)
+            .price(requestDto.price())
             .deadlineAt(deadlineAt)
-            .couponId(couponId)
+            .couponId(requestDto.couponId())
             .user(buyer)
             .product(product)
             .build();
-
         Buy savedBuy = buyRepository.save(buy);
-        buyQueryService.userPointCheck(buyer, finalPrice);
 
+        // 구매자 포인트 삭감
         buyer.decreasePoint(finalPrice);
 
         return BuyMapper.INSTANCE.toBuyBidResponseDto(savedBuy);
@@ -74,23 +73,4 @@ public class BuyBidProvider {
 
         return new BuyCancelBidResponseDto(buyId);
     }
-
-    private Coupon getCoupon(Long couponId, User buyer) {
-        if (couponId != null) {
-            Coupon coupon = couponQueryService.checkCoupon(couponId, buyer, CouponStatus.AVAILABLE);
-            couponCommandService.changeCouponStatus(coupon, CouponStatus.ALREADY_USED);
-            return coupon;
-        }
-
-        return null;
-    }
-
-    private Long calcPrice(Coupon coupon, Long price) {
-        if (coupon != null) {
-            return CouponCalculator.calculateDiscount(coupon, price);
-        }
-
-        return price;
-    }
-
 }

@@ -1,7 +1,6 @@
 package bc1.gream.domain.buy.service.query;
 
 import static bc1.gream.global.common.ResultCase.BUY_BID_NOT_FOUND;
-import static bc1.gream.global.common.ResultCase.NOT_ENOUGH_POINT;
 
 import bc1.gream.domain.buy.dto.response.BuyCheckBidResponseDto;
 import bc1.gream.domain.buy.entity.Buy;
@@ -13,9 +12,9 @@ import bc1.gream.domain.product.dto.response.BuyPriceToQuantityResponseDto;
 import bc1.gream.domain.product.entity.Product;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
-import java.time.LocalDateTime;
 import bc1.gream.global.redis.RedisCacheName;
 import bc1.gream.global.redis.RestPage;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
@@ -83,11 +82,5 @@ public class BuyQueryService {
         }
 
         return CouponCalculator.calculateDiscount(coupon, discountPrice);
-    }
-
-    public void userPointCheck(User user, Long finalPrice) {
-        if (user.getPoint() < finalPrice) {
-            throw new GlobalException(NOT_ENOUGH_POINT);
-        }
     }
 }

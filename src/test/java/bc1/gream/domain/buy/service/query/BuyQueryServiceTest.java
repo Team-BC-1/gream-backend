@@ -128,8 +128,9 @@ class BuyQueryServiceTest implements BuyTest, CouponTest {
             Optional.empty());
 
         // when
-        GlobalException exception = assertThrows(GlobalException.class,
-            () -> buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE));
+        GlobalException exception = assertThrows(GlobalException.class, () -> {
+            buyQueryService.getRecentBuyBidOf(TEST_PRODUCT_ID, TEST_BUY_PRICE);
+        });
 
         // then
         assertThat(exception.getResultCase()).isEqualTo(ResultCase.BUY_BID_NOT_FOUND);
