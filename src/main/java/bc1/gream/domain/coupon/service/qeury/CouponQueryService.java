@@ -62,4 +62,20 @@ public class CouponQueryService {
     public boolean isMatchCouponUser(User user, Coupon coupon) {
         return coupon.getUser().getLoginId().equals(user.getLoginId());
     }
+
+    /**
+     * 쿠폰아이디와 쿠폰주인에 따라 쿠폰조회 이후 쿠폰상태 변경
+     *
+     * @param couponId 쿠폰아이디
+     * @param user     쿠폰주인
+     * @return 쿠폰
+     */
+    public Coupon getCouponFrom(Long couponId, User user) {
+        if (couponId != null) {
+            Coupon coupon = checkCoupon(couponId, user, CouponStatus.AVAILABLE);
+            coupon.changeStatus(CouponStatus.ALREADY_USED);
+            return coupon;
+        }
+        return null;
+    }
 }

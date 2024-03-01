@@ -1,7 +1,7 @@
 package bc1.gream.domain.coupon.helper;
 
-import bc1.gream.domain.coupon.entity.DiscountType;
 import bc1.gream.domain.coupon.entity.Coupon;
+import bc1.gream.domain.coupon.entity.DiscountType;
 
 public final class CouponCalculator {
 
@@ -13,7 +13,10 @@ public final class CouponCalculator {
      * @return 할인된 가격
      */
     public static Long calculateDiscount(Coupon coupon, Long price) {
-        DiscountType discountType = coupon.getDiscountType();
-        return discountType.calculateDiscount(coupon, price);
+        if (coupon != null) {
+            DiscountType discountType = coupon.getDiscountType();
+            return discountType.calculateDiscount(coupon, price);
+        }
+        return price;
     }
 }
