@@ -8,6 +8,7 @@ spring:
     database: h2
     generate-ddl: on
     defer-datasource-initialization: true
+    #    database-platform: org.hibernate.dialect.MySQL8Dialect # <- SpringBootTest 통합테스트 시 사용
     properties:
       hibernate:
         ddl-auto: create
