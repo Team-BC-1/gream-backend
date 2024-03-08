@@ -27,11 +27,9 @@ public class TossPaymentEventListener {
         );
     }
 
-    private static void updateUserPointByPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
+    private static void checkPaymentStatus(TossPaymentSuccessEvent event, TossPaymentSuccessResponseDto responseDto) {
         assert responseDto != null;
         if (responseDto.status().equals("DONE")) {
-            User user = event.getTossPayment().getUser();
-            user.increasePoint(event.getTossPayment().getAmount());
             event.getCallback().handle(responseDto);
         } else {
             throw new GlobalException(ResultCase.TOSS_FINAL_REQUEST_FAIL);
@@ -66,6 +64,6 @@ public class TossPaymentEventListener {
 
         TossPaymentSuccessResponseDto responseDto = sendFinalRequest(rest, headers, param);
 
-        updateUserPointByPaymentStatus(event, responseDto);
+        checkPaymentStatus(event, responseDto);
     }
 }
