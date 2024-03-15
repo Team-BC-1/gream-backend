@@ -1,7 +1,6 @@
 package bc1.gream.domain.payment.toss.service.event;
 
 import bc1.gream.domain.payment.toss.dto.response.TossPaymentSuccessResponseDto;
-import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.common.ResultCase;
 import bc1.gream.global.exception.GlobalException;
 import java.nio.charset.StandardCharsets;
@@ -11,7 +10,6 @@ import net.minidev.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.RestTemplate;
@@ -53,7 +51,6 @@ public class TossPaymentEventListener {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
     }
 
-    @Async
     @TransactionalEventListener
     public void handleTossPaymentSuccess(TossPaymentSuccessEvent event) {
         RestTemplate rest = new RestTemplate();
