@@ -42,7 +42,7 @@ jobs:
       - name: build docker file and setting deploy files
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: gream-ecr
+          ECR_REPOSITORY: gream
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
