@@ -7,8 +7,8 @@ on:
 env:
   PROJECT_NAME: gream-v2
   BUCKET_NAME: gream-s3
-  CODE_DEPLOY_APP_NAME: gream-v2
-  DEPLOYMENT_GROUP_NAME: gream-developer-v2
+  CODE_DEPLOY_APP_NAME: gream-codedeploy
+  DEPLOYMENT_GROUP_NAME: gream-deploy-group
 
 jobs:
   build-docker:
