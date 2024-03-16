@@ -36,12 +36,19 @@ spring:
         host: ${REDIS_REPLICA_URL}
       repositories:
         enabled: false
+
 # JWT
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
 
-# s3
+# LOG
+logging:
+  level:
+    bc1:
+      gream: warn
+
+# S3
 cloud:
   aws:
     s3:
