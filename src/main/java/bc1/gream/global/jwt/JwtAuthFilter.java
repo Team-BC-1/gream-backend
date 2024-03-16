@@ -43,7 +43,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
 
         String accessToken = jwtUtil.getTokenWithoutBearer(request.getHeader(ACCESS_TOKEN_HEADER));
-        log.info("accessToken : {}", accessToken);
+        // accessToken 에 대한 로깅
+        // log.info("accessToken : {}", accessToken);
 
         // access token 비어있으면 인증 미처리
         if (!StringUtils.hasText(accessToken)) {
