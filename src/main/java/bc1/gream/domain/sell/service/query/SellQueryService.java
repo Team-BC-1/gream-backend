@@ -8,15 +8,17 @@ import bc1.gream.domain.sell.entity.Sell;
 import bc1.gream.domain.sell.repository.SellRepository;
 import bc1.gream.domain.user.entity.User;
 import bc1.gream.global.exception.GlobalException;
-import java.time.LocalDateTime;
 import bc1.gream.global.redis.RedisCacheName;
 import bc1.gream.global.redis.RestPage;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +52,7 @@ public class SellQueryService {
     }
 
     @Transactional(readOnly = true)
+    @Retryable(backoff = @Backoff(delay = 100))
     public Sell getRecentSellBidof(Long productId, Long price) {
         return sellRepository.findByProductIdAndPrice(productId, price, LocalDateTime.now()).orElseThrow(
             () -> new GlobalException(SELL_BID_PRODUCT_NOT_FOUND)
