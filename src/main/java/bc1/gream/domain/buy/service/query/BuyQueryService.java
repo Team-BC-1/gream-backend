@@ -21,6 +21,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +59,7 @@ public class BuyQueryService {
      * @param price     구매를 원하는 상품 가격
      * @return 구매입찰
      */
+    @Retryable(backoff = @Backoff(delay = 100))
     public Buy getRecentBuyBidOf(Long productId, Long price) {
         return buyRepository.findByProductIdAndPrice(productId, price, LocalDateTime.now())
             .orElseThrow(() -> new GlobalException(BUY_BID_NOT_FOUND));
